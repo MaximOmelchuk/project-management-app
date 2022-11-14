@@ -3,15 +3,17 @@ import logo from "./logo.svg";
 // import { Counter } from './features/counter/Counter';
 import "./App.css";
 import ConfirmModal from "./app/components/ConfirmModal/ConfirmModal";
+import MainPage from "./app/components/MainPage/MainPage";
 
 function App() {
   return (
     <div className="App">
-      <ConfirmModal
+      {/* <ConfirmModal
         content="Are you sure you want to do what you do?"
         confirmHandler={() => alert("yes")}
         closeHandler={() => alert("close")}
-      />
+      /> */}
+      <MainPage />
       {/* <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <Counter />
