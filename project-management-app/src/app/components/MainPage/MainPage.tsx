@@ -1,5 +1,6 @@
-import { Grid } from "@mui/material";
+import { Grid, Typography } from "@mui/material";
 import Board from "../Board/Board";
+import InputModal from "../InputModal/InputModal";
 
 export default function MainPage() {
   const fakeBoards = [
@@ -10,9 +11,9 @@ export default function MainPage() {
     },
     {
       title: "Example title 2",
-      content: "Some example text for the second board.Some example text for the second board",
+      content:
+        "Some example text for the second board.Some example text for the second board",
       key: 2,
-
     },
     {
       title: "Example title 3",
@@ -20,12 +21,26 @@ export default function MainPage() {
     },
   ];
   return (
-    <Grid container gap="1rem">
-      {fakeBoards.map(
-        (item: { title: string; content?: string }) => (
+    <>
+      <Typography
+        variant="h4"
+        align="left"
+        sx={{ mb: 2, fontWeight: "600" }}
+        color="#fff"
+      >
+        YOUR BOARDS
+      </Typography>
+      <Grid container gap="1rem">
+        {fakeBoards.map((item: { title: string; content?: string }) => (
           <Board {...item} />
-        )
-      )}
-    </Grid>
+        ))}
+        <InputModal
+          confirmHandler={() => alert("yes")}
+          closeHandler={() => alert("close")}
+          title="Input modal"
+          inputsContent={["First input"]}
+        />
+      </Grid>
+    </>
   );
 }

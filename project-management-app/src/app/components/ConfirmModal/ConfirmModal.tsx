@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   Dialog,
   Slide,
@@ -7,13 +7,9 @@ import {
   DialogContentText,
   DialogActions,
   Button,
-  SlideProps,
 } from "@mui/material";
 import { TransitionProps } from "@mui/material/transitions";
-import { sizing } from "@mui/system";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../../store/store";
-import { setIsModalConfirmOpen } from "../../store/reducers/commonSlice";
+
 
 const Transition = React.forwardRef<
   unknown,
