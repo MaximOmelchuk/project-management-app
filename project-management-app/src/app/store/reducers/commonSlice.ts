@@ -1,30 +1,44 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  openMenu: true,
-  localIps: [],
-  publicIps: [],
-  token: null,
-  userInfo: null,
+  isModalConfirmOpen: false,
+  modalConfirmContent: "",
+  modalConfirmHandler: () => {},
 };
 
 const common = createSlice({
   name: "common",
   initialState,
   reducers: {
-    setFields: (state, action) => {
-      return { ...state, ...action.payload };
+    setIsModalConfirmOpen: (state, action) => {
+      return action.payload
+        ? { ...state, isModalConfirmOpen: action.payload }
+        : {
+            ...state,
+            isModalConfirmOpen: action.payload,
+            modalConfirmContent: "",
+            modalConfirmHandler: () => {},
+          };
     },
-    setInitialState: () => ({ ...initialState }),
-    setToken: (state, action) => {
-      return { ...state, token: action.payload };
+    setModalConfirmContent: (state, action) => {
+      return { ...state, modalConfirmContent: action.payload };
     },
-    setUserInfo: (state, action) => {
-      return { ...state, userInfo: action.payload };
+    setModalConfirmHandler: (state, action) => {
+      return { ...state, modalConfirmHandler: action.payload };
     },
+    // setInitialState: () => ({ ...initialState }),
+    // setToken: (state, action) => {
+    //   return { ...state, token: action.payload };
+    // },
+    // setUserInfo: (state, action) => {
+    //   return { ...state, userInfo: action.payload };
+    // },
   },
 });
 
-export const { setFields, setInitialState, setToken, setUserInfo } =
-  common.actions;
+export const {
+  setIsModalConfirmOpen,
+  setModalConfirmContent,
+  setModalConfirmHandler,
+} = common.actions;
 export default common.reducer;

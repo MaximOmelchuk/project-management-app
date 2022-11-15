@@ -4,7 +4,7 @@ import {
   ThunkAction,
   Action,
 } from "@reduxjs/toolkit";
-import { hostsService } from "../services/hostService";
+// import { hostsService } from "../services/hostService";
 import counterReducer from "../../features/counter/counterSlice";
 import common from "./reducers/commonSlice";
 
@@ -16,7 +16,7 @@ import common from "./reducers/commonSlice";
 
 const rootReducer = combineReducers({
   common,
-  [hostsService.reducerPath]: hostsService.reducer,
+//   [hostsService.reducerPath]: hostsService.reducer,
   // [logs.reducerPath]: logs.reducer,
   // [licenseManager.reducerPath]: licenseManager.reducer,
   // [licensesService.reducerPath]: licensesService.reducer,
@@ -28,26 +28,26 @@ const rootReducer = combineReducers({
 
 const store = configureStore({
   reducer: rootReducer,
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware({ serializableCheck: false }).concat(
-      hostsService.middleware
-      // logs.middleware,
-      // licenseManager.middleware,
-      // licensesService.middleware,
-      // packagesService.middleware,
-      // userService.middleware,
-      // settingsService.middleware,
-      // authService.middleware
-    ),
+  // middleware: (getDefaultMiddleware) =>
+  //   getDefaultMiddleware({ serializableCheck: false }).concat(
+  //     hostsService.middleware
+  //     // logs.middleware,
+  //     // licenseManager.middleware,
+  //     // licensesService.middleware,
+  //     // packagesService.middleware,
+  //     // userService.middleware,
+  //     // settingsService.middleware,
+  //     // authService.middleware
+  //   ),
 });
 
 export default store;
 
-export type AppDispatch = typeof store.dispatch;
+// export type AppDispatch = typeof store.dispatch;
 export type RootState = ReturnType<typeof store.getState>;
-// export type AppThunk<ReturnType = void> = ThunkAction<
-//   ReturnType,
-//   RootState,
-//   unknown,
-//   Action<string>
-// >;
+// // export type AppThunk<ReturnType = void> = ThunkAction<
+// //   ReturnType,
+// //   RootState,
+// //   unknown,
+// //   Action<string>
+// // >;
