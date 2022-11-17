@@ -4,6 +4,7 @@ import logo from "./logo.svg";
 import "./App.css";
 import ConfirmModal from "./app/components/ConfirmModal/ConfirmModal";
 import MainPage from "./app/components/MainPage/MainPage";
+import Header from "./app/components/Header/Header";
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         confirmHandler={() => alert("yes")}
         closeHandler={() => alert("close")}
       /> */}
+      <Header />
       <MainPage />
       {/* <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
