@@ -37,28 +37,36 @@ function Header() {
     setAnchorElNav(null);
   };
 
-  const linkItems = {
-    singIn: {
+  const linksWithoutAuth = [
+    {
       text: t('header.singIn'),
       Icon: LoginIcon,
+      onClick: () => navigate('/singIn')
     },
-    singOut: {
-      text: t('header.singOut'),
-      Icon: LogoutIcon,
-    },
-    singUp: {
+    {
       text: t('header.singUp'),
       Icon: AppRegistrationIcon,
+      onClick: () => navigate('/singUp')
     },
-    mainPage: {
+  ]
+
+  const linksWithAuth = [
+    {
       text: t('header.mainPage'),
       Icon: MarginIcon,
+      onClick: () => navigate('/mainPage')
     },
-    addBoard: {
+    {
       text: t('header.addBoard'),
       Icon: AddchartIcon,
+      onClick: () => navigate('/addBoard')
     },
-  }
+    {
+      text: t('header.singOut'),
+      Icon: LogoutIcon,
+      onClick: () => navigate('/singOut')
+    },
+  ]
 
   return (
     <ScrollToColor>
@@ -114,38 +122,30 @@ function Header() {
                   display: { xs: 'block', md: 'none' },
                 }}
               >
-                {isAuth ? <>
-                  <MenuItem onClick={handleCloseNavMenu}>
-                    <ButtonWithIcon {...linkItems.mainPage} />
-                  </MenuItem>
-                  <MenuItem onClick={handleCloseNavMenu}>
-                    <ButtonWithIcon {...linkItems.addBoard} />
-                  </MenuItem>
-                  <MenuItem onClick={handleCloseNavMenu}>
-                    <ButtonWithIcon {...linkItems.singOut} />
-                  </MenuItem>
-                </> :
-                  <>
-                    <MenuItem onClick={handleCloseNavMenu}>
-                      <ButtonWithIcon {...linkItems.singIn} />
+                {isAuth ?
+                  linksWithAuth.map((item => (
+                    <MenuItem onClick={handleCloseNavMenu} key={item.text}>
+                      <ButtonWithIcon {...item} />
                     </MenuItem>
-                    <MenuItem onClick={handleCloseNavMenu}>
-                      <ButtonWithIcon {...linkItems.singUp} />
+                  )))
+                  :
+                  linksWithoutAuth.map((item => (
+                    <MenuItem onClick={handleCloseNavMenu} key={item.text} sx={{ padding: 0 }}>
+                        <ButtonWithIcon {...item} styleProps={{ width: "100%", padding: "10px 20px" }} />
                     </MenuItem>
-                  </>
+                  )))
                 }
               </Menu>
             </Box>
             <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, justifyContent: 'flex-end' }}>
-              {isAuth ? <>
-                <ButtonWithIcon {...linkItems.mainPage} />
-                <ButtonWithIcon {...linkItems.addBoard} />
-                <ButtonWithIcon {...linkItems.singOut} />
-              </> :
-                <>
-                  <ButtonWithIcon {...linkItems.singIn} />
-                  <ButtonWithIcon {...linkItems.singUp} />
-                </>
+              {isAuth ?
+                linksWithAuth.map((item => (
+                  <ButtonWithIcon {...item} key={item.text} />
+                )))
+                :
+                linksWithoutAuth.map((item => (
+                  <ButtonWithIcon {...item} key={item.text} />
+                )))
               }
             </Box>
             <Box sx={{ display: 'flex', flexGrow: { xs: 1, md: 0 }, justifyContent: 'flex-end' }}>

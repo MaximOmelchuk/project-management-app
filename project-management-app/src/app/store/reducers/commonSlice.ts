@@ -4,7 +4,7 @@ const initialState = {
   isModalConfirmOpen: false,
   modalConfirmContent: "",
   modalConfirmHandler: () => {},
-  isAuth: true,
+  isAuth: false,
 };
 
 const common = createSlice({
