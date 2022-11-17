@@ -14,11 +14,15 @@ export const HeaderText = {
     singIn: 'Sing In',
     singUp: 'Sing Up',
     singOut: 'Sing Out',
+    mainPage: 'Main Page',
+    addBoard: 'Add board',
   },
   ru: {
     title: 'ПМ Доски',
     singIn: 'Войти',
     singUp: 'Регистрация',
     singOut: 'Выйти',
+    mainPage: 'Главная',
+    addBoard: 'Добавить доску',
   }
 }

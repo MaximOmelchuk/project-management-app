@@ -12,15 +12,20 @@ import AppRegistrationIcon from '@mui/icons-material/AppRegistration';
 import Container from '@mui/material/Container';
 import MenuItem from '@mui/material/MenuItem';
 import ViewKanbanIcon from '@mui/icons-material/ViewKanban';
+import MarginIcon from '@mui/icons-material/Margin';
+import AddchartIcon from '@mui/icons-material/Addchart';
 import { useTranslation } from 'react-i18next';
 import ChangeLang from '../ChangeLang/ChangeLang';
 import { useNavigate } from 'react-router-dom';
 import ButtonWithIcon from '../ButtonWithIcon/ButtonWithIcon';
-import { Slide, useScrollTrigger } from '@mui/material';
 import ScrollToColor from '../ScrollToColor/ScrollToColor';
+import { useAppSelector } from '../../hooks';
+import { Button } from '@mui/material';
 
 function Header() {
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
+  const { isAuth } = useAppSelector((state) => state.common);
+
   const { t } = useTranslation();
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
 
@@ -32,10 +37,7 @@ function Header() {
     setAnchorElNav(null);
   };
 
-  const pagesWithAuth = {
-
-  }
-  const pagesWithoutAuth = {
+  const linkItems = {
     singIn: {
       text: t('header.singIn'),
       Icon: LoginIcon,
@@ -47,7 +49,15 @@ function Header() {
     singUp: {
       text: t('header.singUp'),
       Icon: AppRegistrationIcon,
-    }
+    },
+    mainPage: {
+      text: t('header.mainPage'),
+      Icon: MarginIcon,
+    },
+    addBoard: {
+      text: t('header.addBoard'),
+      Icon: AddchartIcon,
+    },
   }
 
   return (
@@ -55,25 +65,26 @@ function Header() {
       <AppBar position="sticky">
         <Container maxWidth="xl">
           <Toolbar disableGutters>
-            <ViewKanbanIcon sx={{ mr: 1 }} />
-            <Typography
-              variant="h6"
-              noWrap
-              component="a"
-              href="/"
-              sx={{
-                mr: 2,
-                display: 'inline-flex',
-                fontFamily: 'monospace',
-                fontWeight: 700,
-                letterSpacing: '.2rem',
-                color: 'inherit',
-                textDecoration: 'none',
-              }}
+            <Button id="basic-button" color="inherit"
+              onClick={isAuth ? () => navigate('/mainPage') : () => navigate('/')}
             >
-              {t('header.title')}
-            </Typography>
-
+              <ViewKanbanIcon sx={{ mr: 1 }} />
+              <Typography
+                variant="h6"
+                noWrap
+                component="span"
+                sx={{
+                  mr: 2,
+                  display: 'inline-flex',
+                  fontFamily: 'monospace',
+                  fontWeight: 700,
+                  letterSpacing: '.2rem',
+                  color: 'inherit',
+                }}
+              >
+                {t('header.title')}
+              </Typography>
+            </Button>
             <Box sx={{ display: { xs: 'flex', md: 'none' }, justifyContent: 'flex-end', order: 2 }}>
               <IconButton
                 size="large"
@@ -103,17 +114,39 @@ function Header() {
                   display: { xs: 'block', md: 'none' },
                 }}
               >
-                <MenuItem onClick={handleCloseNavMenu}>
-                  <ButtonWithIcon {...pagesWithoutAuth.singIn} />
-                </MenuItem>
-                <MenuItem onClick={handleCloseNavMenu}>
-                  <ButtonWithIcon {...pagesWithoutAuth.singUp} />
-                </MenuItem>
+                {isAuth ? <>
+                  <MenuItem onClick={handleCloseNavMenu}>
+                    <ButtonWithIcon {...linkItems.mainPage} />
+                  </MenuItem>
+                  <MenuItem onClick={handleCloseNavMenu}>
+                    <ButtonWithIcon {...linkItems.addBoard} />
+                  </MenuItem>
+                  <MenuItem onClick={handleCloseNavMenu}>
+                    <ButtonWithIcon {...linkItems.singOut} />
+                  </MenuItem>
+                </> :
+                  <>
+                    <MenuItem onClick={handleCloseNavMenu}>
+                      <ButtonWithIcon {...linkItems.singIn} />
+                    </MenuItem>
+                    <MenuItem onClick={handleCloseNavMenu}>
+                      <ButtonWithIcon {...linkItems.singUp} />
+                    </MenuItem>
+                  </>
+                }
               </Menu>
             </Box>
             <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, justifyContent: 'flex-end' }}>
-              <ButtonWithIcon {...pagesWithoutAuth.singIn} />
-              <ButtonWithIcon {...pagesWithoutAuth.singUp} />
+              {isAuth ? <>
+                <ButtonWithIcon {...linkItems.mainPage} />
+                <ButtonWithIcon {...linkItems.addBoard} />
+                <ButtonWithIcon {...linkItems.singOut} />
+              </> :
+                <>
+                  <ButtonWithIcon {...linkItems.singIn} />
+                  <ButtonWithIcon {...linkItems.singUp} />
+                </>
+              }
             </Box>
             <Box sx={{ display: 'flex', flexGrow: { xs: 1, md: 0 }, justifyContent: 'flex-end' }}>
               <ChangeLang />

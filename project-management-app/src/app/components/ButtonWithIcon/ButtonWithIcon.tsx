@@ -10,7 +10,7 @@ interface Props {
 
 const ButtonWithIcon = ({text, onClick, Icon}: Props) => {
   return (
-    <Button sx={{ textTransform: 'none' }} startIcon={<Icon />} onClick={onClick} key={Math.random()} color='inherit' disableElevation={true}>{text}</Button>
+    <Button sx={{ textTransform: 'none' }} startIcon={<Icon />} onClick={onClick} color='inherit' disableElevation={true}>{text}</Button>
   )
 }
 

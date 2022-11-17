@@ -5,6 +5,9 @@ import "./App.css";
 import ConfirmModal from "./app/components/ConfirmModal/ConfirmModal";
 import MainPage from "./app/components/MainPage/MainPage";
 import Header from "./app/components/Header/Header";
+import { Route, Routes } from "react-router-dom";
+import WelcomePage from "./app/components/WelcomePage/WelcomePage";
+import Layout from "./app/components/Layout/Layout";
 
 function App() {
   return (
@@ -14,8 +17,12 @@ function App() {
         confirmHandler={() => alert("yes")}
         closeHandler={() => alert("close")}
       /> */}
-      <Header />
-      <MainPage />
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route index element={<WelcomePage />} />
+          <Route path="mainPage" element={<MainPage />} />
+        </Route>
+      </Routes>
       {/* <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <Counter />
