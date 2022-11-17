@@ -4,8 +4,8 @@ import {
   ThunkAction,
   Action,
 } from "@reduxjs/toolkit";
-// import { hostsService } from "../services/hostService";
-import counterReducer from "../../features/counter/counterSlice";
+// import cReducer from "../../features/counter/counterSlice";
+import { service } from "../services/service";
 import common from "./reducers/commonSlice";
 
 // export const store = configureStore({
@@ -16,7 +16,7 @@ import common from "./reducers/commonSlice";
 
 const rootReducer = combineReducers({
   common,
-//   [hostsService.reducerPath]: hostsService.reducer,
+  [service.reducerPath]: service.reducer,
   // [logs.reducerPath]: logs.reducer,
   // [licenseManager.reducerPath]: licenseManager.reducer,
   // [licensesService.reducerPath]: licensesService.reducer,
@@ -28,17 +28,18 @@ const rootReducer = combineReducers({
 
 const store = configureStore({
   reducer: rootReducer,
-  // middleware: (getDefaultMiddleware) =>
-  //   getDefaultMiddleware({ serializableCheck: false }).concat(
-  //     hostsService.middleware
-  //     // logs.middleware,
-  //     // licenseManager.middleware,
-  //     // licensesService.middleware,
-  //     // packagesService.middleware,
-  //     // userService.middleware,
-  //     // settingsService.middleware,
-  //     // authService.middleware
-  //   ),
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({ serializableCheck: false }).concat(
+      service.middleware
+      //     // logs.middleware,
+      //     // licenseManager.middleware,
+      //     // licensesService.middleware,
+      //     // packagesService.middleware,
+      //     // userService.middleware,
+      //     // settingsService.middleware,
+      //     // authService.middleware
+      //   ),
+    ),
 });
 
 export default store;
