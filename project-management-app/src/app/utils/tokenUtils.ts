@@ -12,52 +12,56 @@ export const getExpirationDate = (jwtToken: string) => {
   return (jwt && jwt.exp && jwt.exp * 1000) || null;
 };
 
-//   export const isExpired = (exp) => {
-//     if (!exp || exp === 'null' || exp === 'undefined') {
-//       return false;
-//     }
-//     return Date.now() > exp;
-//   };
+// export const isExpired = (exp) => {
+//   if (!exp || exp === 'null' || exp === 'undefined') {
+//     return false;
+//   }
+//   return Date.now() > exp;
+// };
 
-  const getToken = async () => {
-    if (localStorage.getItem('itVPN_access_token') === 'test') return null;
-    const refresh = localStorage.getItem('itVPN_refresh_token');
-    if (!localStorage.getItem('itVPN_access_token')) {
-      return null;
-    }
+const getToken = async () => {
+  const refresh = localStorage.getItem("app_access_token");
+  if (!localStorage.getItem("app_access_token")) {
+    return null;
   }
-//     if (isExpired(getExpirationDate(localStorage.getItem('itVPN_access_token')))) {
-//       if (isExpired(getExpirationDate(localStorage.getItem('itVPN_refresh_token')))) {
-//         localStorage.setItem('itVPN_access_token', null);
-//         return '';
-//       }
-//       const refreshResp = await fetch('/api/token/refresh/', {
-//         method: 'POST',
-//         headers: {
-//           Accept: 'application/json',
-//           'Content-Type': 'application/json;charset=utf-8',
-//         },
-//         body: JSON.stringify({ refresh }),
-//       });
-//       const access = await refreshResp.json();
-//       localStorage.setItem('itVPN_access_token', access.access);
+  return localStorage.getItem("app_access_token"); // TODO вставил временно, весь функционал проверки в закоментченном коде ниже
+}
+//   if (
+//     isExpired(getExpirationDate(localStorage.getItem("app_access_token")))
+//   ) {
+//     if (
+//       isExpired(getExpirationDate(localStorage.getItem("itVPN_refresh_token")))
+//     ) {
+//       localStorage.setItem("app_access_token", null);
+//       return "";
 //     }
-//     const token = localStorage.getItem('itVPN_access_token');
-//     return token;
-//   };
+//     const refreshResp = await fetch("/api/token/refresh/", {
+//       method: "POST",
+//       headers: {
+//         Accept: "application/json",
+//         "Content-Type": "application/json;charset=utf-8",
+//       },
+//       body: JSON.stringify({ refresh }),
+//     });
+//     const access = await refreshResp.json();
+//     localStorage.setItem("app_access_token", access.access);
+//   }
+//   const token = localStorage.getItem("app_access_token");
+//   return token;
+// };
 
 const getHeaders = async (headers: Headers) => {
   if (
-    localStorage.getItem("itVPN_access_token") &&
-    getExpirationDate(localStorage.getItem("itVPN_access_token") || "")
+    localStorage.getItem("app_access_token") &&
+    getExpirationDate(localStorage.getItem("app_access_token") || "")
   )
     headers.set(
       "Authorization",
-      localStorage.getItem("itVPN_access_token")
+      localStorage.getItem("app_access_token")
         ? "Bearer " + (await getToken())
         : ""
     );
   return headers;
 };
 
-  export default getHeaders
+export default getHeaders;

@@ -4,10 +4,10 @@ import DeleteIcon from "@mui/icons-material/Delete";
 
 export default function Board({
   title,
-  content,
+  // content,
 }: {
   title: string;
-  content?: string;
+  // content?: string;
 }) {
   return (
     // <NavLink to={"./"}>
@@ -30,11 +30,11 @@ export default function Board({
       <Typography align="left" variant="h6">
         {title}
       </Typography>
-      {content && (
+      {/* {content && (
         <Typography align="left" variant="body1">
           {content}
         </Typography>
-      )}
+      )} */}
       <IconButton
         size="large"
         sx={{ position: "absolute", right: ".5rem", bottom: ".5rem" }}
