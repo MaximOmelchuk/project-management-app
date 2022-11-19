@@ -14,6 +14,7 @@ import {
 import { TransitionProps } from "@mui/material/transitions";
 import { useFormik } from "formik";
 import * as yup from "yup";
+import { IInputModalProps } from "../../utils/interfaces";
 
 const Transition = React.forwardRef<
   unknown,
@@ -34,16 +35,7 @@ export default function InputModal({
   confirmHandler,
   title,
   inputsContent,
-}: {
-  confirmHandler: () => void;
-  closeHandler: () => void;
-  title: string;
-  inputsContent: string[];
-}) {
-  const onClickConfirm = () => {
-    confirmHandler();
-    closeHandler();
-  };
+}: IInputModalProps) {
 
   const isSingleInput = inputsContent.length === 1;
 
@@ -62,15 +54,7 @@ export default function InputModal({
     initialValues: isSingleInput ? { first: "" } : { first: "", second: "" },
     validationSchema,
     onSubmit: (value) => {
-      //   updatePasswordMethod({
-      //     id: recordData.id,
-      //     body: {
-      //       username: recordData.username,
-      //       password: value.oldPassword,
-      //       new_pass: value.newPassword,
-      //     },
-      //   });
-      //   handleClose();
+      confirmHandler(value)
     },
   });
 
@@ -105,10 +89,12 @@ export default function InputModal({
         >
           <TextField
             fullWidth
+            autoComplete="off"
             id="first"
             type="text"
             name="first"
             onChange={formik.handleChange}
+            inputProps={{ maxLength: 50 }}
             label={inputsContent[0]}
             value={formik.values.first}
             error={formik.touched.first && Boolean(formik.errors.first)}
@@ -117,8 +103,10 @@ export default function InputModal({
           {!!inputsContent[1] && (
             <TextField
               fullWidth
-              minRows="2"
-              maxRows="2"
+              multiline
+              autoComplete="off"
+              inputProps={{ maxLength: 100 }}
+              rows="3"
               id="second"
               name="second"
               onChange={formik.handleChange}

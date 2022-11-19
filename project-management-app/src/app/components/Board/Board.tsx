@@ -1,47 +1,73 @@
-import { Paper, Typography, IconButton } from "@mui/material";
+import { useState } from "react";
 import { NavLink } from "react-router-dom";
+import { Paper, Typography, IconButton } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { useDeleteBoardMutation } from "../../services/service";
+import { IBoardData, IBoardProps } from "../../utils/interfaces";
+import ConfirmModal from "../ConfirmModal/ConfirmModal";
+import { parseBoardTitle } from "../../utils/utils";
 
-export default function Board({
-  title,
-  // content,
-}: {
-  title: string;
-  // content?: string;
-}) {
+export default function Board({ title, _id: id, owner, users }: IBoardProps) {
+  const MODAL_CONTENT = "Are your sure you want to delete this board?";
+  const [boardTitle, boardDescription] = parseBoardTitle(title);
+  const [trigger] = useDeleteBoardMutation();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const closeModalHandler = () => setIsModalOpen(false);
+  const confirmModalHandler = () => {
+    trigger(id);
+    setIsModalOpen(false);
+  };
+
+  const deleteHandler = () => setIsModalOpen(true);
+
   return (
-    // <NavLink to={"./"}>
-    <Paper
-      sx={{
-        width: "350px",
-        minHeight: "200px",
-        p: "1rem 1rem",
-        boxSizing: "border-box",
-        background: "#5385b5",
-        color: "#fff",
-        position: "relative",
-        "&:hover": {
-          cursor: "pointer",
-          transform: "scale(1.01)",
-        },
-      }}
-      elevation={4}
-    >
-      <Typography align="left" variant="h6">
-        {title}
-      </Typography>
-      {/* {content && (
-        <Typography align="left" variant="body1">
-          {content}
-        </Typography>
-      )} */}
-      <IconButton
-        size="large"
-        sx={{ position: "absolute", right: ".5rem", bottom: ".5rem" }}
+    <>
+      {/* <NavLink to={"./"}> */}
+      <Paper
+        sx={{
+          width: "350px",
+          minHeight: "200px",
+          p: "1rem 1rem",
+          boxSizing: "border-box",
+          background: "#5385b5",
+          color: "#fff",
+          position: "relative",
+          "&:hover": {
+            cursor: "pointer",
+            transform: "scale(1.01)",
+          },
+        }}
+        elevation={4}
       >
-        <DeleteIcon fontSize="large" htmlColor="#fff" />
-      </IconButton>
-    </Paper>
-    // </NavLink>
+        <Typography align="left" variant="h6" sx={{ wordBreak: "break-word" }}>
+          {boardTitle}
+        </Typography>
+        <Typography
+          align="left"
+          sx={{ opacity: ".7", wordBreak: "break-word" }}
+          variant="subtitle1"
+        >
+          {boardDescription}
+        </Typography>
+
+        <IconButton
+          size="large"
+          onClick={deleteHandler}
+          sx={{ position: "absolute", right: ".5rem", bottom: ".5rem" }}
+        >
+          <DeleteIcon fontSize="large" htmlColor="#fff" />
+        </IconButton>
+      </Paper>
+      {isModalOpen && (
+        <ConfirmModal
+          content={MODAL_CONTENT}
+          confirmHandler={confirmModalHandler}
+          closeHandler={closeModalHandler}
+        />
+      )}
+
+      {/* </NavLink> */}
+    </>
   );
 }

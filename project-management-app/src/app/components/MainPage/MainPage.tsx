@@ -1,28 +1,38 @@
+import { useState } from "react";
 import { Grid, Typography, Button } from "@mui/material";
-import { useGetBoardsListQuery } from "../../services/service";
+import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
+import {
+  useCreateBoardMutation,
+  useGetBoardsListQuery,
+} from "../../services/service";
+import { IInputModalProps } from "../../utils/interfaces";
 import Board from "../Board/Board";
 import Column from "../Column/Column";
 import InputModal from "../InputModal/InputModal";
 
 export default function MainPage() {
-  const { data, isSuccess } = useGetBoardsListQuery(null);
-  // const fakeBoards = [
-  //   {
-  //     title: "Example title 1",
-  //     content: "Some example text for the first board",
-  //     key: 1,
-  //   },
-  //   {
-  //     title: "Example title 2",
-  //     content:
-  //       "Some example text for the second board.Some example text for the second board",
-  //     key: 2,
-  //   },
-  //   {
-  //     title: "Example title 3",
-  //     key: 3,
-  //   },
-  // ];
+  const { data, isSuccess } = useGetBoardsListQuery(undefined);
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [createTrigger] = useCreateBoardMutation();
+  const userId = window.localStorage.getItem("app_user_id") || "";
+
+  const createHandler = () => setIsCreateModalOpen(true);
+  const inputModalProps: IInputModalProps = {
+    title: "Create new Board",
+    inputsContent: ["Board title", "Board description"],
+    confirmHandler: (value) => {
+      createTrigger({
+        title: JSON.stringify(Object.values(value)),
+        owner: userId,
+        users: [userId],
+      });
+      setIsCreateModalOpen(false);
+    },
+    closeHandler: () => {
+      setIsCreateModalOpen(false);
+    },
+  };
+
   return (
     <>
       <Typography
@@ -33,19 +43,24 @@ export default function MainPage() {
       >
         YOUR BOARDS
       </Typography>
-      <Button>Add new board</Button>
+      <Grid container justifyContent="left">
+        <Button
+          variant="contained"
+          size="large"
+          endIcon={<AddCircleOutlineIcon />}
+          onClick={createHandler}
+          sx={{ mb: 2, alignSelf: "left" }}
+        >
+          Add new board
+        </Button>{" "}
+      </Grid>
+      {isCreateModalOpen && <InputModal {...inputModalProps} />}
       <Grid container gap="1rem">
         {isSuccess &&
-          data.map((item: { title: string }) => <Board {...item} />)}
-        {/* <InputModal
-          confirmHandler={() => alert("yes")}
-          closeHandler={() => alert("close")}
-          title="Input modal"
-          inputsContent={["First input"]}
-        /> */}
-        <Column
+          [...data].reverse().map((item) => <Board {...item} key={item._id} />)}
+        {/* <Column
           data={{ _id: "dfdf", title: "New Title", order: 1, boardId: "sdsds" }}
-        />
+        /> */}
       </Grid>
     </>
   );

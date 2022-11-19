@@ -1,8 +1,13 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import setFields from "../store/reducers/commonSlice";
-import { ISigninArg, ISigninResult } from "../utils/interfaces";
+import {
+  IBoardData,
+  ICreateBoard,
+  ISigninArg,
+  ISigninResult,
+} from "../utils/interfaces";
 // import { formatDate, redirect } from "../utils/utils";
-import getHeaders from "../utils/tokenUtils";
+import getHeaders, { getUserId } from "../utils/tokenUtils";
 
 export const service = createApi({
   reducerPath: "service",
@@ -16,8 +21,7 @@ export const service = createApi({
 
   tagTypes: ["POST"],
   endpoints: (builder) => ({
-    
-    getBoardsList: builder.query({
+    getBoardsList: builder.query<IBoardData[], undefined>({
       query: () => `/boards`,
       providesTags: ["POST"],
       keepUnusedDataFor: 0,
@@ -43,10 +47,49 @@ export const service = createApi({
             data: { token },
           } = await queryFulfilled;
           window.localStorage.setItem("app_access_token", token);
+          const userId = getUserId(token);
+          window.localStorage.setItem("app_user_id", userId);
         } catch (err) {
           // redirect(err, dispatch);
         }
       },
+    }),
+
+    deleteBoard: builder.mutation({
+      query: (params) => ({
+        url: `/boards/${params}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["POST"],
+      //   async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+      //     try {
+      //       const {
+      //         data: { token },
+      //       } = await queryFulfilled;
+      //       window.localStorage.setItem("app_access_token", token);
+      //     } catch (err) {
+      // redirect(err, dispatch);
+      //     }
+      //   },
+    }),
+
+    createBoard: builder.mutation<IBoardData, ICreateBoard>({
+      query: (params) => ({
+        url: `/boards`,
+        method: "POST",
+        body: params,
+      }),
+      invalidatesTags: ["POST"],
+      //   async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+      //     try {
+      //       const {
+      //         data: { token },
+      //       } = await queryFulfilled;
+      //       window.localStorage.setItem("app_access_token", token);
+      //     } catch (err) {
+      // redirect(err, dispatch);
+      //     }
+      //   },
     }),
 
     // updateHost: builder.mutation({
@@ -148,7 +191,9 @@ export const {
   useLazyGetBoardsListQuery,
   useGetBoardsListQuery,
   useSingInMutation,
-//   useUpdateHostMutation,
+  useDeleteBoardMutation,
+  useCreateBoardMutation,
+  //   useUpdateHostMutation,
   //   useGetHostByIdQuery,
   //   useGetHostStatusesQuery,
   //   useGetHostTypesQuery,

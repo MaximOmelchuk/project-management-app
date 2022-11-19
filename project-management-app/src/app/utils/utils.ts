@@ -2,6 +2,16 @@
 // import { setToken } from "../store/reducers/commonSlice";
 // import { getExpirationDate, isExpired } from "./tokenUtils";
 
+export function parseBoardTitle(title: string) {
+  let res: string[];
+  try {
+    res = JSON.parse(title);
+  } catch (e) {
+    res = ["", ""];
+  }
+  return res;
+}
+
 // export function findItem(objArr, objProp, value) {
 //   return objArr.find((item) => item[objProp] === value);
 // }

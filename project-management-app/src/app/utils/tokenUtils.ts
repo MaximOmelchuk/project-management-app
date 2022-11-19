@@ -12,6 +12,20 @@ export const getExpirationDate = (jwtToken: string) => {
   return (jwt && jwt.exp && jwt.exp * 1000) || null;
 };
 
+export const getUserId = (jwtToken: string) => {
+  if (!jwtToken) {
+    return null;
+  }
+  let jwt;
+  try {
+    jwt = JSON.parse(atob(jwtToken.split(".")[1]));
+  } catch (e) {
+    return null;
+  }
+
+  return jwt?.id || null;
+};
+
 // export const isExpired = (exp) => {
 //   if (!exp || exp === 'null' || exp === 'undefined') {
 //     return false;
