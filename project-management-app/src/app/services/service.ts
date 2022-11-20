@@ -5,6 +5,7 @@ import {
   ICreateBoard,
   ISigninArg,
   ISigninResult,
+  IUpdateBoard,
 } from "../utils/interfaces";
 // import { formatDate, redirect } from "../utils/utils";
 import getHeaders, { getUserId } from "../utils/tokenUtils";
@@ -78,6 +79,25 @@ export const service = createApi({
         url: `/boards`,
         method: "POST",
         body: params,
+      }),
+      invalidatesTags: ["POST"],
+      //   async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+      //     try {
+      //       const {
+      //         data: { token },
+      //       } = await queryFulfilled;
+      //       window.localStorage.setItem("app_access_token", token);
+      //     } catch (err) {
+      // redirect(err, dispatch);
+      //     }
+      //   },
+    }),
+
+    updateBoard: builder.mutation<IBoardData, IUpdateBoard>({
+      query: (params) => ({
+        url: `/boards/${params.id}`,
+        method: "PUT",
+        body: params.body,
       }),
       invalidatesTags: ["POST"],
       //   async onQueryStarted(arg, { dispatch, queryFulfilled }) {
@@ -193,6 +213,7 @@ export const {
   useSingInMutation,
   useDeleteBoardMutation,
   useCreateBoardMutation,
+  useUpdateBoardMutation,
   //   useUpdateHostMutation,
   //   useGetHostByIdQuery,
   //   useGetHostStatusesQuery,

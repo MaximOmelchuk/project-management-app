@@ -15,6 +15,11 @@ export interface ICreateBoard {
   users: string[];
 }
 
+export interface IUpdateBoard {
+  id: string;
+  body: ICreateBoard;
+}
+
 export interface IBoardData extends ICreateBoard {
   _id: string;
 }
@@ -28,4 +33,11 @@ export interface IInputModalProps {
   closeHandler: () => void;
   title: string;
   inputsContent: string[];
+}
+
+export interface IColumnProps {
+  _id: string;
+  title: string;
+  order: number;
+  boardId: string;
 }

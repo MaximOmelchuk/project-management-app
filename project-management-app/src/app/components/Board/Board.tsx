@@ -1,30 +1,36 @@
 import { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation, useNavigate, useParams } from "react-router-dom";
 import { Paper, Typography, IconButton } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { useDeleteBoardMutation } from "../../services/service";
+import {
+  useDeleteBoardMutation,
+  useUpdateBoardMutation,
+} from "../../services/service";
 import { IBoardData, IBoardProps } from "../../utils/interfaces";
 import ConfirmModal from "../ConfirmModal/ConfirmModal";
 import { parseBoardTitle } from "../../utils/utils";
 
 export default function Board({ title, _id: id, owner, users }: IBoardProps) {
+  const navigate = useNavigate();
+  const params = useParams();
   const MODAL_CONTENT = "Are your sure you want to delete this board?";
   const [boardTitle, boardDescription] = parseBoardTitle(title);
-  const [trigger] = useDeleteBoardMutation();
+  const [triggerDelete] = useDeleteBoardMutation();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const closeModalHandler = () => setIsModalOpen(false);
   const confirmModalHandler = () => {
-    trigger(id);
+    triggerDelete(id);
     setIsModalOpen(false);
   };
 
   const deleteHandler = () => setIsModalOpen(true);
 
   return (
+    // <NavLink to={`./boards/${id}`}>
     <>
-      {/* <NavLink to={"./"}> */}
       <Paper
+        onClick={() => navigate(`./boards/${id}`)}
         sx={{
           width: "350px",
           minHeight: "200px",
@@ -66,8 +72,7 @@ export default function Board({ title, _id: id, owner, users }: IBoardProps) {
           closeHandler={closeModalHandler}
         />
       )}
-
-      {/* </NavLink> */}
     </>
+    // </NavLink>
   );
 }

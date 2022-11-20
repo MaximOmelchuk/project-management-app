@@ -11,15 +11,14 @@ import { NavLink } from "react-router-dom";
 import DeleteIcon from "@mui/icons-material/Delete";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import TaskAltIcon from "@mui/icons-material/TaskAlt";
+import { useUpdateBoardMutation } from "../../services/service";
+import { IColumnProps } from "../../utils/interfaces";
 
-export default function Column({
-  data,
-}: {
-  data: { _id: string; title: string; order: number; boardId: string };
-}) {
+export default function Column({ _id, title, order, boardId }: IColumnProps) {
   const [isTitleOpen, setIsTitleOPen] = useState(false);
-  const [titleInput, setTitleInput] = useState(data.title);
-  const [backUpInput, setBackUpInput] = useState(data.title);
+  const [titleInput, setTitleInput] = useState(title);
+  const [backUpInput, setBackUpInput] = useState(title);
+  // const [triggerUpdate] = useUpdateBoardMutation();
 
   const changeTitleHandler: ChangeEventHandler<HTMLInputElement> = (e) => {
     setTitleInput(e?.target?.value || "");
@@ -32,6 +31,7 @@ export default function Column({
   const approveSwitchHandler = () => {
     setBackUpInput(titleInput);
     titleSwitchHandler();
+    // triggerUpdate({ id: boardId, body: { title } });
   };
 
   const denySwitchHandler = () => {
