@@ -15,6 +15,21 @@ export interface ICreateBoard {
   users: string[];
 }
 
+export interface ICreateColumn {
+  id: string;
+  body: {
+    title: string;
+    order: number;
+  };
+}
+
+export interface ICreateBoardResult {
+  _id: string;
+  title: string;
+  order: string;
+  boardId: string;
+}
+
 export interface IUpdateBoard {
   id: string;
   body: ICreateBoard;

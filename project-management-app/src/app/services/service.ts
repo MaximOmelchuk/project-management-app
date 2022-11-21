@@ -3,6 +3,8 @@ import setFields from "../store/reducers/commonSlice";
 import {
   IBoardData,
   ICreateBoard,
+  ICreateBoardResult,
+  ICreateColumn,
   ISigninArg,
   ISigninResult,
   IUpdateBoard,
@@ -22,17 +24,31 @@ export const service = createApi({
 
   tagTypes: ["POST"],
   endpoints: (builder) => ({
+
     getBoardsList: builder.query<IBoardData[], undefined>({
       query: () => `/boards`,
       providesTags: ["POST"],
       keepUnusedDataFor: 0,
-      async onQueryStarted(arg, { dispatch, queryFulfilled }) {
-        try {
-          const { data } = await queryFulfilled;
-        } catch (err) {
+    //   async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+    //     try {
+    //       const { data } = await queryFulfilled;
+    //     } catch (err) {
           //   redirect(err, dispatch);
-        }
-      },
+    //     }
+    //   },
+    }),
+
+    getBoardById: builder.query<IBoardData, string>({
+      query: (params) => `/boards/${params}`,
+      providesTags: ["POST"],
+      keepUnusedDataFor: 0,
+    //   async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+    //     try {
+    //       const { data } = await queryFulfilled;
+    //     } catch (err) {
+          //   redirect(err, dispatch);
+    //     }
+    //   },
     }),
 
     singIn: builder.mutation({
@@ -111,6 +127,40 @@ export const service = createApi({
       //     }
       //   },
     }),
+
+    getColumnList: builder.query<IBoardData[], string>({
+        query: (params) => `/boards/${params}/columns`,
+        providesTags: ["POST"],
+        keepUnusedDataFor: 0,
+      //   async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+      //     try {
+      //       const { data } = await queryFulfilled;
+      //     } catch (err) {
+            //   redirect(err, dispatch);
+      //     }
+      //   },
+      }),
+
+      createColumn: builder.mutation<ICreateBoardResult, ICreateColumn>({
+        query: (params) => ({
+          url: `/boards/${params.id}/columns`,
+          method: "POST",
+          body: params.body,
+        }),
+        invalidatesTags: ["POST"],
+        //   async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+        //     try {
+        //       const {
+        //         data: { token },
+        //       } = await queryFulfilled;
+        //       window.localStorage.setItem("app_access_token", token);
+        //     } catch (err) {
+        // redirect(err, dispatch);
+        //     }
+        //   },
+      }),
+
+      
 
     // updateHost: builder.mutation({
     //   query: (params) => ({
@@ -214,6 +264,9 @@ export const {
   useDeleteBoardMutation,
   useCreateBoardMutation,
   useUpdateBoardMutation,
+  useGetBoardByIdQuery,
+  useGetColumnListQuery,
+  useCreateColumnMutation,
   //   useUpdateHostMutation,
   //   useGetHostByIdQuery,
   //   useGetHostStatusesQuery,

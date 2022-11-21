@@ -12,6 +12,16 @@ export function parseBoardTitle(title: string) {
   return res;
 }
 
+// export async function asyncParseBoardTitle(title: Promise<string>) {
+//   let res: string[];
+//   try {
+//     res = JSON.parse(await title);
+//   } catch (e) {
+//     res = ["", ""];
+//   }
+//   return res;
+// }
+
 // export function findItem(objArr, objProp, value) {
 //   return objArr.find((item) => item[objProp] === value);
 // }

@@ -27,7 +27,6 @@ export default function Board({ title, _id: id, owner, users }: IBoardProps) {
   const deleteHandler = () => setIsModalOpen(true);
 
   return (
-    // <NavLink to={`./boards/${id}`}>
     <>
       <Paper
         onClick={() => navigate(`./boards/${id}`)}
@@ -73,6 +72,5 @@ export default function Board({ title, _id: id, owner, users }: IBoardProps) {
         />
       )}
     </>
-    // </NavLink>
   );
 }
