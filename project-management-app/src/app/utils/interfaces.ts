@@ -30,9 +30,28 @@ export interface ICreateBoardResult {
   boardId: string;
 }
 
+export interface ICreateColumnResult {
+  _id: string;
+  title: string;
+  order: string;
+  boardId: string;
+}
+
 export interface IUpdateBoard {
   id: string;
   body: ICreateBoard;
+}
+
+export interface IDeleteColumn {
+  boardId: string;
+  columnId: string;
+}
+
+export interface IUpdateColumn extends IDeleteColumn {
+  body: {
+    title: string;
+    order: number;
+  };
 }
 
 export interface IBoardData extends ICreateBoard {

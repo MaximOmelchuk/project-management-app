@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { Button, Grid, Typography } from "@mui/material";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import {
@@ -8,12 +8,15 @@ import {
   useGetColumnListQuery,
 } from "../../services/service";
 import { parseBoardTitle } from "../../utils/utils";
-import AddColumnButton from "./AddColumnButton";
 import { IInputModalProps } from "../../utils/interfaces";
 import InputModal from "../InputModal/InputModal";
+import AddButton from "../AddButton/AddButton";
+import Column from "../Column/Column";
 
 export default function BoardPage() {
   const BUTTON_CONTENT = "Back";
+  const ADD_COLUMN_BUTTON_CONTENT = "Add column";
+  const navigate = useNavigate();
   const [showTitle, setShowTitle] = useState(false);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [contentArr, setContentArr] = useState(["", ""]);
@@ -49,16 +52,21 @@ export default function BoardPage() {
     }
   }, [isSuccess]);
 
+  const backClickHandler = () => {
+    navigate(-1);
+  };
+
   return (
     <>
       {showTitle && (
-        <Grid color="#fff" sx={{ maxWidth: "30rem" }}>
+        <Grid color="#fff" sx={{ maxWidth: "30rem", mb: 2 }}>
           <Grid container justifyContent="left" gap="1rem" sx={{ mb: 0.7 }}>
             <Button
               variant="outlined"
               size="large"
               sx={{ background: "#070e4a" }}
               startIcon={<ArrowBackIosIcon />}
+              onClick={backClickHandler}
             >
               {BUTTON_CONTENT}
             </Button>
@@ -71,11 +79,30 @@ export default function BoardPage() {
           </Typography>
         </Grid>
       )}
-      <Grid container flexDirection="column" sx={{ mt: 2 }}>
-        <AddColumnButton clickHandler={clickAddHandler} />
+      <Grid sx={{ width: "100%", overflowX: "scroll" }}>
+        <Grid
+          container
+          sx={{
+            mt: 2,
+            gap: 2,
+            flexDirection: "row",
+            flexWrap: "nowrap",
+            height: "50vh",
+            maxHeight: "70vh",
+            width: "fit-content",
+          }}
+        >
+          {isSuccessColumns &&
+            [...arrColumns]
+              .reverse()
+              .map((item) => <Column {...item} key={item._id} />)}
+          <AddButton
+            clickHandler={clickAddHandler}
+            content={ADD_COLUMN_BUTTON_CONTENT}
+          />
+        </Grid>
+        {isCreateModalOpen && <InputModal {...inputModalProps} />}
       </Grid>
-      {isSuccessColumns && console.log(arrColumns)}
-      {isCreateModalOpen && <InputModal {...inputModalProps} />}
     </>
   );
 }

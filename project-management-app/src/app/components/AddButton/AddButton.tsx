@@ -2,13 +2,13 @@ import React from "react";
 import { Button, Paper } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 
-export default function AddColumnButton({
+export default function AddButton({
   clickHandler,
+  content,
 }: {
   clickHandler: () => void;
+  content: string;
 }) {
-  const TEXT_CONTENT = "ADD COLUMN";
-
   return (
     <Button
       startIcon={<AddIcon />}
@@ -18,9 +18,10 @@ export default function AddColumnButton({
         height: "50px",
         p: "1rem 1rem",
         boxSizing: "border-box",
-        background: "#5385b5",
+        background: "#070e4a",
         color: "#fff",
         position: "relative",
+        fontSize: "1.1rem",
         "&:hover": {
           cursor: "pointer",
           transform: "scale(1.01)",
@@ -28,7 +29,7 @@ export default function AddColumnButton({
         },
       }}
     >
-      {TEXT_CONTENT}
+      {content}
     </Button>
   );
 }

@@ -23,7 +23,6 @@ export default function Board({ title, _id: id, owner, users }: IBoardProps) {
     triggerDelete(id);
     setIsModalOpen(false);
   };
-
   const deleteHandler = () => setIsModalOpen(true);
 
   return (
