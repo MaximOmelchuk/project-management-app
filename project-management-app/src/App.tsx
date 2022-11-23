@@ -8,6 +8,7 @@ import Header from "./app/components/Header/Header";
 import { Route, Routes } from "react-router-dom";
 import WelcomePage from "./app/components/WelcomePage/WelcomePage";
 import Layout from "./app/components/Layout/Layout";
+import NotFoundPage from "./app/components/NotFounPage/NotFoundPage";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
         <Route path="/" element={<Layout />}>
           <Route index element={<WelcomePage />} />
           <Route path="mainPage" element={<MainPage />} />
+          <Route path="*" element={<NotFoundPage />} />
         </Route>
       </Routes>
       {/* <header className="App-header">

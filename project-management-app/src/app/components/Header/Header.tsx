@@ -74,7 +74,7 @@ function Header() {
         <Container maxWidth="xl">
           <Toolbar disableGutters>
             <Button id="basic-button" color="inherit"
-              onClick={isAuth ? () => navigate('/mainPage') : () => navigate('/')}
+              onClick={() => navigate('/')}
             >
               <ViewKanbanIcon sx={{ mr: 1 }} />
               <Typography
