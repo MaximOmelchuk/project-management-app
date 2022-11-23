@@ -6,9 +6,12 @@ import {
   ICreateBoard,
   ICreateBoardResult,
   ICreateColumn,
+  ICreateTask,
   IDeleteColumn,
+  IDeleteTask,
   ISigninArg,
   ISigninResult,
+  ITaskProps,
   IUpdateBoard,
   IUpdateColumn,
 } from "../utils/interfaces";
@@ -26,7 +29,7 @@ export const service = createApi({
   }),
 
   tagTypes: ["POST"],
-  
+
   endpoints: (builder) => ({
     getBoardsList: builder.query<IBoardData[], undefined>({
       query: () => `/boards`,
@@ -150,6 +153,24 @@ export const service = createApi({
       //   },
     }),
 
+    deleteTask: builder.mutation<IBoardData, IDeleteTask>({
+      query: (params) => ({
+        url: `/boards/${params.boardId}/columns/${params.columnId}/tasks/${params.taskId}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["POST"],
+      //   async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+      //     try {
+      //       const {
+      //         data: { token },
+      //       } = await queryFulfilled;
+      //       window.localStorage.setItem("app_access_token", token);
+      //     } catch (err) {
+      // redirect(err, dispatch);
+      //     }
+      //   },
+    }),
+
     deleteColumn: builder.mutation<IBoardData, IDeleteColumn>({
       query: (params) => ({
         url: `/boards/${params.boardId}/columns/${params.columnId}`,
@@ -181,9 +202,45 @@ export const service = createApi({
       //   },
     }),
 
+    getTaskList: builder.query<
+      ITaskProps[],
+      { boardId: string; columnId: string }
+    >({
+      query: (params) =>
+        `/boards/${params.boardId}/columns/${params.columnId}/tasks`,
+      providesTags: ["POST"],
+      keepUnusedDataFor: 0,
+      //   async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+      //     try {
+      //       const { data } = await queryFulfilled;
+      //     } catch (err) {
+      //   redirect(err, dispatch);
+      //     }
+      //   },
+    }),
+
     createColumn: builder.mutation<IColumnProps, ICreateColumn>({
       query: (params) => ({
         url: `/boards/${params.id}/columns`,
+        method: "POST",
+        body: params.body,
+      }),
+      invalidatesTags: ["POST"],
+      //   async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+      //     try {
+      //       const {
+      //         data: { token },
+      //       } = await queryFulfilled;
+      //       window.localStorage.setItem("app_access_token", token);
+      //     } catch (err) {
+      // redirect(err, dispatch);
+      //     }
+      //   },
+    }),
+
+    createTask: builder.mutation<IColumnProps, ICreateTask>({
+      query: (params) => ({
+        url: `/boards/${params.boardId}/columns/${params.columnId}/tasks`,
         method: "POST",
         body: params.body,
       }),
@@ -307,6 +364,9 @@ export const {
   useCreateColumnMutation,
   useUpdateColumnMutation,
   useDeleteColumnMutation,
+  useGetTaskListQuery,
+  useCreateTaskMutation,
+  useDeleteTaskMutation,
   //   useUpdateHostMutation,
   //   useGetHostByIdQuery,
   //   useGetHostStatusesQuery,

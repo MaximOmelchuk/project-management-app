@@ -47,6 +47,31 @@ export interface IDeleteColumn {
   columnId: string;
 }
 
+export interface IDeleteTask extends IDeleteColumn {
+  taskId: string;
+}
+
+export interface ICreateTask extends IDeleteColumn {
+  body: {
+    title: string;
+    order: number;
+    description: string;
+    userId: string;
+    users: string[];
+  };
+}
+
+export interface ITaskProps {
+  _id: string;
+  title: string;
+  order: number;
+  boardId: string;
+  columnId: string;
+  description: string;
+  userId: string;
+  users: string[];
+}
+
 export interface IUpdateColumn extends IDeleteColumn {
   body: {
     title: string;

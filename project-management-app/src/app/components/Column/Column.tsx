@@ -7,23 +7,34 @@ import {
   TextField,
   Button,
 } from "@mui/material";
-import { NavLink } from "react-router-dom";
 import DeleteIcon from "@mui/icons-material/Delete";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import TaskAltIcon from "@mui/icons-material/TaskAlt";
+import AddIcon from "@mui/icons-material/Add";
 import {
   useDeleteColumnMutation,
   useUpdateColumnMutation,
+  useGetTaskListQuery,
+  useCreateTaskMutation,
 } from "../../services/service";
-import { IColumnProps } from "../../utils/interfaces";
+import { IColumnProps, IInputModalProps } from "../../utils/interfaces";
 import ConfirmModal from "../ConfirmModal/ConfirmModal";
+import Task from "../Task/Task";
+import InputModal from "../InputModal/InputModal";
 
 export default function Column({ _id, title, order, boardId }: IColumnProps) {
   const MODAL_CONTENT = "Are your sure you want to delete this column?";
+  const ADD_TASK_CONTENT = "Add task";
   const [triggerUpdate] = useUpdateColumnMutation();
   const [triggerDelete] = useDeleteColumnMutation();
+  const [triggerCreate] = useCreateTaskMutation();
+  const { data: tasksArr, isSuccess } = useGetTaskListQuery({
+    boardId,
+    columnId: _id,
+  });
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isTitleOpen, setIsTitleOPen] = useState(false);
+  const [isAddTaskModalOpen, setIsAddTaskModalOpen] = useState(false);
   const [titleInput, setTitleInput] = useState(title);
   const [backUpInput, setBackUpInput] = useState(title);
 
@@ -62,12 +73,37 @@ export default function Column({ _id, title, order, boardId }: IColumnProps) {
     setIsModalOpen(false);
   };
 
+  const addTaskHandler = () => setIsAddTaskModalOpen(true);
+
+  const inputModalProps: IInputModalProps = {
+    title: "Create new Task",
+    inputsContent: ["Task title", "Task description"],
+    confirmHandler: (value) => {
+      const userId = window.localStorage.getItem("app_user_id") || "";
+      triggerCreate({
+        boardId,
+        columnId: _id,
+        body: {
+          title: value.first,
+          description: value.second || "",
+          order: tasksArr?.length || 0,
+          userId,
+          users: [userId],
+        },
+      });
+      setIsAddTaskModalOpen(false);
+    },
+    closeHandler: () => {
+      setIsAddTaskModalOpen(false);
+    },
+  };
+
   return (
     <>
       <Paper
         sx={{
           width: "350px",
-          minHeight: "200px",
+          // minHeight: "200px",
           height: "fit-content",
           p: "1rem",
           boxSizing: "border-box",
@@ -83,7 +119,7 @@ export default function Column({ _id, title, order, boardId }: IColumnProps) {
       >
         <Grid container alignItems="center">
           {isTitleOpen ? (
-            <>
+            <Grid container direction="row" mb="2rem">
               <TextField
                 color="primary"
                 size="small"
@@ -134,9 +170,9 @@ export default function Column({ _id, title, order, boardId }: IColumnProps) {
               >
                 <DeleteOutlineIcon htmlColor="#f0806e" />
               </IconButton>
-            </>
+            </Grid>
           ) : (
-            <>
+            <Grid container direction="row" mb="2rem">
               <Button
                 //   variant="text"
                 disableElevation
@@ -159,8 +195,29 @@ export default function Column({ _id, title, order, boardId }: IColumnProps) {
               <IconButton onClick={deleteColumnHandler}>
                 <DeleteIcon fontSize="large" htmlColor="#fff" />
               </IconButton>
-            </>
+            </Grid>
           )}
+          <Grid container sx={{ width: "100%", gap: 1 }}>
+            {isSuccess && tasksArr.map((item) => <Task {...item} />)}
+          </Grid>
+          <Button
+            startIcon={<AddIcon />}
+            disableElevation
+            variant="contained"
+            fullWidth
+            onClick={addTaskHandler}
+            sx={{
+              color: "#fff",
+              mt: 3,
+
+              // "&:hover": {
+              //   transform: "scale(1.01)",
+              //   border: "2px solid #fff",
+              // },
+            }}
+          >
+            {ADD_TASK_CONTENT}
+          </Button>
         </Grid>
       </Paper>
       {isModalOpen && (
@@ -170,6 +227,7 @@ export default function Column({ _id, title, order, boardId }: IColumnProps) {
           closeHandler={closeModalHandler}
         />
       )}
+      {isAddTaskModalOpen && <InputModal {...inputModalProps} />}
     </>
   );
 }
