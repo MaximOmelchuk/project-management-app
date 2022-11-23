@@ -2,8 +2,12 @@ import { Container, Grid, List, ListItem, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import PersonCard from '../PersonCard/PersonCard';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+import { useGetTasksOnSearchQuery } from '../../services/service';
 
 const WelcomePage = () => {
+  const { data, isSuccess } = useGetTasksOnSearchQuery('d');
+  console.log(data);
+
   const { t } = useTranslation();
   const cards = t('welcome.personCards', { returnObjects: true }) as Array<{ title: string, content: string }>;
   const advantagesList = t('welcome.advantagesList', { returnObjects: true }) as Array<string

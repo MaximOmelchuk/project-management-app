@@ -1,16 +1,23 @@
-import React from "react";
+import React, { useEffect } from "react";
 import logo from "./logo.svg";
 // import { Counter } from './features/counter/Counter';
 import "./App.css";
 import ConfirmModal from "./app/components/ConfirmModal/ConfirmModal";
 import MainPage from "./app/components/MainPage/MainPage";
-import Header from "./app/components/Header/Header";
 import { Route, Routes } from "react-router-dom";
 import WelcomePage from "./app/components/WelcomePage/WelcomePage";
 import Layout from "./app/components/Layout/Layout";
 import NotFoundPage from "./app/components/NotFounPage/NotFoundPage";
+import { useSingInMutation } from "./app/services/service";
+import BoardPage from "./app/components/BoardPage/BoardPage";
 
 function App() {
+  const [trigger] = useSingInMutation();
+
+  useEffect(() => {
+    trigger({ login: "test123", password: "test123" });
+  }, []);
+
   return (
     <div className="App">
       {/* <ConfirmModal
@@ -23,6 +30,17 @@ function App() {
           <Route index element={<WelcomePage />} />
           <Route path="mainPage" element={<MainPage />} />
           <Route path="*" element={<NotFoundPage />} />
+          <Route
+          path="/boards/:boardId"
+          // loader={({ params }) => {
+          //   params.boardtId;
+          // }}
+          // // and actions
+          // action={({ params }) => {
+          //   params.boardtId; 
+          // }}
+          element={<BoardPage />}
+        />
         </Route>
       </Routes>
       {/* <header className="App-header">
