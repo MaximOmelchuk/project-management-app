@@ -3,7 +3,7 @@ import RssIcon from "../RSSIcon";
 
 const Footer = () => {
   return (
-    <AppBar position="static" sx={{ mt: "auto", padding: "15px 0" }}>
+    <AppBar position="static" sx={{ mt: "auto", padding: "15px 0" }} component="footer">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Grid container spacing={2} alignItems="center" direction={{ xs: 'column', sm: 'row' }} justifyContent={{ xs: 'center', sm: 'space-between' }}>

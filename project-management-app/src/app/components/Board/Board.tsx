@@ -13,7 +13,7 @@ export default function Board({
     // <NavLink to={"./"}>
     <Paper
       sx={{
-        width: "350px",
+        width: "300px",
         minHeight: "200px",
         p: "1rem 1rem",
         boxSizing: "border-box",
