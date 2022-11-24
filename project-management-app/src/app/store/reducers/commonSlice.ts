@@ -1,10 +1,11 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 const initialState = {
   isModalConfirmOpen: false,
   modalConfirmContent: "",
   modalConfirmHandler: () => {},
   isAuth: true,
+  searchString: localStorage.getItem('search') || '',
 };
 
 const common = createSlice({
@@ -27,6 +28,12 @@ const common = createSlice({
     setModalConfirmHandler: (state, action) => {
       return { ...state, modalConfirmHandler: action.payload };
     },
+    changeSearchString: (state, action: PayloadAction<string>) => {
+      return {
+        ...state,
+        searchString: action.payload,
+      };
+    },
     // setInitialState: () => ({ ...initialState }),
     // setToken: (state, action) => {
     //   return { ...state, token: action.payload };
@@ -41,5 +48,6 @@ export const {
   setIsModalConfirmOpen,
   setModalConfirmContent,
   setModalConfirmHandler,
+  changeSearchString
 } = common.actions;
 export default common.reducer;

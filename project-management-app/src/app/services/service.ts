@@ -9,6 +9,7 @@ import {
   IDeleteColumn,
   ISigninArg,
   ISigninResult,
+  ITaskData,
   IUpdateBoard,
   IUpdateColumn,
 } from "../utils/interfaces";
@@ -200,7 +201,7 @@ export const service = createApi({
       //   },
     }),
 
-    getTasksOnSearch: builder.query<IBoardData, string>({
+    getTasksOnSearch: builder.query<ITaskData[], string>({
       query: (params) => `/tasksSet?search=${params}`,
       providesTags: ["POST"],
       keepUnusedDataFor: 0,

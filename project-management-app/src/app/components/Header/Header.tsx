@@ -14,6 +14,7 @@ import MenuItem from '@mui/material/MenuItem';
 import ViewKanbanIcon from '@mui/icons-material/ViewKanban';
 import MarginIcon from '@mui/icons-material/Margin';
 import AddchartIcon from '@mui/icons-material/Addchart';
+import SearchIcon from '@mui/icons-material/Search';
 import { useTranslation } from 'react-i18next';
 import ChangeLang from '../ChangeLang/ChangeLang';
 import { useNavigate } from 'react-router-dom';
@@ -60,6 +61,11 @@ function Header() {
       text: t('header.addBoard'),
       Icon: AddchartIcon,
       onClick: () => navigate('/addBoard')
+    },
+    {
+      text: t('header.searchPage'),
+      Icon: SearchIcon,
+      onClick: () => navigate('/searchPage')
     },
     {
       text: t('header.singOut'),

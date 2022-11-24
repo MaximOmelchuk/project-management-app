@@ -12,6 +12,7 @@ import { useSingInMutation } from "./app/services/service";
 import BoardPage from "./app/components/BoardPage/BoardPage";
 import { ThemeProvider } from "@mui/system";
 import theme from "./app/constants/theme";
+import SearchPage from "./app/components/SearchPage/SearchPage";
 
 function App() {
   const [trigger] = useSingInMutation();
@@ -32,6 +33,7 @@ function App() {
           <Route path="/" element={<Layout />}>
             <Route index element={<WelcomePage />} />
             <Route path="mainPage" element={<MainPage />} />
+            <Route path="searchPage" element={<SearchPage />} />
             <Route path="*" element={<NotFoundPage />} />
             <Route
               path="/boards/:boardId"

@@ -16,6 +16,7 @@ export const HeaderText = {
     singOut: 'Sing Out',
     mainPage: 'Main Page',
     addBoard: 'Add board',
+    searchPage: 'Search tasks',
   },
   ru: {
     title: 'ПМ Доски',
@@ -24,6 +25,7 @@ export const HeaderText = {
     singOut: 'Выйти',
     mainPage: 'Главная',
     addBoard: 'Добавить доску',
+    searchPage: 'Поиск задач',
   }
 }
 
@@ -87,5 +89,20 @@ export const WelcomePageText = {
         key: 3,
       },
     ],
+  }
+}
+
+export const searchPageText = {
+  en: {
+    title: 'Search tasks',
+    label: 'Search tasks by title or description',
+    tasksHeading: 'Task search results',
+    searchError: 'Tasks not found. Try another request',
+  },
+  ru: {
+    title: 'Поиск задач',
+    label: 'Поиск задач по названию или описанию',
+    tasksHeading: 'Результаты поиска задач',
+    searchError: 'Задвчи не найдены. Попробуйте другой запрос',
   }
 }

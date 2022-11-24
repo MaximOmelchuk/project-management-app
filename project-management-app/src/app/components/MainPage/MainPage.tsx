@@ -13,10 +13,8 @@ import { useNavigate } from "react-router-dom";
 
 export default function MainPage() {
   const { data, isSuccess } = useGetBoardsListQuery(undefined);
-  console.log(data);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [createTrigger] = useCreateBoardMutation();
-  console.log(data);
   const userId = window.localStorage.getItem("app_user_id") || "";
 
   const createHandler = () => setIsCreateModalOpen(true);
