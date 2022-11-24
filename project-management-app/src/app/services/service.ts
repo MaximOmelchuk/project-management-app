@@ -16,7 +16,7 @@ export const service = createApi({
 
   tagTypes: ["POST"],
   endpoints: (builder) => ({
-    
+
     getBoardsList: builder.query({
       query: () => `/boards`,
       providesTags: ["POST"],
@@ -42,7 +42,70 @@ export const service = createApi({
           const {
             data: { token },
           } = await queryFulfilled;
+
           window.localStorage.setItem("app_access_token", token);
+        } catch (err) {
+          // redirect(err, dispatch);
+        }
+      },
+    }),
+
+    singUp: builder.mutation({
+      query: (params) => ({
+        url: `auth/signup`,
+        method: "POST",
+        body: params,
+      }),
+      invalidatesTags: ["POST"],
+      async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+        try {
+        } catch (err) {
+          // redirect(err, dispatch);
+        }
+      },
+    }),
+
+    editUser: builder.mutation({
+      query: (params) => ({
+        url: `users/${params.id}`,
+        method: "PUT",
+        body: params,
+      }),
+      invalidatesTags: ["POST"],
+      async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+        try {
+          
+        } catch (err) {
+          // redirect(err, dispatch);
+        }
+      },
+    }),
+
+
+    getUser: builder.query({
+      query: (id) => ({
+        url: `users/${id}`,
+      }),
+      providesTags: ["POST"],
+      keepUnusedDataFor: 0,
+      async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+        try {
+          const { data } = await queryFulfilled;
+        } catch (err) {
+          //   redirect(err, dispatch);
+        }
+      },
+    }),
+
+    deleteUser: builder.mutation({
+      query: (params) => ({
+        url: `users/${params.id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["POST"],
+      async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+        try {
+          const data = await queryFulfilled;
         } catch (err) {
           // redirect(err, dispatch);
         }
@@ -148,7 +211,11 @@ export const {
   useLazyGetBoardsListQuery,
   useGetBoardsListQuery,
   useSingInMutation,
-//   useUpdateHostMutation,
+  useSingUpMutation,
+  useEditUserMutation,
+  useGetUserQuery,
+  useDeleteUserMutation
+  //   useUpdateHostMutation,
   //   useGetHostByIdQuery,
   //   useGetHostStatusesQuery,
   //   useGetHostTypesQuery,
