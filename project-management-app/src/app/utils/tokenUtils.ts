@@ -19,11 +19,35 @@ export const isExpired = (exp: string | number) => {
   return Date.now() > exp;
 };
 
-const getToken = async () => {
-  if (!localStorage.getItem("app_access_token")) {
+export const getUserId = (jwtToken: string) => {
+  if (!jwtToken) {
     return null;
   }
- return localStorage.getItem("app_access_token"); // TODO вставил временно, весь функционал проверки в закоментченном коде ниже
+  let jwt;
+  try {
+    jwt = JSON.parse(atob(jwtToken.split(".")[1]));
+  } catch (e) {
+    return null;
+  }
+
+  return jwt?.id || null;
+};
+
+// export const isExpired = (exp) => {
+//   if (!exp || exp === 'null' || exp === 'undefined') {
+//     return false;
+//   }
+//   return Date.now() > exp;
+// };
+
+export const getToken = () => {
+  if (
+    !localStorage.getItem("app_access_token") ||
+    isExpired(getExpirationDate(localStorage.getItem("app_access_token")!))
+  ) {
+    return null;
+  }
+  return localStorage.getItem("app_access_token"); // TODO вставил временно, весь функционал проверки в закоментченном коде ниже
 
   // if (
   //   isExpired(getExpirationDate(localStorage.getItem("app_access_token")!))

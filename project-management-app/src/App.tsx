@@ -1,17 +1,18 @@
 import React from "react";
 import "./App.css";
-import { BrowserRouter } from "react-router-dom";
 import AppRouter from "./AppRouter";
-import Header from "./app/components/header/headerTest";
 import { ActionAlert } from "./app/components/Action/ActionAlert";
+import { ThemeProvider } from "@mui/system";
+import theme from "./app/constants/theme";
 
 function App() {
   return (
-    <BrowserRouter basename={process.env.PUBLIC_URL}>
-      <Header />
-      <AppRouter />
-      <ActionAlert />
-    </BrowserRouter>
+    <ThemeProvider theme={theme}>
+      <div className="App">
+        <AppRouter />
+        <ActionAlert />
+      </div>
+    </ThemeProvider>
   );
 }
 

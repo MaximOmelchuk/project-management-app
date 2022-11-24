@@ -12,7 +12,7 @@ export type ResponseAlert = {
   message: string,
   type: "error" | "warning" | "info" | "success",
 }
-/* 
+/*
 
 export type GlobalContextContent = {
   isModalConfirmOpen: boolean;
@@ -31,6 +31,7 @@ const initialState = {
   formSignUp: {} as FormContext,
   formEditUser: {} as FormContext,
   alert: {} as ResponseAlert,
+  searchString: localStorage.getItem('search') || '',
 };
 
 const appCommon = createSlice({
@@ -64,7 +65,13 @@ const appCommon = createSlice({
     },
     setMessageResponsive: (state, action: PayloadAction<ResponseAlert>) => {
       state.alert = action.payload;
-    }
+    },
+    changeSearchString: (state, action: PayloadAction<string>) => {
+      return {
+        ...state,
+        searchString: action.payload,
+      };
+    },
     // setInitialState: () => ({ ...initialState }),
     // setToken: (state, action) => {
     //   return { ...state, token: action.payload };
@@ -82,9 +89,11 @@ export const {
   setFormSignIn,
   setFormSignUp,
   setFormEditUser,
-  setMessageResponsive
+  setMessageResponsive,
+  changeSearchString
 } = appCommon.actions;
 
 export const selectStateApp = (state: RootState) => state.common;
 
 export default appCommon.reducer;
+

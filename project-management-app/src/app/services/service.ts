@@ -1,8 +1,20 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import setFields from "../store/reducers/commonSlice";
-import { ISigninArg, ISigninResult } from "../utils/interfaces";
+import {
+  IBoardData,
+  IColumnProps,
+  ICreateBoard,
+  ICreateBoardResult,
+  ICreateColumn,
+  IDeleteColumn,
+  ISigninArg,
+  ISigninResult,
+  ITaskData,
+  IUpdateBoard,
+  IUpdateColumn,
+} from "../utils/interfaces";
 // import { formatDate, redirect } from "../utils/utils";
-import getHeaders from "../utils/tokenUtils";
+import getHeaders, { getUserId } from "../utils/tokenUtils";
 
 export const service = createApi({
   reducerPath: "service",
@@ -16,7 +28,6 @@ export const service = createApi({
 
   tagTypes: ["POST"],
   endpoints: (builder) => ({
-
     getBoardsList: builder.query({
       query: () => `/boards`,
       providesTags: ["POST"],
@@ -25,9 +36,22 @@ export const service = createApi({
         try {
           const { data } = await queryFulfilled;
         } catch (err) {
-          //   redirect(err, dispatch);
+          // redirect(err, dispatch);
         }
       },
+    }),
+
+    getBoardById: builder.query<IBoardData, string>({
+      query: (params) => `/boards/${params}`,
+      providesTags: ["POST"],
+      keepUnusedDataFor: 0,
+      //   async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+      //     try {
+      //       const { data } = await queryFulfilled;
+      //     } catch (err) {
+      //   redirect(err, dispatch);
+      //     }
+      //   },
     }),
 
     singIn: builder.mutation({
@@ -44,6 +68,8 @@ export const service = createApi({
           } = await queryFulfilled;
 
           window.localStorage.setItem("app_access_token", token);
+          const userId = getUserId(token);
+          window.localStorage.setItem("app_user_id", userId);
         } catch (err) {
           // redirect(err, dispatch);
         }
@@ -74,7 +100,7 @@ export const service = createApi({
       invalidatesTags: ["POST"],
       async onQueryStarted(arg, { dispatch, queryFulfilled }) {
         try {
-          
+
         } catch (err) {
           // redirect(err, dispatch);
         }
@@ -110,6 +136,144 @@ export const service = createApi({
           // redirect(err, dispatch);
         }
       },
+    }),
+
+    deleteBoard: builder.mutation({
+      query: (params) => ({
+        url: `/boards/${params}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["POST"],
+      //   async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+      //     try {
+      //       const {
+      //         data: { token },
+      //       } = await queryFulfilled;
+      //       window.localStorage.setItem("app_access_token", token);
+      //     } catch (err) {
+      // redirect(err, dispatch);
+      //     }
+      //   },
+    }),
+
+    createBoard: builder.mutation<IBoardData, ICreateBoard>({
+      query: (params) => ({
+        url: `/boards`,
+        method: "POST",
+        body: params,
+      }),
+      invalidatesTags: ["POST"],
+      //   async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+      //     try {
+      //       const {
+      //         data: { token },
+      //       } = await queryFulfilled;
+      //       window.localStorage.setItem("app_access_token", token);
+      //     } catch (err) {
+      // redirect(err, dispatch);
+      //     }
+      //   },
+    }),
+
+    updateBoard: builder.mutation<IBoardData, IUpdateBoard>({
+      query: (params) => ({
+        url: `/boards/${params.id}`,
+        method: "PUT",
+        body: params.body,
+      }),
+      invalidatesTags: ["POST"],
+      //   async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+      //     try {
+      //       const {
+      //         data: { token },
+      //       } = await queryFulfilled;
+      //       window.localStorage.setItem("app_access_token", token);
+      //     } catch (err) {
+      // redirect(err, dispatch);
+      //     }
+      //   },
+    }),
+
+    updateColumn: builder.mutation<IBoardData, IUpdateColumn>({
+      query: (params) => ({
+        url: `/boards/${params.boardId}/columns/${params.columnId}`,
+        method: "PUT",
+        body: params.body,
+      }),
+      invalidatesTags: ["POST"],
+      //   async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+      //     try {
+      //       const {
+      //         data: { token },
+      //       } = await queryFulfilled;
+      //       window.localStorage.setItem("app_access_token", token);
+      //     } catch (err) {
+      // redirect(err, dispatch);
+      //     }
+      //   },
+    }),
+
+    deleteColumn: builder.mutation<IBoardData, IDeleteColumn>({
+      query: (params) => ({
+        url: `/boards/${params.boardId}/columns/${params.columnId}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["POST"],
+      //   async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+      //     try {
+      //       const {
+      //         data: { token },
+      //       } = await queryFulfilled;
+      //       window.localStorage.setItem("app_access_token", token);
+      //     } catch (err) {
+      // redirect(err, dispatch);
+      //     }
+      //   },
+    }),
+
+    getColumnList: builder.query<IColumnProps[], string>({
+      query: (params) => `/boards/${params}/columns`,
+      providesTags: ["POST"],
+      keepUnusedDataFor: 0,
+      //   async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+      //     try {
+      //       const { data } = await queryFulfilled;
+      //     } catch (err) {
+      //   redirect(err, dispatch);
+      //     }
+      //   },
+    }),
+
+    createColumn: builder.mutation<IColumnProps, ICreateColumn>({
+      query: (params) => ({
+        url: `/boards/${params.id}/columns`,
+        method: "POST",
+        body: params.body,
+      }),
+      invalidatesTags: ["POST"],
+      //   async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+      //     try {
+      //       const {
+      //         data: { token },
+      //       } = await queryFulfilled;
+      //       window.localStorage.setItem("app_access_token", token);
+      //     } catch (err) {
+      // redirect(err, dispatch);
+      //     }
+      //   },
+    }),
+
+    getTasksOnSearch: builder.query<ITaskData[], string>({
+      query: (params) => `/tasksSet?search=${params}`,
+      providesTags: ["POST"],
+      keepUnusedDataFor: 0,
+      //   async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+      //     try {
+      //       const { data } = await queryFulfilled;
+      //     } catch (err) {
+      //   redirect(err, dispatch);
+      //     }
+      //   },
     }),
 
     // updateHost: builder.mutation({
@@ -214,7 +378,16 @@ export const {
   useSingUpMutation,
   useEditUserMutation,
   useGetUserQuery,
-  useDeleteUserMutation
+  useDeleteUserMutation,
+  useDeleteBoardMutation,
+  useCreateBoardMutation,
+  useUpdateBoardMutation,
+  useGetBoardByIdQuery,
+  useGetColumnListQuery,
+  useCreateColumnMutation,
+  useUpdateColumnMutation,
+  useDeleteColumnMutation,
+  useGetTasksOnSearchQuery,
   //   useUpdateHostMutation,
   //   useGetHostByIdQuery,
   //   useGetHostStatusesQuery,
