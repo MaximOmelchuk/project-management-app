@@ -1,105 +1,145 @@
-import React from 'react';
-import Typography from '@mui/material/Typography';
-import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
-import { useForm, SubmitHandler, Controller, useFormState } from "react-hook-form";
-import { loginValidation, passwordValidation } from './validation';
+import React, { useEffect } from 'react';
+import * as yup from "yup";
+import { useNavigate } from 'react-router';
+import { useForm, SubmitHandler } from "react-hook-form";
+
+import { yupResolver } from '@hookform/resolvers/yup';
 import { ErrorMessage } from "@hookform/error-message";
-import { Box } from '@mui/system';
+
+import { Box, Button, TextField } from '@mui/material';
+
+import { VALIDATORS } from '../../utils/validation';
+import styles from './Form.module.css';
+import { useAppDispatch } from "../../hooks";
+import { FormContext } from "../../store/reducers/commonSlice";
+
 
 interface ISignInForm {
-    name: string;
-    login: string;
-    password: string;
+  name: string;
+  login: string;
+  password: string;
 }
 
-interface SignInProps {
-    signIn: (email: string, password: string) => Promise<void>;
-    emailFromUrl?: string;
-    passwordFromUrl?: string;
+interface IFormProps {
+  isAllValidate: boolean,
+  serverRequest: (data: ISignInForm) => Promise<void>,
+  setState: (payload: FormContext) => any,
+  contentForm: any,
+  stateForm: any,
 }
 
-export const AuthForm: React.FC = () => {
-    /* useEffect(() => {
-        if (error) {
-            setError("password", { type: "auth", message: getErrorMessageFirebase(error.code) });
-        }
-    }, [error]); */
+export const AuthForm = ({ isAllValidate, serverRequest, setState, contentForm, stateForm }: IFormProps): JSX.Element => {
+  const dispatch = useAppDispatch();
+  const validationSchema = yup.object(
+    isAllValidate
+      ? {
+        password: yup
+          .string()
+          .required(VALIDATORS.PASSWORD.required)
+          .min(VALIDATORS.PASSWORD.minLength.value, VALIDATORS.PASSWORD.minLength.message)
+          .max(VALIDATORS.PASSWORD.maxLength.value, VALIDATORS.PASSWORD.maxLength.message)
+          .matches(VALIDATORS.PASSWORD.pattern.value, VALIDATORS.PASSWORD.pattern.message),
+        login: yup
+          .string()
+          .required(VALIDATORS.TEXT.required)
+          .min(VALIDATORS.TEXT.minLength.value, VALIDATORS.TEXT.minLength.message)
+          .max(VALIDATORS.TEXT.maxLength.value, VALIDATORS.TEXT.maxLength.message)
+          .matches(VALIDATORS.TEXT.pattern.value, VALIDATORS.TEXT.pattern.message),
+        name: yup
+          .string()
+          .required(VALIDATORS.TEXT.required)
+          .min(VALIDATORS.TEXT.minLength.value, VALIDATORS.TEXT.minLength.message)
+          .max(VALIDATORS.TEXT.maxLength.value, VALIDATORS.TEXT.maxLength.message)
+          .matches(VALIDATORS.TEXT.pattern.value, VALIDATORS.TEXT.pattern.message),
+      }
+      : {
+        password: yup
+          .string()
+          .required(VALIDATORS.PASSWORD.required)
+          .min(VALIDATORS.PASSWORD.minLength.value, VALIDATORS.PASSWORD.minLength.message)
+          .max(VALIDATORS.PASSWORD.maxLength.value, VALIDATORS.PASSWORD.maxLength.message)
+          .matches(VALIDATORS.PASSWORD.pattern.value, VALIDATORS.PASSWORD.pattern.message),
+        login: yup
+          .string()
+          .required(VALIDATORS.TEXT.required)
+          .min(VALIDATORS.TEXT.minLength.value, VALIDATORS.TEXT.minLength.message)
+          .max(VALIDATORS.TEXT.maxLength.value, VALIDATORS.TEXT.maxLength.message)
+          .matches(VALIDATORS.TEXT.pattern.value, VALIDATORS.TEXT.pattern.message),
+      }
+  );
 
-    /*   const schemaPassword = yup.object({
-          password: yup
-              .string()
-              .required(VALIDATORS.PASSWORD.required)
-              .max(VALIDATORS.PASSWORD.maxLength.value, VALIDATORS.PASSWORD.maxLength.message)
-              .min(VALIDATORS.PASSWORD.minLength.value, VALIDATORS.PASSWORD.minLength.message),
-      }); */
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    watch,
+  } = useForm<ISignInForm>({
+    resolver: yupResolver(validationSchema),
+    defaultValues: {
+      name: stateForm?.name,
+      login: stateForm?.login,
+      password: '',
+    }
+  });
 
-    const {
-        register,
-        handleSubmit,
-        setError,
-        formState: { errors },
-    } = useForm<ISignInForm>({
-        defaultValues: {
-            name: '',
-            login: '',
-            password: '',
-        }
+  useEffect(() => {
+    watch((value) => {
+      const data = {
+        name: value.name,
+        login: value.login as string
+      }
+      dispatch(setState(data));
     });
+  }, [dispatch, setState, watch]);
 
-    // const { handleSubmit, control } = useForm<ISignInForm>();
-    // const { errors } = useFormState({
-    //     control
-    // })
+  const onSubmit: SubmitHandler<ISignInForm> = async (data) => {
+    serverRequest(data);
+  };
 
-    const onSubmit: SubmitHandler<ISignInForm> = (data) => {
-        console.log(data);
-    };
+  const placeholderName = contentForm.en?.placeholderName;
+  const labelName = contentForm.en?.labelName ;
+  const placeholderLogin = contentForm?.placeholderLogin;
+  const labelLogin = contentForm.en?.labelLogin;
+  const placeholderPassword = contentForm.en?.placeholderPassword;
+  const labelPassword = contentForm.en?.labelPassword;
+  const buttonContent = contentForm.en?.button;
 
-    return (
-        <>
-            <Typography variant="h4">Sign In</Typography>
+  return (
+    <form className={styles['wrapper-form']} onSubmit={handleSubmit(onSubmit)}>
+      <Box sx={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+        {isAllValidate && <TextField
+          type="text"
+          placeholder={placeholderName}
+          label={labelName}
+          autoComplete="off"
+          {...register("name")}
+          error={!!errors.name?.message}
+          helperText={<ErrorMessage errors={errors} name="name" />}
+        />}
 
-            <form onSubmit={handleSubmit(onSubmit)} data-testid="signIn-form">
-                <Box sx={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-                    <TextField
-                        id="text"
-                        type="text"
-                        placeholder="Enter your name"
-                        label={"Name"}
-                        /* hidden={!!emailFromUrl} */
-                        {...register("name")}
-                        error={!!errors.login?.message}
-                        helperText={<ErrorMessage errors={errors} name="name" />}
-                    />
+        <TextField
+          type="text"
+          placeholder={placeholderLogin}
+          label={labelLogin}
+          autoComplete="off"
+          {...register("login")}
+          error={!!errors.login?.message}
+          helperText={<ErrorMessage errors={errors} name="login" />}
+        />
 
-                    <TextField
-                        id="text"
-                        type="text"
-                        placeholder="Enter your login"
-                        label={"Login"}
-                        /* hidden={!!emailFromUrl} */
-                        {...register("login")}
-                        error={!!errors.login?.message}
-                        helperText={<ErrorMessage errors={errors} name="login" />}
-                    />
-
-                    <TextField
-                        id="password"
-                        placeholder="Enter password"
-                        label={"Password"}
-                        type="password"
-                        /* hidden={!emailFromUrl} */
-                        {...register("password")}
-                        error={!!errors.password?.message}
-                        helperText={errors.password?.message}
-                    />
-
-                    <Button variant="contained" type="submit" sx={{ marginTop: "1rem" }}>
-                        {!'emailFromUrl' ? "Continue" : "Sign In"}
-                    </Button>
-                </Box>
-            </form>
-        </>
-    )
+        <TextField
+          placeholder={placeholderPassword}
+          label={labelPassword}
+          type="password"
+          autoComplete="off"
+          {...register("password")}
+          error={!!errors.password?.message}
+          helperText={errors.password?.message}
+        />
+        <Button variant="contained" type="submit" sx={{ marginTop: "1rem", padding: '10px' }}>
+          {buttonContent}
+        </Button>
+      </Box>
+    </form>
+  )
 }
