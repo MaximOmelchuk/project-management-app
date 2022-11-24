@@ -5,7 +5,7 @@ import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import { useGetTasksOnSearchQuery } from '../../services/service';
 
 const WelcomePage = () => {
-  const { data, isSuccess } = useGetTasksOnSearchQuery('d');
+  const { data } = useGetTasksOnSearchQuery('');
   console.log(data);
 
   const { t } = useTranslation();
@@ -19,11 +19,11 @@ const WelcomePage = () => {
       </Typography>
       <Grid container alignItems="center">
         <Grid item sm={6}>
-          <Typography color='white'>{t('welcome.subTitle')}</Typography>
+          <Typography color='white' variant='h6'>{t('welcome.subTitle')}</Typography>
           <List>
             {advantagesList.map(
               (item, index) => (
-                <ListItem key={index} sx={{ color: "white" }}>
+                <ListItem key={index} sx={{ color: "rgb(211, 211, 211)" }}>
                   <CheckCircleOutlineIcon sx={{ paddingRight: "1rem" }} />
                   {item}
                 </ListItem>
@@ -40,9 +40,9 @@ const WelcomePage = () => {
           <img width="100%" src={require("../../assets/Boards2.png")} alt="" />
         </Grid>
         <Grid item sm={6}>
-          <Typography color='white' paddingBottom="1rem">{t('welcome.title2')}</Typography>
-          <Typography color='white' paddingBottom="1rem">{t('welcome.paragraph')}</Typography>
-          <Typography color='white' paddingBottom="1rem">{t('welcome.paragraph2')}</Typography>
+          <Typography color='white' paddingBottom="1rem" variant='h6'>{t('welcome.title2')}</Typography>
+          <Typography color='rgb(211, 211, 211)' paddingBottom="1rem">{t('welcome.paragraph')}</Typography>
+          <Typography color='rgb(211, 211, 211)' paddingBottom="1rem">{t('welcome.paragraph2')}</Typography>
         </Grid>
       </Grid>
       <Typography color='white' sx={{ padding: "1rem 0", fontWeight: 700, fontSize: { xs: '1.4rem', sm: '2rem' } }}>

@@ -21,7 +21,7 @@ export default function PersonCard({
           minHeight: "200px",
           p: "1rem 1rem",
           boxSizing: "border-box",
-          background: "#5385b5",
+          background: "rgb(44, 56, 126)",
           color: "#fff",
           position: "relative",
           transition: "0.2s",

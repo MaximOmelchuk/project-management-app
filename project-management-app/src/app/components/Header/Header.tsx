@@ -124,8 +124,8 @@ function Header() {
               >
                 {isAuth ?
                   linksWithAuth.map((item => (
-                    <MenuItem onClick={handleCloseNavMenu} key={item.text}>
-                      <ButtonWithIcon {...item} />
+                    <MenuItem onClick={handleCloseNavMenu} key={item.text} sx={{ padding: 0 }}>
+                      <ButtonWithIcon {...item} styleProps={{ width: "100%", padding: "10px 20px" }} />
                     </MenuItem>
                   )))
                   :

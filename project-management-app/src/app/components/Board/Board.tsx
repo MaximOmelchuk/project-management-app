@@ -28,7 +28,7 @@ export default function Board({ title, _id: id, owner, users }: IBoardProps) {
   return (
     <>
       <Paper
-        onClick={() => navigate(`./boards/${id}`)}
+        onClick={() => navigate(`/boards/${id}`)}
         sx={{
           width: "350px",
           minHeight: "200px",

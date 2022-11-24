@@ -10,6 +10,8 @@ import Layout from "./app/components/Layout/Layout";
 import NotFoundPage from "./app/components/NotFounPage/NotFoundPage";
 import { useSingInMutation } from "./app/services/service";
 import BoardPage from "./app/components/BoardPage/BoardPage";
+import { ThemeProvider } from "@mui/system";
+import theme from "./app/constants/theme";
 
 function App() {
   const [trigger] = useSingInMutation();
@@ -19,31 +21,32 @@ function App() {
   }, []);
 
   return (
-    <div className="App">
-      {/* <ConfirmModal
+    <ThemeProvider theme={theme}>
+      <div className="App">
+        {/* <ConfirmModal
         content="Are you sure you want to do what you do?"
         confirmHandler={() => alert("yes")}
         closeHandler={() => alert("close")}
       /> */}
-      <Routes>
-        <Route path="/" element={<Layout />}>
-          <Route index element={<WelcomePage />} />
-          <Route path="mainPage" element={<MainPage />} />
-          <Route path="*" element={<NotFoundPage />} />
-          <Route
-          path="/boards/:boardId"
-          // loader={({ params }) => {
-          //   params.boardtId;
-          // }}
-          // // and actions
-          // action={({ params }) => {
-          //   params.boardtId; 
-          // }}
-          element={<BoardPage />}
-        />
-        </Route>
-      </Routes>
-      {/* <header className="App-header">
+        <Routes>
+          <Route path="/" element={<Layout />}>
+            <Route index element={<WelcomePage />} />
+            <Route path="mainPage" element={<MainPage />} />
+            <Route path="*" element={<NotFoundPage />} />
+            <Route
+              path="/boards/:boardId"
+              // loader={({ params }) => {
+              //   params.boardtId;
+              // }}
+              // // and actions
+              // action={({ params }) => {
+              //   params.boardtId; 
+              // }}
+              element={<BoardPage />}
+            />
+          </Route>
+        </Routes>
+        {/* <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <Counter />
         <p>
@@ -88,7 +91,8 @@ function App() {
           </a>
         </span>
       </header> */}
-    </div>
+      </div>
+    </ThemeProvider>
   );
 }
 
