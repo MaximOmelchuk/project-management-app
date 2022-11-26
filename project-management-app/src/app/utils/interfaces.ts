@@ -72,6 +72,16 @@ export interface ITaskProps {
   users: string[];
 }
 
+export interface IUpdateTask extends IDeleteTask {
+  body: {
+    title: string;
+    order: number;
+    description: string;
+    userId: string;
+    users: string[];
+  };
+}
+
 export interface IUpdateColumn extends IDeleteColumn {
   body: {
     title: string;
@@ -92,6 +102,24 @@ export interface IInputModalProps {
   closeHandler: () => void;
   title: string;
   inputsContent: string[];
+}
+
+export interface IGetUserData {
+  _id: "string";
+  name: "string";
+  login: "string";
+}
+
+export interface IEditTaskModalProps {
+  closeHandler: () => void;
+  title: string;
+  description: string;
+  userId: string;
+  users: string[];
+  columnId: string;
+  order: number;
+  boardId: string;
+  taskId: string;
 }
 
 export interface IColumnProps {

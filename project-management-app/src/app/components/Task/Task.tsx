@@ -1,9 +1,11 @@
 import { Button, Paper, Typography } from "@mui/material";
 import React, { useState } from "react";
-import { ITaskProps } from "../../utils/interfaces";
+import { IEditTaskModalProps, ITaskProps } from "../../utils/interfaces";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { useDeleteTaskMutation } from "../../services/service";
 import ConfirmModal from "../ConfirmModal/ConfirmModal";
+import InputModal from "../InputModal/InputModal";
+import EditTaskModal from "../EditTaskModal/EditTaskModal";
 
 export default function Task({
   _id,
@@ -17,13 +19,34 @@ export default function Task({
 }: ITaskProps) {
   const MODAL_CONTENT = "Are your sure you want to delete this task?";
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
+  const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
   const [triggerDelete] = useDeleteTaskMutation();
   const deleteHandler = () => setIsConfirmModalOpen(true);
+
   const confirmModalHandler = () => {
     triggerDelete({ boardId, columnId, taskId: _id });
   };
+
   const closeModalHandler = () => {
     setIsConfirmModalOpen(false);
+  };
+
+  const openEditModalHandler = () => {
+    setIsUpdateModalOpen(true);
+  };
+
+  const inputModalProps: IEditTaskModalProps = {
+    title,
+    description,
+    userId,
+    users,
+    columnId,
+    order,
+    boardId,
+    taskId: _id,
+    closeHandler: () => {
+      setIsUpdateModalOpen(false);
+    },
   };
 
   return (
@@ -35,7 +58,7 @@ export default function Task({
             justifyContent: "space-between",
             textTransform: "none",
           }}
-          onClick={() => console.log("fire button")}
+          onClick={openEditModalHandler}
           disableElevation={true}
         >
           <Typography
@@ -59,6 +82,7 @@ export default function Task({
           closeHandler={closeModalHandler}
         />
       )}
+      {isUpdateModalOpen && <EditTaskModal {...inputModalProps} />}
     </>
   );
 }

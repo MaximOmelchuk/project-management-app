@@ -9,11 +9,13 @@ import {
   ICreateTask,
   IDeleteColumn,
   IDeleteTask,
+  IGetUserData,
   ISigninArg,
   ISigninResult,
   ITaskProps,
   IUpdateBoard,
   IUpdateColumn,
+  IUpdateTask,
 } from "../utils/interfaces";
 // import { formatDate, redirect } from "../utils/utils";
 import getHeaders, { getUserId } from "../utils/tokenUtils";
@@ -46,6 +48,32 @@ export const service = createApi({
 
     getBoardById: builder.query<IBoardData, string>({
       query: (params) => `/boards/${params}`,
+      providesTags: ["POST"],
+      keepUnusedDataFor: 0,
+      //   async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+      //     try {
+      //       const { data } = await queryFulfilled;
+      //     } catch (err) {
+      //   redirect(err, dispatch);
+      //     }
+      //   },
+    }),
+
+    getAllUsers: builder.query<IGetUserData[], null>({
+      query: () => `/users/`,
+      providesTags: ["POST"],
+      keepUnusedDataFor: 0,
+      //   async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+      //     try {
+      //       const { data } = await queryFulfilled;
+      //     } catch (err) {
+      //   redirect(err, dispatch);
+      //     }
+      //   },
+    }),
+
+    getUserById: builder.query<IGetUserData, string>({
+      query: (params) => `/users/${params}`,
       providesTags: ["POST"],
       keepUnusedDataFor: 0,
       //   async onQueryStarted(arg, { dispatch, queryFulfilled }) {
@@ -137,6 +165,25 @@ export const service = createApi({
     updateColumn: builder.mutation<IBoardData, IUpdateColumn>({
       query: (params) => ({
         url: `/boards/${params.boardId}/columns/${params.columnId}`,
+        method: "PUT",
+        body: params.body,
+      }),
+      invalidatesTags: ["POST"],
+      //   async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+      //     try {
+      //       const {
+      //         data: { token },
+      //       } = await queryFulfilled;
+      //       window.localStorage.setItem("app_access_token", token);
+      //     } catch (err) {
+      // redirect(err, dispatch);
+      //     }
+      //   },
+    }),
+
+    updateTask: builder.mutation<IBoardData, IUpdateTask>({
+      query: (params) => ({
+        url: `/boards/${params.boardId}/columns/${params.columnId}/tasks/${params.taskId}`,
         method: "PUT",
         body: params.body,
       }),
@@ -367,6 +414,9 @@ export const {
   useGetTaskListQuery,
   useCreateTaskMutation,
   useDeleteTaskMutation,
+  useGetAllUsersQuery,
+  useGetUserByIdQuery,
+  useUpdateTaskMutation,
   //   useUpdateHostMutation,
   //   useGetHostByIdQuery,
   //   useGetHostStatusesQuery,
