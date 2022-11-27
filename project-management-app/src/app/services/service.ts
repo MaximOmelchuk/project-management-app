@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import setFields from "../store/reducers/commonSlice";
+import setFields, { changeSearchString } from "../store/reducers/commonSlice";
 import {
   IBoardData,
   IColumnProps,
@@ -95,7 +95,7 @@ export const service = createApi({
       query: (params) => ({
         url: `users/${params.id}`,
         method: "PUT",
-        body: params,
+        body: params.body,
       }),
       invalidatesTags: ["POST"],
       async onQueryStarted(arg, { dispatch, queryFulfilled }) {
@@ -113,7 +113,7 @@ export const service = createApi({
         url: `users/${id}`,
       }),
       providesTags: ["POST"],
-      keepUnusedDataFor: 0,
+      keepUnusedDataFor: 10,
       async onQueryStarted(arg, { dispatch, queryFulfilled }) {
         try {
           const { data } = await queryFulfilled;

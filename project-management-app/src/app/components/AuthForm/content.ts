@@ -10,7 +10,7 @@ export const RegistrationText = {
     placeholderPassword: "Enter password",
     button: "Sign up",
     suggestion: "Already with us?",
-    suggestionButton: "Sign in!"
+    suggestionButton: "Sign in!",
   },
   ru: {
     title: "Создайте новый аккаунт",
@@ -25,7 +25,7 @@ export const RegistrationText = {
     suggestion: "Уже с нами?",
     suggestionButton: "Войти"
   }
-}
+};
 
 export const AuthText = {
   en: {
@@ -50,4 +50,36 @@ export const AuthText = {
     suggestion: "Еще нет аккаута?",
     suggestionButton: "Регистрация"
   }
-}
+};
+
+
+export const EditUser = {
+  en: {
+    name: "Name",
+    login: "Login",
+    title: 'Edit user',
+    labelName: 'Name',
+    placeholderName: "Enter your name",
+    labelLogin: 'Login',
+    placeholderLogin: "Enter your login",
+    labelPassword: 'Password',
+    placeholderPassword: "Enter password",
+    button: "Edit",
+    delete: "Delete account",
+    modalContent: "Do you really want to delete your accoutn?"
+  },
+  ru: {
+    name: "Имя",
+    login: "Логин",
+    title: 'Редактировать профиль',
+    labelName: 'Имя',
+    placeholderName: "Введите Ваше имя",
+    labelLogin: 'Логин',
+    placeholderLogin: "Введите Ваш логин",
+    labelPassword: 'Пароль',
+    placeholderPassword: "Введите пароль",
+    button: "Редактировать",
+    delete: "Удалить аккаунт",
+    modalContent: "Вы действительно хотите удалить Ваш аккаунт?"
+  }
+};
