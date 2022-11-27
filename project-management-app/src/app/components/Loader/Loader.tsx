@@ -1,10 +1,10 @@
 import CircularProgress from "@mui/material/CircularProgress";
 import { Container } from "@mui/material";
 
-export function Loader({flag} : {flag: boolean}) {
+export function Loader({ isOpen } : {isOpen: boolean}) {
   return (
-    <Container sx={{ display: "flex", justifyContent: "center", margin: "25% auto" }}>
-      <CircularProgress disableShrink={flag} size={70} sx={{color: 'red', opacity: '0.7'}} />
+    <Container sx={{ display: "flex", justifyContent: "center", margin: "30% auto" }}>
+      <CircularProgress disableShrink={isOpen} thickness={2.8} size={70} sx={{color: '#fff', opacity: '0.7'}} />
     </Container>
   );
 }
