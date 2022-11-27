@@ -12,25 +12,27 @@ export type ResponseAlert = {
   message: string,
   type: "error" | "warning" | "info" | "success",
 }
-/*
+
 
 export type GlobalContextContent = {
   isModalConfirmOpen: boolean;
   modalConfirmContent: string;
   modalConfirmHandler: () => void;
-  formSignIn: FormSignInContext | null;
-  formSignUp: string;
-  formEditUser: string;
-}; */
+  formSignIn: FormContext | null;
+  formSignUp: FormContext | null;
+  formEditUser: FormContext | null;
+  alert: ResponseAlert | null;
+  searchString: string;
+};
 
-const initialState = {
+const initialState: GlobalContextContent = {
   isModalConfirmOpen: false,
   modalConfirmContent: "",
   modalConfirmHandler: () => {},
-  formSignIn: {},
-  formSignUp: {} as FormContext,
-  formEditUser: {} as FormContext,
-  alert: {} as ResponseAlert,
+  formSignIn: null,
+  formSignUp: null,
+  formEditUser: null,
+  alert: null,
   searchString: localStorage.getItem('search') || '',
 };
 
@@ -54,13 +56,13 @@ const appCommon = createSlice({
     setModalConfirmHandler: (state, action) => {
       return { ...state, modalConfirmHandler: action.payload };
     },
-    setFormSignIn: (state, action: PayloadAction<FormContext>) => {
+    setFormSignIn: (state, action: PayloadAction<FormContext | null>) => {
       state.formSignIn = action.payload;
     },
-    setFormSignUp: (state, action: PayloadAction<FormContext>) => {
+    setFormSignUp: (state, action: PayloadAction<FormContext | null>) => {
       state.formSignUp = action.payload;
     },
-    setFormEditUser: (state, action: PayloadAction<FormContext>) => {
+    setFormEditUser: (state, action: PayloadAction<FormContext | null>) => {
       state.formEditUser = action.payload;
     },
     setMessageResponsive: (state, action: PayloadAction<ResponseAlert>) => {

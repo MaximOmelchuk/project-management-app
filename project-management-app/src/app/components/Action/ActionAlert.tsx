@@ -23,8 +23,8 @@ export const ActionAlert = () => {
       onClose={handleClose}
       anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
     >
-      <Alert onClose={handleClose} severity={alert.type} sx={{ width: '100%' }}>
-        {alert.message}
+      <Alert onClose={handleClose} severity={alert?.type} sx={{ width: '100%' }}>
+        {alert?.message}
       </Alert>
     </Snackbar>
   );
