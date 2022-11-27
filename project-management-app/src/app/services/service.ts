@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import setFields from "../store/reducers/commonSlice";
+// import setFields, { changeSearchString } from "../store/reducers/commonSlice";
 import {
   IBoardData,
   IColumnProps,
@@ -12,6 +12,7 @@ import {
   IGetUserData,
   ISigninArg,
   ISigninResult,
+  ITaskData,
   ITaskProps,
   IUpdateBoard,
   IUpdateColumn,
@@ -31,19 +32,18 @@ export const service = createApi({
   }),
 
   tagTypes: ["POST"],
-
   endpoints: (builder) => ({
-    getBoardsList: builder.query<IBoardData[], undefined>({
+    getBoardsList: builder.query({
       query: () => `/boards`,
       providesTags: ["POST"],
       keepUnusedDataFor: 0,
-      //   async onQueryStarted(arg, { dispatch, queryFulfilled }) {
-      //     try {
-      //       const { data } = await queryFulfilled;
-      //     } catch (err) {
-      //   redirect(err, dispatch);
-      //     }
-      //   },
+    //   async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+    //     try {
+    //       const { data } = await queryFulfilled;
+    //     } catch (err) {
+          // redirect(err, dispatch);
+    //     }
+    //   },
     }),
 
     getBoardById: builder.query<IBoardData, string>({
@@ -85,6 +85,32 @@ export const service = createApi({
       //   },
     }),
 
+    // getAllUsers: builder.query<IGetUserData[], null>({
+    //   query: () => `/users/`,
+    //   providesTags: ["POST"],
+    //   keepUnusedDataFor: 0,
+    //   //   async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+    //   //     try {
+    //   //       const { data } = await queryFulfilled;
+    //   //     } catch (err) {
+    //   //   redirect(err, dispatch);
+    //   //     }
+    //   //   },
+    // }),
+
+    // getUserById: builder.query<IGetUserData, string>({
+    //   query: (params) => `/users/${params}`,
+    //   providesTags: ["POST"],
+    //   keepUnusedDataFor: 0,
+    //   //   async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+    //   //     try {
+    //   //       const { data } = await queryFulfilled;
+    //   //     } catch (err) {
+    //   //   redirect(err, dispatch);
+    //   //     }
+    //   //   },
+    // }),
+
     singIn: builder.mutation({
       query: (params) => ({
         url: `/auth/signin`,
@@ -97,9 +123,72 @@ export const service = createApi({
           const {
             data: { token },
           } = await queryFulfilled;
+
           window.localStorage.setItem("app_access_token", token);
           const userId = getUserId(token);
           window.localStorage.setItem("app_user_id", userId);
+        } catch (err) {
+          // redirect(err, dispatch);
+        }
+      },
+    }),
+
+    singUp: builder.mutation({
+      query: (params) => ({
+        url: `auth/signup`,
+        method: "POST",
+        body: params,
+      }),
+      invalidatesTags: ["POST"],
+      async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+        try {
+        } catch (err) {
+          // redirect(err, dispatch);
+        }
+      },
+    }),
+
+    editUser: builder.mutation({
+      query: (params) => ({
+        url: `users/${params.id}`,
+        method: "PUT",
+        body: params.body,
+      }),
+      invalidatesTags: ["POST"],
+      async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+        try {
+
+        } catch (err) {
+          // redirect(err, dispatch);
+        }
+      },
+    }),
+
+
+    getUser: builder.query({
+      query: (id) => ({
+        url: `users/${id}`,
+      }),
+      providesTags: ["POST"],
+      keepUnusedDataFor: 10,
+      async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+        try {
+          const { data } = await queryFulfilled;
+        } catch (err) {
+          //   redirect(err, dispatch);
+        }
+      },
+    }),
+
+    deleteUser: builder.mutation({
+      query: (params) => ({
+        url: `users/${params.id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["POST"],
+      async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+        try {
+          const data = await queryFulfilled;
         } catch (err) {
           // redirect(err, dispatch);
         }
@@ -304,6 +393,19 @@ export const service = createApi({
       //   },
     }),
 
+    getTasksOnSearch: builder.query<ITaskData[], string>({
+      query: (params) => `/tasksSet?search=${params}`,
+      providesTags: ["POST"],
+      keepUnusedDataFor: 0,
+      //   async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+      //     try {
+      //       const { data } = await queryFulfilled;
+      //     } catch (err) {
+      //   redirect(err, dispatch);
+      //     }
+      //   },
+    }),
+
     // updateHost: builder.mutation({
     //   query: (params) => ({
     //     url: `host/update/${params.id}`,
@@ -403,6 +505,10 @@ export const {
   useLazyGetBoardsListQuery,
   useGetBoardsListQuery,
   useSingInMutation,
+  useSingUpMutation,
+  useEditUserMutation,
+  useGetUserQuery,
+  useDeleteUserMutation,
   useDeleteBoardMutation,
   useCreateBoardMutation,
   useUpdateBoardMutation,
@@ -417,6 +523,7 @@ export const {
   useGetAllUsersQuery,
   useGetUserByIdQuery,
   useUpdateTaskMutation,
+  useGetTasksOnSearchQuery,
   //   useUpdateHostMutation,
   //   useGetHostByIdQuery,
   //   useGetHostStatusesQuery,

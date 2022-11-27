@@ -131,3 +131,14 @@ export interface IColumnProps {
   boardId: string;
   setArrColumnState: Dispatch<SetStateAction<IColumnProps[]>>;
 }
+
+export interface ITaskData {
+  _id: string;
+  title: string;
+  order: number;
+  boardId: string;
+  columnId: string;
+  description: string;
+  userId: string;
+  users: string[];
+}

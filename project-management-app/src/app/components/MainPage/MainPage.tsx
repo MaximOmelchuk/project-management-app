@@ -15,7 +15,6 @@ export default function MainPage() {
   const { data, isSuccess } = useGetBoardsListQuery(undefined);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [createTrigger] = useCreateBoardMutation();
-  
   const userId = window.localStorage.getItem("app_user_id") || "";
 
   const createHandler = () => setIsCreateModalOpen(true);

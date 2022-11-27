@@ -1,38 +1,18 @@
-import React, { useEffect } from "react";
-import logo from "./logo.svg";
-// import { Counter } from './features/counter/Counter';
+import React from "react";
 import "./App.css";
-import ConfirmModal from "./app/components/ConfirmModal/ConfirmModal";
-import MainPage from "./app/components/MainPage/MainPage";
-import { useSingInMutation } from "./app/services/service";
-import { Routes, Route } from "react-router-dom";
-import BoardPage from "./app/components/BoardPage/BoardPage";
+import AppRouter from "./AppRouter";
+import { ActionAlert } from "./app/components/Action/ActionAlert";
+import { ThemeProvider } from "@mui/system";
+import theme from "./app/constants/theme";
 
 function App() {
-  const [trigger] = useSingInMutation();
-
-  useEffect(() => {
-    trigger({ login: "test123", password: "test123" });
-  }, []);
-
   return (
-    <div className="App">
-      <Routes>
-        <Route path="/" element={<MainPage />} />
-        <Route
-          path="/boards/:boardId"
-          // loader={({ params }) => {
-          //   params.boardtId;
-          // }}
-          // // and actions
-          // action={({ params }) => {
-          //   params.boardtId; 
-          // }}
-          element={<BoardPage />}
-        />
-      </Routes>
-      {/* <MainPage /> */}
-    </div>
+    <ThemeProvider theme={theme}>
+      <div className="App">
+        <AppRouter />
+        <ActionAlert />
+      </div>
+    </ThemeProvider>
   );
 }
 

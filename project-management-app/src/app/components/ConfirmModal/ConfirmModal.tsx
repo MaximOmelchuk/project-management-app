@@ -9,7 +9,7 @@ import {
   Button,
 } from "@mui/material";
 import { TransitionProps } from "@mui/material/transitions";
-
+import { useTranslation } from 'react-i18next';
 
 const Transition = React.forwardRef<
   unknown,
@@ -34,6 +34,8 @@ export default function ConfirmModal({
   confirmHandler: () => void;
   closeHandler: () => void;
 }) {
+  const { t } = useTranslation();
+  
   const onClickConfirm = () => {
     confirmHandler();
     closeHandler();
@@ -49,7 +51,7 @@ export default function ConfirmModal({
       onClose={closeHandler}
       aria-describedby="alert-dialog-slide-description"
     >
-      <DialogTitle>Attention</DialogTitle>
+      <DialogTitle>{t('confirmModalContent.title')}</DialogTitle>
       <DialogContent>
         <DialogContentText id="alert-dialog-slide-description">
           {content}
@@ -57,10 +59,10 @@ export default function ConfirmModal({
       </DialogContent>
       <DialogActions>
         <Button size="medium" variant="contained" onClick={onClickConfirm}>
-          OK
+          {t('confirmModalContent.ok')}
         </Button>
         <Button size="medium" variant="outlined" onClick={closeHandler}>
-          Cancel
+        {t('confirmModalContent.cancel')}
         </Button>
       </DialogActions>
     </Dialog>
