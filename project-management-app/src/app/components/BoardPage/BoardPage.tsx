@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { Button, Grid, Typography } from "@mui/material";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import {
@@ -8,7 +8,7 @@ import {
   useGetColumnListQuery,
 } from "../../services/service";
 import { parseBoardTitle } from "../../utils/utils";
-import { IInputModalProps } from "../../utils/interfaces";
+import { IColumnProps, IInputModalProps } from "../../utils/interfaces";
 import InputModal from "../InputModal/InputModal";
 import AddButton from "../AddButton/AddButton";
 import Column from "../Column/Column";
@@ -16,15 +16,23 @@ import Column from "../Column/Column";
 export default function BoardPage() {
   const BUTTON_CONTENT = "Back";
   const ADD_COLUMN_BUTTON_CONTENT = "Add column";
+
   const navigate = useNavigate();
   const [showTitle, setShowTitle] = useState(false);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [contentArr, setContentArr] = useState(["", ""]);
+  const [arrColumnsState, setArrColumnState] = useState<IColumnProps[]>([]);
   const params = useParams();
   const { data, isSuccess } = useGetBoardByIdQuery(params?.boardId || "");
   const { data: arrColumns, isSuccess: isSuccessColumns } =
     useGetColumnListQuery(params?.boardId || "");
   const [createTrigger, result] = useCreateColumnMutation();
+
+  useEffect(() => {
+    if (isSuccessColumns) {
+      setArrColumnState(arrColumns || []);
+    }
+  }, [isSuccessColumns]);
 
   const inputModalProps: IInputModalProps = {
     title: "Create new Column",
@@ -32,7 +40,7 @@ export default function BoardPage() {
     confirmHandler: (value) => {
       createTrigger({
         id: params.boardId || "",
-        body: { title: value.first, order: arrColumns?.length || 0 },
+        body: { title: value.first, order: arrColumnsState?.length || 0 },
       });
       setIsCreateModalOpen(false);
     },
@@ -79,7 +87,7 @@ export default function BoardPage() {
           </Typography>
         </Grid>
       )}
-      <Grid sx={{ width: "100%", overflowX: "scroll" }}>
+      <Grid sx={{ width: "100%", overflowX: "auto" }}>
         <Grid
           container
           sx={{
@@ -92,10 +100,9 @@ export default function BoardPage() {
             width: "fit-content",
           }}
         >
-          {isSuccessColumns &&
-            [...arrColumns]
-              .reverse()
-              .map((item) => <Column {...item} key={item._id} />)}
+          {[...arrColumnsState].reverse().map((item) => (
+            <Column {...item} key={item._id} setArrColumnState = {setArrColumnState} />
+          ))}
           <AddButton
             clickHandler={clickAddHandler}
             content={ADD_COLUMN_BUTTON_CONTENT}

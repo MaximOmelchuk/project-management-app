@@ -23,7 +23,10 @@ export default function Board({ title, _id: id, owner, users }: IBoardProps) {
     triggerDelete(id);
     setIsModalOpen(false);
   };
-  const deleteHandler = () => setIsModalOpen(true);
+  const deleteHandler = (e: React.MouseEvent<HTMLElement>) => {
+    e.stopPropagation();
+    setIsModalOpen(true);
+  };
 
   return (
     <>
