@@ -71,7 +71,6 @@ export const service = createApi({
           const userId = getUserId(token);
           window.localStorage.setItem("app_user_id", userId);
         } catch (err) {
-          console.log('error singIn')
           // redirect(err, dispatch);
         }
       },
