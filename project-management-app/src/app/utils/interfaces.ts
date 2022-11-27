@@ -1,3 +1,5 @@
+import { Dispatch, SetStateAction } from "react";
+
 export interface ISigninArg {
   login: string;
   password: string;
@@ -127,4 +129,5 @@ export interface IColumnProps {
   title: string;
   order: number;
   boardId: string;
+  setArrColumnState: Dispatch<SetStateAction<IColumnProps[]>>;
 }

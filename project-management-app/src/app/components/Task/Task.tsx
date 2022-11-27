@@ -1,5 +1,5 @@
-import { Button, Paper, Typography } from "@mui/material";
 import React, { useState } from "react";
+import { Button, Paper, Typography } from "@mui/material";
 import { IEditTaskModalProps, ITaskProps } from "../../utils/interfaces";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { useDeleteTaskMutation } from "../../services/service";

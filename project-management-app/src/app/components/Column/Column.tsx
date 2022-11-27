@@ -22,7 +22,7 @@ import ConfirmModal from "../ConfirmModal/ConfirmModal";
 import Task from "../Task/Task";
 import InputModal from "../InputModal/InputModal";
 
-export default function Column({ _id, title, order, boardId }: IColumnProps) {
+export default function Column({ _id, title, order, boardId, setArrColumnState }: IColumnProps) {
   const MODAL_CONTENT = "Are your sure you want to delete this column?";
   const ADD_TASK_CONTENT = "Add task";
   const [triggerUpdate] = useUpdateColumnMutation();
