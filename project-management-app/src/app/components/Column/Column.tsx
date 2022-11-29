@@ -11,6 +11,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import TaskAltIcon from "@mui/icons-material/TaskAlt";
 import AddIcon from "@mui/icons-material/Add";
+import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import {
   useDeleteColumnMutation,
   useUpdateColumnMutation,
@@ -21,8 +22,15 @@ import { IColumnProps, IInputModalProps } from "../../utils/interfaces";
 import ConfirmModal from "../ConfirmModal/ConfirmModal";
 import Task from "../Task/Task";
 import InputModal from "../InputModal/InputModal";
+import React from "react";
 
-export default function Column({ _id, title, order, boardId, setArrColumnState }: IColumnProps) {
+export default function Column({
+  _id,
+  title,
+  order,
+  boardId,
+  setArrColumnState,
+}: IColumnProps) {
   const MODAL_CONTENT = "Are your sure you want to delete this column?";
   const ADD_TASK_CONTENT = "Add task";
   const [triggerUpdate] = useUpdateColumnMutation();
@@ -198,7 +206,24 @@ export default function Column({ _id, title, order, boardId, setArrColumnState }
             </Grid>
           )}
           <Grid container sx={{ width: "100%", gap: 1 }}>
-            {isSuccess && tasksArr.map((item) => <Task {...item} />)}
+            {isSuccess &&
+              tasksArr.map((item, index) => (
+                <Draggable key={item._id} draggableId={item._id} index={index}>
+                  {(provided, snapshot) => {
+                    const ref = React.createRef();
+                    return (
+                      <div
+                        style={{ padding: "1rem" }}
+                        ref={provided.innerRef}
+                        {...provided.draggableProps}
+                        {...provided.dragHandleProps}
+                      >
+                        <Task {...item} />
+                      </div>
+                    );
+                  }}
+                </Draggable>
+              ))}
           </Grid>
           <Button
             startIcon={<AddIcon />}

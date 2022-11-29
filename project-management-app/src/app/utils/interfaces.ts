@@ -130,6 +130,7 @@ export interface IColumnProps {
   order: number;
   boardId: string;
   setArrColumnState: Dispatch<SetStateAction<IColumnProps[]>>;
+  ref: (element: HTMLElement | null) => any;
 }
 
 export interface ITaskData {

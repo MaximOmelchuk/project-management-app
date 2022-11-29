@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Button, Grid, Typography } from "@mui/material";
+import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import {
   useCreateColumnMutation,
@@ -64,8 +65,12 @@ export default function BoardPage() {
     navigate(-1);
   };
 
+  const onDragEnd = () => {
+    console.log("fire");
+  };
+
   return (
-    <>
+    <Grid p="2rem">
       {showTitle && (
         <Grid color="#fff" sx={{ maxWidth: "30rem", mb: 2 }}>
           <Grid container justifyContent="left" gap="1rem" sx={{ mb: 0.7 }}>
@@ -87,29 +92,42 @@ export default function BoardPage() {
           </Typography>
         </Grid>
       )}
-      <Grid sx={{ width: "100%", overflowX: "auto" }}>
-        <Grid
-          container
-          sx={{
-            mt: 2,
-            gap: 2,
-            flexDirection: "row",
-            flexWrap: "nowrap",
-            height: "50vh",
-            maxHeight: "70vh",
-            width: "fit-content",
-          }}
-        >
-          {[...arrColumnsState].reverse().map((item) => (
-            <Column {...item} key={item._id} setArrColumnState = {setArrColumnState} />
-          ))}
-          <AddButton
-            clickHandler={clickAddHandler}
-            content={ADD_COLUMN_BUTTON_CONTENT}
-          />
+      <DragDropContext onDragEnd={onDragEnd}>
+        <Grid sx={{ width: "100%", overflowX: "auto" }}>
+          <Grid
+            container
+            sx={{
+              mt: 2,
+              gap: 2,
+              flexDirection: "row",
+              flexWrap: "nowrap",
+              height: "50vh",
+              maxHeight: "70vh",
+              width: "fit-content",
+            }}
+          >
+            {[...arrColumnsState].reverse().map((item) => (
+              <Droppable droppableId={item._id} key={item._id}>
+                {(provided, snapshot) => (
+                  <div
+                    style={{ padding: "1rem" }}
+                    {...provided.droppableProps}
+                    ref={provided.innerRef}
+                    key={item._id}
+                  >
+                    <Column {...item} setArrColumnState={setArrColumnState} />
+                  </div>
+                )}
+              </Droppable>
+            ))}
+            <AddButton
+              clickHandler={clickAddHandler}
+              content={ADD_COLUMN_BUTTON_CONTENT}
+            />
+          </Grid>
+          {isCreateModalOpen && <InputModal {...inputModalProps} />}
         </Grid>
-        {isCreateModalOpen && <InputModal {...inputModalProps} />}
-      </Grid>
-    </>
+      </DragDropContext>
+    </Grid>
   );
 }
