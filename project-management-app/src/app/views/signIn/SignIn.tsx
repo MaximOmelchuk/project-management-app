@@ -1,6 +1,6 @@
 import { NavLink, useNavigate } from 'react-router-dom';
 
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, Container } from '@mui/material';
 
 import { AuthText } from '../../components/AuthForm/content';
 import { AuthForm } from '../../components/AuthForm/AuthForm';
@@ -8,6 +8,7 @@ import { useSingInMutation } from '../../services/service';
 import { setFormSignIn, selectStateApp, setMessageResponsive } from '../../store/reducers/commonSlice';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 
 interface IErrorResponse {
@@ -26,6 +27,7 @@ interface ISignInForm {
 }
 
 export const SignIn = (): JSX.Element => {
+  const { t } = useTranslation();
   const [user, setUser] = useState('')
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -46,39 +48,47 @@ export const SignIn = (): JSX.Element => {
     if (resultSingIn.isSuccess) {
       dispatch(setFormSignIn(defaultValue));
       dispatch(setMessageResponsive({ message: `Hello ${user}`, type: 'success' }));
-      navigate('/');
+      navigate('/mainPage');
     } else {
       if (resultSingIn.isError) {
-      const { data } = resultSingIn.error as IErrorResponse;
-      dispatch(setMessageResponsive({message: data.message, type: 'error' }))
+        const { data } = resultSingIn.error as IErrorResponse;
+        dispatch(setMessageResponsive({ message: data.message, type: 'error' }))
       }
     }
   }, [dispatch, navigate, resultSingIn.error, resultSingIn.isSuccess, user]);
 
-  const title = AuthText.en.title;
-  const subTitle = AuthText.en.subTitle;
-  const suggestion = AuthText.en.suggestion;
-  const suggestionButton = AuthText.en.suggestionButton;
+  const title = t('authorization.title');
+  const subTitle = t('authorization.subTitle');
+  const suggestion = t('authorization.suggestion');
+  const suggestionButton = t('authorization.suggestionButton');
 
   return (
-    <Box sx={{
-      maxWidth: "600px",
-      margin: "0 auto",
-      padding: "50px 10px",
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "center",
-      gap: "1.5rem"
-    }}>
-      <Typography variant="h4">{title}</Typography>
-      <Typography variant="body1">{subTitle}</Typography>
-      <AuthForm isAllValidate={false} serverRequest={login} setState={setFormSignIn} contentForm={AuthText} stateForm={formSignIn}></AuthForm>
-      <Box sx={{ display: "inline-flex", gap: "10px" }}>
-        <Typography variant="body1">{suggestion}</Typography>
-        <NavLink to='/sign-in'>
-          {suggestionButton}
-        </NavLink>
+    <Container>
+      <Box sx={{
+        maxWidth: "600px",
+        margin: "0 auto",
+        padding: "50px 10px",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        gap: "1.5rem",
+        color: '#fff',
+      }}>
+        <Typography variant="h4">{title}</Typography>
+        <Typography variant="body1">{subTitle}</Typography>
+        <AuthForm
+          isAllValidate={false}
+          serverRequest={login}
+          setState={setFormSignIn}
+          contentForm={"authorization"}
+          stateForm={formSignIn} />
+        <Box sx={{ display: "inline-flex", gap: "10px" }}>
+          <Typography variant="body1">{suggestion}</Typography>
+          <NavLink to='/sign-up'>
+            {suggestionButton}
+          </NavLink>
+        </Box>
       </Box>
-    </Box>
+    </Container>
   )
 }

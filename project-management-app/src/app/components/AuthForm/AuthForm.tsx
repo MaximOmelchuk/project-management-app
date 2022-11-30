@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import * as yup from "yup";
-import { useNavigate } from 'react-router';
 import { useForm, SubmitHandler } from "react-hook-form";
 
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -12,6 +11,8 @@ import { VALIDATORS } from '../../utils/validation';
 import styles from './Form.module.css';
 import { useAppDispatch } from "../../hooks";
 import { FormContext } from "../../store/reducers/commonSlice";
+import { useTranslation } from 'react-i18next';
+import { PayloadAction } from '@reduxjs/toolkit';
 
 
 interface ISignInForm {
@@ -23,48 +24,49 @@ interface ISignInForm {
 interface IFormProps {
   isAllValidate: boolean,
   serverRequest: (data: ISignInForm) => Promise<void>,
-  setState: (payload: FormContext) => any,
-  contentForm: any,
-  stateForm: any,
+  setState: (payload: FormContext) => PayloadAction<FormContext | null>,
+  contentForm: string,
+  stateForm: FormContext | null,
 }
 
 export const AuthForm = ({ isAllValidate, serverRequest, setState, contentForm, stateForm }: IFormProps): JSX.Element => {
   const dispatch = useAppDispatch();
+  const { t } = useTranslation();
   const validationSchema = yup.object(
     isAllValidate
       ? {
         password: yup
           .string()
-          .required(VALIDATORS.PASSWORD.required)
-          .min(VALIDATORS.PASSWORD.minLength.value, VALIDATORS.PASSWORD.minLength.message)
-          .max(VALIDATORS.PASSWORD.maxLength.value, VALIDATORS.PASSWORD.maxLength.message)
-          .matches(VALIDATORS.PASSWORD.pattern.value, VALIDATORS.PASSWORD.pattern.message),
+          .required(t('errorsForm.required') || '')
+          .min(VALIDATORS.PASSWORD.minLength.value, t('errorsForm.minLengthPassword') || '')
+          .max(VALIDATORS.PASSWORD.maxLength.value, t('errorsForm.maxLengthPassword') || '')
+          .matches(VALIDATORS.PASSWORD.pattern.value, t('errorsForm.patternPassword') || ''),
         login: yup
           .string()
-          .required(VALIDATORS.TEXT.required)
-          .min(VALIDATORS.TEXT.minLength.value, VALIDATORS.TEXT.minLength.message)
-          .max(VALIDATORS.TEXT.maxLength.value, VALIDATORS.TEXT.maxLength.message)
-          .matches(VALIDATORS.TEXT.pattern.value, VALIDATORS.TEXT.pattern.message),
+          .required(t('errorsForm.required') || '')
+          .min(VALIDATORS.TEXT.minLength.value, t('errorsForm.minLengthText') || '')
+          .max(VALIDATORS.TEXT.maxLength.value, t('errorsForm.maxLengthText') || '')
+          .matches(VALIDATORS.TEXT.pattern.value, t('errorsForm.patternText') || ''),
         name: yup
           .string()
-          .required(VALIDATORS.TEXT.required)
-          .min(VALIDATORS.TEXT.minLength.value, VALIDATORS.TEXT.minLength.message)
-          .max(VALIDATORS.TEXT.maxLength.value, VALIDATORS.TEXT.maxLength.message)
-          .matches(VALIDATORS.TEXT.pattern.value, VALIDATORS.TEXT.pattern.message),
+          .required(t('errorsForm.required') || '')
+          .min(VALIDATORS.TEXT.minLength.value, t('errorsForm.minLengthText') || '')
+          .max(VALIDATORS.TEXT.maxLength.value, t('errorsForm.maxLengthText') || '')
+          .matches(VALIDATORS.TEXT.pattern.value, t('errorsForm.patternText') || ''),
       }
       : {
         password: yup
           .string()
-          .required(VALIDATORS.PASSWORD.required)
-          .min(VALIDATORS.PASSWORD.minLength.value, VALIDATORS.PASSWORD.minLength.message)
-          .max(VALIDATORS.PASSWORD.maxLength.value, VALIDATORS.PASSWORD.maxLength.message)
-          .matches(VALIDATORS.PASSWORD.pattern.value, VALIDATORS.PASSWORD.pattern.message),
+          .required(t('errorsForm.required') || '')
+          .min(VALIDATORS.PASSWORD.minLength.value, t('errorsForm.minLengthPassword') || '')
+          .max(VALIDATORS.PASSWORD.maxLength.value, t('errorsForm.maxLengthPassword') || '')
+          .matches(VALIDATORS.PASSWORD.pattern.value, t('errorsForm.patternPassword') || ''),
         login: yup
           .string()
-          .required(VALIDATORS.TEXT.required)
-          .min(VALIDATORS.TEXT.minLength.value, VALIDATORS.TEXT.minLength.message)
-          .max(VALIDATORS.TEXT.maxLength.value, VALIDATORS.TEXT.maxLength.message)
-          .matches(VALIDATORS.TEXT.pattern.value, VALIDATORS.TEXT.pattern.message),
+          .required(t('errorsForm.required') || '')
+          .min(VALIDATORS.TEXT.minLength.value, t('errorsForm.minLengthText') || '')
+          .max(VALIDATORS.TEXT.maxLength.value, t('errorsForm.maxLengthText') || '')
+          .matches(VALIDATORS.TEXT.pattern.value, t('errorsForm.patternText') || ''),
       }
   );
 
@@ -96,13 +98,14 @@ export const AuthForm = ({ isAllValidate, serverRequest, setState, contentForm, 
     serverRequest(data);
   };
 
-  const placeholderName = contentForm.en?.placeholderName;
-  const labelName = contentForm.en?.labelName ;
-  const placeholderLogin = contentForm?.placeholderLogin;
-  const labelLogin = contentForm.en?.labelLogin;
-  const placeholderPassword = contentForm.en?.placeholderPassword;
-  const labelPassword = contentForm.en?.labelPassword;
-  const buttonContent = contentForm.en?.button;
+  
+  const placeholderName = t(`${contentForm}.placeholderName`);
+  const labelName = t(`${contentForm}.labelName`);
+  const placeholderLogin = t(`${contentForm}.placeholderLogin`);
+  const labelLogin = t(`${contentForm}.labelLogin`);
+  const placeholderPassword = t(`${contentForm}.placeholderPassword`);
+  const labelPassword = t(`${contentForm}.labelPassword`);
+  const buttonContent = t(`${contentForm}.button`);
 
   return (
     <form className={styles['wrapper-form']} onSubmit={handleSubmit(onSubmit)}>
@@ -134,7 +137,7 @@ export const AuthForm = ({ isAllValidate, serverRequest, setState, contentForm, 
           autoComplete="off"
           {...register("password")}
           error={!!errors.password?.message}
-          helperText={errors.password?.message}
+          helperText={<ErrorMessage errors={errors} name="password" />}
         />
         <Button variant="contained" type="submit" sx={{ marginTop: "1rem", padding: '10px' }}>
           {buttonContent}
