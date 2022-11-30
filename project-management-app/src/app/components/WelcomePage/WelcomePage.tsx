@@ -1,13 +1,13 @@
 import { Container, Grid, List, ListItem, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import PersonCard from '../PersonCard/PersonCard';
+import PersonCard, { PersonCardProps } from '../PersonCard/PersonCard';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 
 const WelcomePage = () => {
   const { t } = useTranslation();
-  const cards = t('welcome.personCards', { returnObjects: true }) as Array<{ title: string, content: string }>;
-  const advantagesList = t('welcome.advantagesList', { returnObjects: true }) as Array<string
-  >;
+  const cards = t('welcome.personCards', { returnObjects: true }) as Array<PersonCardProps>;
+  const advantagesList = t('welcome.advantagesList', { returnObjects: true }) as Array<string>;
+
   return (
     <Container>
       <Typography color='white' sx={{ padding: "1rem 0", fontWeight: 700, fontSize: { xs: '1.4rem', sm: '2rem' } }}>
@@ -46,7 +46,7 @@ const WelcomePage = () => {
       </Typography>
       <Grid container gap="2rem" justifyContent="space-evenly" paddingBottom="1rem">
         {cards.map(
-          (item: { title: string; content?: string }) => (
+          (item) => (
             <PersonCard {...item} />
           )
         )}

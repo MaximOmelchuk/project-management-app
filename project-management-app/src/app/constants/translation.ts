@@ -46,16 +46,19 @@ export const WelcomePageText = {
       {
         title: "Maksim",
         content: "Some example text for the first board",
+        link: "https://github.com/MaximOmelchuk",
         key: 1,
       },
       {
         title: "Anton",
         content: "Some example text for the first board",
+        link: "https://github.com/anton13602",
         key: 2,
       },
       {
         title: "Artem",
         content: "Some example text for the first board",
+        link: "https://github.com/gavrilenkoartem038",
         key: 3,
       },
     ],
@@ -76,16 +79,19 @@ export const WelcomePageText = {
       {
         title: "Максим",
         content: "Some example text for the first board",
+        link: "https://github.com/MaximOmelchuk",
         key: 1,
       },
       {
         title: "Антон",
         content: "Some example text for the first board",
+        link: "https://github.com/anton13602",
         key: 2,
       },
       {
         title: "Артем",
         content: "Some example text for the first board",
+        link: "https://github.com/gavrilenkoartem038",
         key: 3,
       },
     ],

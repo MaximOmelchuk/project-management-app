@@ -54,6 +54,19 @@ export const service = createApi({
       //   },
     }),
 
+    getBoardByIdsList: builder.query({
+      query: (params) => `/boardsSet?ids=${params}`,
+      providesTags: ["POST"],
+      keepUnusedDataFor: 0,
+      //   async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+      //     try {
+      //       const { data } = await queryFulfilled;
+      //     } catch (err) {
+      //   redirect(err, dispatch);
+      //     }
+      //   },
+    }),
+
     singIn: builder.mutation({
       query: (params) => ({
         url: `/auth/signin`,
@@ -374,6 +387,7 @@ export const service = createApi({
 export const {
   useLazyGetBoardsListQuery,
   useGetBoardsListQuery,
+  useGetBoardByIdsListQuery,
   useSingInMutation,
   useSingUpMutation,
   useEditUserMutation,

@@ -10,7 +10,6 @@ const SearchPage = () => {
   const searchString = useAppSelector((state) => state.common.searchString);
 
   const { data } = useGetTasksOnSearchQuery(searchString);
-  console.log(data);
 
   const { t } = useTranslation();
   return (

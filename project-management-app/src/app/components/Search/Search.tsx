@@ -19,7 +19,6 @@ const Search = () => {
     e.preventDefault();
     dispatch(changeSearchString(searchValue));
     localStorage.setItem('search', searchValue);
-    console.log('d')
   };
 
   return (
