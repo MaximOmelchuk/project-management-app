@@ -31,7 +31,7 @@ const SearchPage = () => {
         }}
       >
         {(data && data.length !== 0) ? data.map((task) => {
-          return <TaskCard title={task.title} description={task.description} key={task._id}></TaskCard>
+          return <TaskCard {...task}></TaskCard>
         })
           :
           <Typography color='white' paddingBottom="1rem" variant='h6'>{t('search.searchError')}</Typography>

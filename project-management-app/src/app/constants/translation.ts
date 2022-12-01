@@ -104,11 +104,13 @@ export const searchPageText = {
     label: 'Search tasks by title or description',
     tasksHeading: 'Task search results',
     searchError: 'Tasks not found. Try another request',
+    deleteTitle: 'Are your sure you want to delete this task?'
   },
   ru: {
     title: 'Поиск задач',
     label: 'Поиск задач по названию или описанию',
     tasksHeading: 'Результаты поиска задач',
     searchError: 'Задвчи не найдены. Попробуйте другой запрос',
+    deleteTitle: 'Вы уверены что хотите удалить эту задачу?'
   }
 }

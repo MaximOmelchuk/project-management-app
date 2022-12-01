@@ -12,7 +12,6 @@ import {
   IGetUserData,
   ISigninArg,
   ISigninResult,
-  ITaskData,
   ITaskProps,
   IUpdateBoard,
   IUpdateColumn,
@@ -393,7 +392,7 @@ export const service = createApi({
       //   },
     }),
 
-    getTasksOnSearch: builder.query<ITaskData[], string>({
+    getTasksOnSearch: builder.query<ITaskProps[], string>({
       query: (params) => `/tasksSet?search=${params}`,
       providesTags: ["POST"],
       keepUnusedDataFor: 0,
