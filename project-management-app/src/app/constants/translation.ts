@@ -46,16 +46,19 @@ export const WelcomePageText = {
       {
         title: "Maksim",
         content: "Some example text for the first board",
+        link: "https://github.com/MaximOmelchuk",
         key: 1,
       },
       {
         title: "Anton",
         content: "Some example text for the first board",
+        link: "https://github.com/anton13602",
         key: 2,
       },
       {
         title: "Artem",
         content: "Some example text for the first board",
+        link: "https://github.com/gavrilenkoartem038",
         key: 3,
       },
     ],
@@ -76,16 +79,19 @@ export const WelcomePageText = {
       {
         title: "Максим",
         content: "Some example text for the first board",
+        link: "https://github.com/MaximOmelchuk",
         key: 1,
       },
       {
         title: "Антон",
         content: "Some example text for the first board",
+        link: "https://github.com/anton13602",
         key: 2,
       },
       {
         title: "Артем",
         content: "Some example text for the first board",
+        link: "https://github.com/gavrilenkoartem038",
         key: 3,
       },
     ],
@@ -98,11 +104,13 @@ export const searchPageText = {
     label: 'Search tasks by title or description',
     tasksHeading: 'Task search results',
     searchError: 'Tasks not found. Try another request',
+    deleteTitle: 'Are your sure you want to delete this task?'
   },
   ru: {
     title: 'Поиск задач',
     label: 'Поиск задач по названию или описанию',
     tasksHeading: 'Результаты поиска задач',
-    searchError: 'Задвчи не найдены. Попробуйте другой запрос',
+    searchError: 'Задачи не найдены. Попробуйте другой запрос',
+    deleteTitle: 'Вы уверены что хотите удалить эту задачу?'
   }
 }

@@ -2,17 +2,17 @@ import { Link, Paper, SvgIcon, Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { ReactComponent as PersonIcon } from '../../assets/images/Person.svg'
 
-export default function PersonCard({
-  title,
-  content,
-}: {
-  title: string;
-  content?: string;
-}) {
+export interface PersonCardProps {
+  title: string,
+  content?: string,
+  link: string,
+}
+
+export default function PersonCard({title, content, link}: PersonCardProps) {
   const { t } = useTranslation();
 
   return (
-    <Link href="fds.com" target="_blank" sx={{ textDecoration: "none" }}>
+    <Link href={link} target="_blank" sx={{ textDecoration: "none" }}>
       <Paper
         sx={{
           width: "300px",

@@ -92,7 +92,7 @@ export const {
   setFormSignUp,
   setFormEditUser,
   setMessageResponsive,
-  changeSearchString
+  changeSearchString,
 } = appCommon.actions;
 
 export const selectStateApp = (state: RootState) => state.common;
