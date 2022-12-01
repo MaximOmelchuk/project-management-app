@@ -53,11 +53,14 @@ export default function TaskCard({
   return (
     <>
       <Paper
+        onClick={openEditModalHandler}
         sx={{
           width: "270px",
           minHeight: "200px",
           boxSizing: "border-box",
+          p: "1rem",
           background: "#5385b5",
+          color: "#fff",
           position: "relative",
           "&:hover": {
             cursor: "pointer",
@@ -66,30 +69,17 @@ export default function TaskCard({
         }}
         elevation={4}
       >
-        <Button
-          sx={{
-            width: "100%",
-            height: "100%",
-            justifyContent: "space-between",
-            alignItems: "flex-start",
-            p: "1rem",
-            textTransform: "none",
-            color: "#fff",
-          }}
-          onClick={openEditModalHandler}
-          disableElevation={true}
-        >
           <Grid container alignItems="center">
 
             <Grid container direction="row" alignItems="center" justifyContent="space-between">
               <Typography variant="h6" sx={{ maxHeight: "10rem", maxWidth: "75%", wordWrap: "break-word" }}>
                 {title}
               </Typography>
-              <IconButton>
-                <DeleteIcon fontSize="large" htmlColor="#fff" onClick={(e) => {
+              <IconButton onClick={(e) => {
                   e.stopPropagation();
                   deleteHandler();
-                }} />
+                }}>
+                <DeleteIcon fontSize="large" htmlColor="#fff" />
               </IconButton>
             </Grid>
             <Paper variant="outlined" sx={{ width: "100%", p: "0.5rem" }}>
@@ -100,7 +90,6 @@ export default function TaskCard({
               </Typography>
             </Paper>
           </Grid>
-        </Button>
       </Paper>
       {isConfirmModalOpen && (
         <ConfirmModal
