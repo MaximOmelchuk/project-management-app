@@ -32,31 +32,18 @@ export default function Column({
   title,
   order,
   boardId,
-  setTasksHandler,
+  tasks,
 }: IColumnProps) {
   const MODAL_CONTENT = "Are your sure you want to delete this column?";
   const ADD_TASK_CONTENT = "Add task";
   const [triggerUpdate] = useUpdateColumnMutation();
   const [triggerDelete] = useDeleteColumnMutation();
   const [triggerCreate] = useCreateTaskMutation();
-  const { data: tasksArr, isSuccess } = useGetTaskListQuery({
-    boardId,
-    columnId: _id,
-  });
-  const [tasksArrSorted, setTasksArrSorted] = useState<ITaskProps[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isTitleOpen, setIsTitleOPen] = useState(false);
   const [isAddTaskModalOpen, setIsAddTaskModalOpen] = useState(false);
   const [titleInput, setTitleInput] = useState(title);
   const [backUpInput, setBackUpInput] = useState(title);
-
-  useEffect(() => {
-    if (isSuccess) {
-      const sorted = [...tasksArr].sort((a, b) => a.order - b.order);
-      setTasksHandler(sorted);
-      setTasksArrSorted(sorted);
-    }
-  }, [isSuccess, tasksArr]);
 
   const changeTitleHandler: ChangeEventHandler<HTMLInputElement> = (e) => {
     setTitleInput(e?.target?.value || "");
@@ -106,7 +93,7 @@ export default function Column({
         body: {
           title: value.first,
           description: value.second || "",
-          order: tasksArr?.length || 0,
+          order: tasks?.length || 0,
           userId,
           users: [userId],
         },
@@ -218,7 +205,7 @@ export default function Column({
             </Grid>
           )}
           <Grid container flexDirection="column" sx={{ width: "100%", gap: 1 }}>
-            {tasksArrSorted.map((item, index) => {
+            {tasks.map((item, index) => {
               return (
                 <Draggable key={item._id} draggableId={item._id} index={index}>
                   {(provided, snapshot) => {

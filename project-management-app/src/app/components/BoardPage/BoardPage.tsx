@@ -15,7 +15,11 @@ import {
   useTasksSetMutation,
   useGetAllTasksSetByIdQuery,
 } from "../../services/service";
-import { parseBoardTitle } from "../../utils/utils";
+import {
+  parseBoardTitle,
+  reduceTaskData,
+  replaceOrderWithIndexInArray,
+} from "../../utils/utils";
 import {
   IColumnProps,
   IInputModalProps,
@@ -31,12 +35,11 @@ export default function BoardPage() {
   const ADD_COLUMN_BUTTON_CONTENT = "Add column";
 
   const navigate = useNavigate();
+  const params = useParams();
   const [showTitle, setShowTitle] = useState(false);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [contentArr, setContentArr] = useState(["", ""]);
-  // const [arrColumnsState, setArrColumnState] = useState<IColumnProps[]>([]);
-  const [tasksState, setTasksState] = useState<ITasksState>({});
-  const params = useParams();
+
   const { data, isSuccess } = useGetBoardByIdQuery(params?.boardId || "");
   const { data: arrColumns, isSuccess: isSuccessColumns } =
     useGetColumnListQuery(params?.boardId || "");
@@ -44,23 +47,19 @@ export default function BoardPage() {
   const [tasksSetTrigger] = useTasksSetMutation();
   const { data: allTasks, isSuccess: isSuccessAllTasks } =
     useGetAllTasksSetByIdQuery(params?.boardId || "");
-  const [unorderedTasksState, setUnorderedTasksState] = useState<ITaskProps[]>(
-    []
-  );
-
-  // useEffect(() => {
-  //   if (isSuccessColumns) {
-  //     setArrColumnState(arrColumns || []);
-  //   }
-  // }, [isSuccessColumns]);
+  const [commonTaskColumn, setCommonTaskColumn] = useState<IColumnProps[]>([]);
 
   useEffect(() => {
-    if (isSuccessAllTasks) {
-      setUnorderedTasksState(allTasks);
-      const arrColumnId = [...new Set(allTasks.map((item) => item.columnId))] // .map(item => allTasks.filter(taskItem => taskItem.columnId === item))
-      setTasksState();
+    if (isSuccessAllTasks && isSuccessColumns) {
+      const columnsCopy = [...arrColumns].map((column) => {
+        const tasksForColumn = allTasks
+          .filter((task: ITaskProps) => task.columnId === column._id)
+          .sort((a, b) => a.order - b.order);
+        return { ...column, tasks: tasksForColumn };
+      });
+      setCommonTaskColumn(columnsCopy);
     }
-  }, [isSuccessAllTasks, allTasks]);
+  }, [isSuccessAllTasks, allTasks, isSuccessColumns, arrColumns]);
 
   const inputModalProps: IInputModalProps = {
     title: "Create new Column",
@@ -68,7 +67,7 @@ export default function BoardPage() {
     confirmHandler: (value) => {
       createTrigger({
         id: params.boardId || "",
-        body: { title: value.first, order: arrColumnsState?.length || 0 },
+        body: { title: value.first, order: arrColumns?.length || 0 },
       });
       setIsCreateModalOpen(false);
     },
@@ -92,18 +91,6 @@ export default function BoardPage() {
     navigate(-1);
   };
 
-  const setTasksHandler = (arr: ITaskProps[]) => {
-    setTasksState((prev) => {
-      if (!arr.length) {
-        return prev;
-      }
-      const copy = { ...prev };
-      const columnId = arr[0].columnId;
-      copy[columnId] = [...arr];
-      return copy;
-    });
-  };
-
   const onDragEnd = (result: DropResult) => {
     console.log(result);
     if (!result.destination) return;
@@ -112,54 +99,51 @@ export default function BoardPage() {
     console.log(destination, "------destination");
 
     if (source.droppableId !== destination.droppableId) {
-      //   const sourceColumn = columns[source.droppableId];
-      //   const destColumn = columns[destination.droppableId];
-      //   const sourceItems = [...sourceColumn.items];
-      //   const destItems = [...destColumn.items];
-      //   const [removed] = sourceItems.splice(source.index, 1);
-      //   destItems.splice(destination.index, 0, removed);
-      //   setColumns({
-      //     ...columns,
-      //     [source.droppableId]: {
-      //       ...sourceColumn,
-      //       items: sourceItems,
-      //     },
-      //     [destination.droppableId]: {
-      //       ...destColumn,
-      //       items: destItems,
-      //     },
-      //   });
+      const sourceColumn = commonTaskColumn?.find(
+        (column) => column._id === source.droppableId
+      );
+      const destColumn = commonTaskColumn?.find(
+        (column) => column._id === destination.droppableId
+      );
+      const sourceItems = [...(sourceColumn?.tasks || [])];
+      const destItems = [...(destColumn?.tasks || [])];
+      const [removed] = sourceItems.splice(source.index, 1);
+      destItems.splice(destination.index, 0, removed);
+      const replacedOrdersArrSource = replaceOrderWithIndexInArray(sourceItems);
+      const replacedOrdersArrDest = replaceOrderWithIndexInArray(destItems);
+      const preparedArrSource = reduceTaskData(replacedOrdersArrSource);
+      const preparedArrDest = reduceTaskData(
+        replacedOrdersArrDest,
+        destColumn?._id
+      );
+      setCommonTaskColumn((prevState) =>
+        prevState.map((column) => {
+          return column._id === source.droppableId
+            ? { ...column, tasks: replacedOrdersArrSource }
+            : column._id === destination.droppableId
+            ? { ...column, tasks: replacedOrdersArrDest }
+            : column;
+        })
+      );
+      tasksSetTrigger([...preparedArrSource, ...preparedArrDest]);
     } else {
-      const prevTasksArr = tasksState[source.droppableId];
+      const sourceColumn = commonTaskColumn?.find(
+        (column) => column._id === source.droppableId
+      );
+      const prevTasksArr = sourceColumn?.tasks || [];
       const copiedTasksArr = [...prevTasksArr];
       const [removed] = copiedTasksArr.splice(source.index, 1);
       copiedTasksArr.splice(destination.index, 0, removed);
-      const preparedArr = copiedTasksArr.map(({ _id, columnId }, index) => ({
-        order: index,
-        _id,
-        columnId,
-      }));
-      // const startIndex = source.index;
-      // const endIndex = destination.index;
-      // const movedTask = prevTasksArr.find(item => item.order === startIndex);
-      // const refactoredArr = prevTasksArr.map(item => {
-      //   if (item.order <= endIndex) {
-      //     item.
-      //   }
-      // })
-
+      const replacedOrdersArr = replaceOrderWithIndexInArray(copiedTasksArr);
+      const preparedArr = reduceTaskData(replacedOrdersArr);
+      setCommonTaskColumn((prevState) =>
+        prevState.map((column) => {
+          return column._id === source.droppableId
+            ? { ...column, tasks: replacedOrdersArr }
+            : column;
+        })
+      );
       tasksSetTrigger(preparedArr);
-      //   const column = columns[source.droppableId];
-      //   const copiedItems = [...column.items];
-      //   const [removed] = copiedItems.splice(source.index, 1);
-      //   copiedItems.splice(destination.index, 0, removed);
-      //   setColumns({
-      //     ...columns,
-      //     [source.droppableId]: {
-      //       ...column,
-      //       items: copiedItems,
-      //     },
-      //   });
     }
   };
 
@@ -200,12 +184,12 @@ export default function BoardPage() {
               width: "fit-content",
             }}
           >
-            {[...arrColumnsState].reverse().map((item) => (
+            {[...commonTaskColumn].reverse().map((item) => (
               <Droppable droppableId={item._id} key={item._id}>
                 {(provided, snapshot) => {
                   return (
                     <div {...provided.droppableProps} ref={provided.innerRef}>
-                      <Column {...item} setTasksHandler={setTasksHandler} />
+                      <Column {...item} />
                       {provided.placeholder}
                     </div>
                   );

@@ -133,7 +133,7 @@ export interface IColumnProps {
   title: string;
   order: number;
   boardId: string;
-  setTasksHandler: (arr: ITaskProps[]) => void;
+  tasks: ITaskProps[];
 }
 
 export interface ITaskData {

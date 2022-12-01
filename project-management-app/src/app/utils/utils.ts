@@ -2,6 +2,8 @@
 // import { setToken } from "../store/reducers/commonSlice";
 // import { getExpirationDate, isExpired } from "./tokenUtils";
 
+import { ITaskProps } from "./interfaces";
+
 export function parseBoardTitle(title: string) {
   let res: string[];
   try {
@@ -10,6 +12,21 @@ export function parseBoardTitle(title: string) {
     res = ["", ""];
   }
   return res;
+}
+
+export function replaceOrderWithIndexInArray(arr: ITaskProps[]) {
+  return arr.map((task, index) => ({
+    ...task,
+    order: index,
+  }));
+}
+
+export function reduceTaskData(arr: ITaskProps[], destColumnId?: string) {
+  return arr.map(({ _id, columnId, order }) => ({
+    order,
+    _id,
+    columnId: destColumnId || columnId,
+  }));
 }
 
 // export async function asyncParseBoardTitle(title: Promise<string>) {

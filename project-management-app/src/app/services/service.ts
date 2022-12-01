@@ -178,7 +178,7 @@ export const service = createApi({
       },
     }),
 
-    deleteUser: builder.mutation({
+    deleteUser: builder.mutation({ 
       query: (params) => ({
         url: `users/${params.id}`,
         method: "DELETE",
@@ -410,7 +410,7 @@ export const service = createApi({
         method: "PATCH",
         body: params,
       }),
-      invalidatesTags: ["POST"],
+      // invalidatesTags: ["POST"],
       //   async onQueryStarted(arg, { dispatch, queryFulfilled }) {
       //     try {
       //       const {
@@ -424,7 +424,7 @@ export const service = createApi({
     }),
 
     getAllTasksSetById: builder.query<ITaskProps[], string>({
-      query: (params) => `/tasksSet?userId=${params}`,
+      query: (params) => `/tasksSet/${params}`,
       providesTags: ["POST"],
       keepUnusedDataFor: 0,
       //   async onQueryStarted(arg, { dispatch, queryFulfilled }) {
