@@ -74,6 +74,10 @@ export interface ITaskProps {
   users: string[];
 }
 
+export interface ITasksState {
+  [key: string]: ITaskProps[];
+}
+
 export interface IUpdateTask extends IDeleteTask {
   body: {
     title: string;
@@ -129,8 +133,7 @@ export interface IColumnProps {
   title: string;
   order: number;
   boardId: string;
-  setArrColumnState: Dispatch<SetStateAction<IColumnProps[]>>;
-  ref: (element: HTMLElement | null) => any;
+  setTasksHandler: (arr: ITaskProps[]) => void;
 }
 
 export interface ITaskData {

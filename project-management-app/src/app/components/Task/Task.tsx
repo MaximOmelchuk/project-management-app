@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, Paper, Typography } from "@mui/material";
+import { Button, Paper, Typography, Grid } from "@mui/material";
 import { IEditTaskModalProps, ITaskProps } from "../../utils/interfaces";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { useDeleteTaskMutation } from "../../services/service";
@@ -21,7 +21,11 @@ export default function Task({
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
   const [triggerDelete] = useDeleteTaskMutation();
-  const deleteHandler = () => setIsConfirmModalOpen(true);
+
+  const deleteHandler = (e: React.MouseEvent<SVGSVGElement, MouseEvent>) => {
+    e.stopPropagation();
+    setIsConfirmModalOpen(true);
+  };
 
   const confirmModalHandler = () => {
     triggerDelete({ boardId, columnId, taskId: _id });
@@ -31,7 +35,10 @@ export default function Task({
     setIsConfirmModalOpen(false);
   };
 
-  const openEditModalHandler = () => {
+  const openEditModalHandler = (
+    e: React.MouseEvent<HTMLDivElement, MouseEvent>
+  ) => {
+    e.stopPropagation();
     setIsUpdateModalOpen(true);
   };
 
@@ -51,29 +58,33 @@ export default function Task({
 
   return (
     <>
-      <Paper variant="outlined" sx={{ width: "100%" }}>
-        <Button
+      <Paper variant="outlined" sx={{ width: "100%", transform: "none" }}>
+        <Grid
           sx={{
             width: "100%",
             justifyContent: "space-between",
             textTransform: "none",
+            padding: '.5rem 1rem',
+            zIndex: 2,
+            "&:hover": { cursor: "pointer" },
           }}
           onClick={openEditModalHandler}
-          disableElevation={true}
+          container
+
+          // disableElevation={true}
         >
           <Typography
             align="left"
-            sx={{ maxHeight: "10rem", maxWidth: "80%", wordWrap: "break-word" }}
+            sx={{
+              maxHeight: "10rem",
+              maxWidth: "80%",
+              wordWrap: "break-word",
+            }}
           >
             {title}
           </Typography>
-          <DeleteOutlineIcon
-            onClick={(e) => {
-              e.stopPropagation();
-              deleteHandler();
-            }}
-          />
-        </Button>
+          <DeleteOutlineIcon onClick={deleteHandler} />
+        </Grid>
       </Paper>
       {isConfirmModalOpen && (
         <ConfirmModal

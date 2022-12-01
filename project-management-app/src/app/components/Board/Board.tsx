@@ -42,7 +42,7 @@ export default function Board({ title, _id: id, owner, users }: IBoardProps) {
           position: "relative",
           "&:hover": {
             cursor: "pointer",
-            transform: "scale(1.01)",
+            // transform: "scale(1.01)",
           },
         }}
         elevation={4}
