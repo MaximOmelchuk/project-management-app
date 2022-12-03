@@ -410,7 +410,7 @@ export const service = createApi({
         method: "PATCH",
         body: params,
       }),
-      // invalidatesTags: ["POST"],
+      invalidatesTags: ["POST"],
       //   async onQueryStarted(arg, { dispatch, queryFulfilled }) {
       //     try {
       //       const {
