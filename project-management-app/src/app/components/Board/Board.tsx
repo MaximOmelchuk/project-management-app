@@ -1,19 +1,16 @@
 import { useState } from "react";
-import { NavLink, useLocation, useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { Paper, Typography, IconButton } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
-import {
-  useDeleteBoardMutation,
-  useUpdateBoardMutation,
-} from "../../services/service";
-import { IBoardData, IBoardProps } from "../../utils/interfaces";
+import { useDeleteBoardMutation } from "../../services/service";
+import { IBoardProps } from "../../utils/interfaces";
 import ConfirmModal from "../ConfirmModal/ConfirmModal";
 import { parseBoardTitle } from "../../utils/utils";
 
-export default function Board({ title, _id: id, owner, users }: IBoardProps) {
+export default function Board({ title, _id: id }: IBoardProps) {
   const navigate = useNavigate();
-  const params = useParams();
-  const MODAL_CONTENT = "Are your sure you want to delete this board?";
+  const { t } = useTranslation();
   const [boardTitle, boardDescription] = parseBoardTitle(title);
   const [triggerDelete] = useDeleteBoardMutation();
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -28,23 +25,26 @@ export default function Board({ title, _id: id, owner, users }: IBoardProps) {
     setIsModalOpen(true);
   };
 
+  const clickBoardHandler = () => navigate(`/boards/${id}`);
+
+  const containerStyle = {
+    width: "320px",
+    minHeight: "200px",
+    p: "1rem",
+    boxSizing: "border-box",
+    background: "#5385b5",
+    color: "#fff",
+    position: "relative",
+    "&:hover": {
+      cursor: "pointer",
+    },
+  }
+
   return (
     <>
       <Paper
-        onClick={() => navigate(`/boards/${id}`)}
-        sx={{
-          width: "350px",
-          minHeight: "200px",
-          p: "1rem 1rem",
-          boxSizing: "border-box",
-          background: "#5385b5",
-          color: "#fff",
-          position: "relative",
-          "&:hover": {
-            cursor: "pointer",
-            transform: "scale(1.01)",
-          },
-        }}
+        onClick={clickBoardHandler}
+        sx={containerStyle}
         elevation={4}
       >
         <Typography align="left" variant="h6" sx={{ wordBreak: "break-word" }}>
@@ -68,7 +68,7 @@ export default function Board({ title, _id: id, owner, users }: IBoardProps) {
       </Paper>
       {isModalOpen && (
         <ConfirmModal
-          content={MODAL_CONTENT}
+          content={t("boardContent.modalContent")}
           confirmHandler={confirmModalHandler}
           closeHandler={closeModalHandler}
         />

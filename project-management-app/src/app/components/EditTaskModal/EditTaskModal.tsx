@@ -4,8 +4,6 @@ import {
   Slide,
   DialogTitle,
   DialogContent,
-  DialogContentText,
-  DialogActions,
   Button,
   TextField,
   Grid,
@@ -16,6 +14,7 @@ import {
 import { TransitionProps } from "@mui/material/transitions";
 import { useFormik } from "formik";
 import * as yup from "yup";
+import { useTranslation } from "react-i18next";
 import { IEditTaskModalProps, IInputModalProps } from "../../utils/interfaces";
 import {
   useGetAllUsersQuery,
@@ -49,24 +48,18 @@ export default function EditTaskModal({
   boardId,
   taskId,
 }: IEditTaskModalProps) {
+  const { t } = useTranslation();
   const { data: usersDropList, isSuccess: isSuccessGetAllUsers } =
     useGetAllUsersQuery(null);
   const { data: userData, isSuccess: isSuccessGetOneUser } =
     useGetUserByIdQuery(userId);
   const [triggerUpdate] = useUpdateTaskMutation();
 
-  const TITLE_FORM = "Update task";
-  const TASK_TITLE_FORM = "Task title";
-  const TASK_DESCRIPTION_FORM = "Task description";
-  const TASK_USERID_FORM = "Task owner";
-  const TASK_USERS_FORM = "Task users";
-
   const validationSchema = yup.object({
-    title: yup.string().required("Required field"),
-    description: yup.string().required("Required field"),
-    userId: yup.object().required("Required field"),
-    users: yup.array().min(1, "Empty field"),
-    // users: yup.array().test("Required field", "Required field", (value) => Boolean(value?.length)),
+    title: yup.string().required(t("editTaskContent.error") || ""),
+    description: yup.string().required(t("editTaskContent.error") || ""),
+    userId: yup.object().required(t("editTaskContent.error") || ""),
+    users: yup.array().min(1, t("editTaskContent.error") || ""),
   });
 
   const formik = useFormik({
@@ -116,7 +109,7 @@ export default function EditTaskModal({
       aria-describedby="alert-dialog-slide-description"
     >
       <DialogTitle variant="h5" align="center" sx={{ pb: 0, mt: 1 }}>
-        {TITLE_FORM}
+        {t("editTaskContent.formTitle")}
       </DialogTitle>
       <DialogContent>
         <Box
@@ -141,7 +134,7 @@ export default function EditTaskModal({
             name="title"
             onChange={formik.handleChange}
             inputProps={{ maxLength: 50 }}
-            label={TASK_TITLE_FORM}
+            label={t("editTaskContent.createContentFirst")}
             value={formik.values.title}
             error={formik.touched.title && Boolean(formik.errors.title)}
             helperText={formik.touched.title && formik.errors.title}
@@ -155,7 +148,7 @@ export default function EditTaskModal({
             id="description"
             name="description"
             onChange={formik.handleChange}
-            label={TASK_DESCRIPTION_FORM}
+            label={t("editTaskContent.createContentSecond")}
             value={formik.values.description}
             error={
               formik.touched.description && Boolean(formik.errors.description)
@@ -165,7 +158,6 @@ export default function EditTaskModal({
 
           <Autocomplete
             disablePortal
-            // disableClearable
             fullWidth
             value={formik.values.userId}
             id="userId"
@@ -182,10 +174,11 @@ export default function EditTaskModal({
                 name="userId"
                 id="userId"
                 helperText={
-                    formik.touched.userId &&
-                    Boolean(formik.errors.userId) &&
-                    "Required field"}
-                label={TASK_USERID_FORM}
+                  formik.touched.userId &&
+                  Boolean(formik.errors.userId) &&
+                  "Required field"
+                }
+                label={t("editTaskContent.owner")}
               />
             )}
           />
@@ -207,16 +200,15 @@ export default function EditTaskModal({
             renderInput={(params: JSX.IntrinsicAttributes & TextFieldProps) => (
               <TextField
                 {...params}
-                // value={formik.values.users}
                 error={formik.touched.users && Boolean(formik.errors.users)}
                 helperText={
                   formik.touched.users &&
                   Boolean(formik.errors.users) &&
-                  "Required field"
+                  t("editTaskContent.error")
                 }
                 name="users"
                 id="users"
-                label={TASK_USERS_FORM}
+                label={t("editTaskContent.users")}
               />
             )}
           />
@@ -228,7 +220,7 @@ export default function EditTaskModal({
               variant="contained"
               sx={{ width: "48%" }}
             >
-              SAVE
+              {t("editTaskContent.save")}
             </Button>
             <Button
               size="medium"
@@ -236,7 +228,7 @@ export default function EditTaskModal({
               onClick={closeHandler}
               sx={{ width: "48%" }}
             >
-              Cancel
+              {t("editTaskContent.cancel")}
             </Button>
           </Grid>
         </Box>

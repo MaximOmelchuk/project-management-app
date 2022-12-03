@@ -36,26 +36,26 @@ export const service = createApi({
       query: () => `/boards`,
       providesTags: ["POST"],
       keepUnusedDataFor: 0,
-    //   async onQueryStarted(arg, { dispatch, queryFulfilled }) {
-    //     try {
-    //       const { data } = await queryFulfilled;
-    //     } catch (err) {
-          // redirect(err, dispatch);
-    //     }
-    //   },
+      //   async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+      //     try {
+      //       const { data } = await queryFulfilled;
+      //     } catch (err) {
+      // redirect(err, dispatch);
+      //     }
+      //   },
     }),
 
     getBoardById: builder.query<IBoardData, string>({
       query: (params) => `/boards/${params}`,
       providesTags: ["POST"],
       keepUnusedDataFor: 0,
-      //   async onQueryStarted(arg, { dispatch, queryFulfilled }) {
-      //     try {
-      //       const { data } = await queryFulfilled;
-      //     } catch (err) {
-      //   redirect(err, dispatch);
-      //     }
-      //   },
+        // async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+        //   try {
+        //     const { data } = await queryFulfilled;
+        //   } catch (err) {
+        // redirect(err, dispatch);
+        //   }
+        // },
     }),
 
     getAllUsers: builder.query<IGetUserData[], null>({
@@ -156,13 +156,11 @@ export const service = createApi({
       invalidatesTags: ["POST"],
       async onQueryStarted(arg, { dispatch, queryFulfilled }) {
         try {
-
         } catch (err) {
           // redirect(err, dispatch);
         }
       },
     }),
-
 
     getUser: builder.query({
       query: (id) => ({
@@ -179,7 +177,7 @@ export const service = createApi({
       },
     }),
 
-    deleteUser: builder.mutation({
+    deleteUser: builder.mutation({ 
       query: (params) => ({
         url: `users/${params.id}`,
         method: "DELETE",
@@ -345,13 +343,13 @@ export const service = createApi({
         `/boards/${params.boardId}/columns/${params.columnId}/tasks`,
       providesTags: ["POST"],
       keepUnusedDataFor: 0,
-      //   async onQueryStarted(arg, { dispatch, queryFulfilled }) {
-      //     try {
-      //       const { data } = await queryFulfilled;
-      //     } catch (err) {
-      //   redirect(err, dispatch);
-      //     }
-      //   },
+      // async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+      //   try {
+      //     const { data } = await queryFulfilled;
+      //   } catch (err) {
+      // redirect(err, dispatch);
+      //   }
+      // },
     }),
 
     createColumn: builder.mutation<IColumnProps, ICreateColumn>({
@@ -401,6 +399,41 @@ export const service = createApi({
       //       const { data } = await queryFulfilled;
       //     } catch (err) {
       //   redirect(err, dispatch);
+      //     }
+      //   },
+    }),
+
+    tasksSet: builder.mutation({
+      query: (params) => ({
+        url: `/tasksSet/`,
+        method: "PATCH",
+        body: params,
+      }),
+      invalidatesTags: ["POST"],
+      //   async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+      //     try {
+      //       const {
+      //         data: { token },
+      //       } = await queryFulfilled;
+      //       window.localStorage.setItem("app_access_token", token);
+      //     } catch (err) {
+      // redirect(err, dispatch);
+      //     }
+      //   },
+    }),
+
+    getAllTasksSetById: builder.query<ITaskProps[], string>({
+      query: (params) => `/tasksSet/${params}`,
+      providesTags: ["POST"],
+      keepUnusedDataFor: 0,
+      //   async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+      //     try {
+      //       const {
+      //         data: { token },
+      //       } = await queryFulfilled;
+      //       window.localStorage.setItem("app_access_token", token);
+      //     } catch (err) {
+      // redirect(err, dispatch);
       //     }
       //   },
     }),
@@ -523,6 +556,8 @@ export const {
   useGetUserByIdQuery,
   useUpdateTaskMutation,
   useGetTasksOnSearchQuery,
+  useTasksSetMutation,
+  useGetAllTasksSetByIdQuery,
   //   useUpdateHostMutation,
   //   useGetHostByIdQuery,
   //   useGetHostStatusesQuery,
