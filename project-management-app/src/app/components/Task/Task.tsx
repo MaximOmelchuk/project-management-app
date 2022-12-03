@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import { Button, Paper, Typography, Grid } from "@mui/material";
-import { IEditTaskModalProps, ITaskProps } from "../../utils/interfaces";
+import {  Paper, Typography, Grid } from "@mui/material";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+import { useTranslation } from "react-i18next";
 import { useDeleteTaskMutation } from "../../services/service";
 import ConfirmModal from "../ConfirmModal/ConfirmModal";
-import InputModal from "../InputModal/InputModal";
+import { IEditTaskModalProps, ITaskProps } from "../../utils/interfaces";
 import EditTaskModal from "../EditTaskModal/EditTaskModal";
 
 export default function Task({
@@ -17,7 +17,7 @@ export default function Task({
   userId,
   users,
 }: ITaskProps) {
-  const MODAL_CONTENT = "Are your sure you want to delete this task?";
+  const { t } = useTranslation();
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
   const [triggerDelete] = useDeleteTaskMutation();
@@ -70,8 +70,6 @@ export default function Task({
           }}
           onClick={openEditModalHandler}
           container
-
-          // disableElevation={true}
         >
           <Typography
             align="left"
@@ -88,7 +86,7 @@ export default function Task({
       </Paper>
       {isConfirmModalOpen && (
         <ConfirmModal
-          content={MODAL_CONTENT}
+          content={t('taskContent.modalContent')}
           confirmHandler={confirmModalHandler}
           closeHandler={closeModalHandler}
         />

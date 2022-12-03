@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Grid, Typography, Button } from "@mui/material";
+import { useTranslation } from 'react-i18next';
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import {
   useCreateBoardMutation,
@@ -7,9 +8,7 @@ import {
 } from "../../services/service";
 import { IInputModalProps } from "../../utils/interfaces";
 import Board from "../Board/Board";
-import Column from "../Column/Column";
 import InputModal from "../InputModal/InputModal";
-import { useNavigate } from "react-router-dom";
 
 export default function MainPage() {
   const { data, isSuccess } = useGetBoardsListQuery(undefined);
@@ -18,9 +17,10 @@ export default function MainPage() {
   const userId = window.localStorage.getItem("app_user_id") || "";
 
   const createHandler = () => setIsCreateModalOpen(true);
+  const { t } = useTranslation();
   const inputModalProps: IInputModalProps = {
-    title: "Create new Board",
-    inputsContent: ["Board title", "Board description"],
+    title: t('mainPageContent.createTitle'),
+    inputsContent: [t('mainPageContent.createContentFirst'), t('mainPageContent.createContentSecond')],
     confirmHandler: (value) => {
       createTrigger({
         title: JSON.stringify(Object.values(value)),
@@ -35,14 +35,14 @@ export default function MainPage() {
   };
 
   return (
-    <>
+    <Grid p="2rem">
       <Typography
         variant="h4"
         align="left"
         sx={{ mb: 2, fontWeight: "600" }}
         color="#fff"
       >
-        YOUR BOARDS
+        {t('mainPageContent.title')}
       </Typography>
       <Grid container justifyContent="left">
         <Button
@@ -52,7 +52,7 @@ export default function MainPage() {
           onClick={createHandler}
           sx={{ mb: 2, alignSelf: "left" }}
         >
-          Add new board
+         {t('mainPageContent.button')}
         </Button>{" "}
       </Grid>
       {isCreateModalOpen && <InputModal {...inputModalProps} />}
@@ -63,6 +63,6 @@ export default function MainPage() {
           data={{ _id: "dfdf", title: "New Title", order: 1, boardId: "sdsds" }}
         /> */}
       </Grid>
-    </>
+    </Grid>
   );
 }

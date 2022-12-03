@@ -5,6 +5,13 @@ import { HeaderText, searchPageText, WelcomePageText } from '../constants/transl
 import { RegistrationText, AuthText, EditUser } from '../components/AuthForm/content'
 import { messageValidation } from '../utils/validation'
 import { confirmModalContent } from '../components/ConfirmModal/content'
+import { mainPageContent } from '../components/MainPage/content';
+import { inputModalContent } from '../components/InputModal/content';
+import { boardPageContent } from '../components/BoardPage/content';
+import { boardContent } from '../components/Board/content';
+import { columnContent } from '../components/Column/content';
+import { taskContent } from '../components/Task/content';
+import { editTaskContent } from '../components/EditTaskModal/content';
 
 const DETECTION_OPTIONS = {
   order: ['localStorage']
@@ -21,6 +28,13 @@ const resources = {
       editUser: EditUser.en,
       errorsForm: messageValidation.en,
       confirmModalContent: confirmModalContent.en,
+      mainPageContent: mainPageContent.en,
+      inputModalContent: inputModalContent.en,
+      boardPageContent: boardPageContent.en,
+      boardContent: boardContent.en,
+      columnContent: columnContent.en,
+      taskContent: taskContent.en,
+      editTaskContent: editTaskContent.en,
     }
   },
   ru: {
@@ -33,6 +47,15 @@ const resources = {
       editUser: EditUser.ru,
       errorsForm: messageValidation.ru,
       confirmModalContent: confirmModalContent.ru,
+      mainPageContent: mainPageContent.ru,
+      inputModalContent: inputModalContent.ru,
+      boardPageContent: boardPageContent.ru,
+      boardContent: boardContent.ru,
+      columnContent: columnContent.ru,
+      taskContent: taskContent.ru,
+      editTaskContent: editTaskContent.ru,
+
+
     }
   }
 };

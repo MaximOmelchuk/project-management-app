@@ -50,13 +50,13 @@ export const service = createApi({
       query: (params) => `/boards/${params}`,
       providesTags: ["POST"],
       keepUnusedDataFor: 0,
-      //   async onQueryStarted(arg, { dispatch, queryFulfilled }) {
-      //     try {
-      //       const { data } = await queryFulfilled;
-      //     } catch (err) {
-      //   redirect(err, dispatch);
-      //     }
-      //   },
+        // async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+        //   try {
+        //     const { data } = await queryFulfilled;
+        //   } catch (err) {
+        // redirect(err, dispatch);
+        //   }
+        // },
     }),
 
     getAllUsers: builder.query<IGetUserData[], null>({

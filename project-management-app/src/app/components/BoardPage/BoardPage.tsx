@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { useTranslation } from 'react-i18next';
 import { Button, Grid, Typography } from "@mui/material";
 import {
   DragDropContext,
@@ -33,6 +34,7 @@ import Column from "../Column/Column";
 export default function BoardPage() {
   const BUTTON_CONTENT = "Back";
   const ADD_COLUMN_BUTTON_CONTENT = "Add column";
+  const { t } = useTranslation();
 
   const navigate = useNavigate();
   const params = useParams();
@@ -62,8 +64,8 @@ export default function BoardPage() {
   }, [isSuccessAllTasks, allTasks, isSuccessColumns, arrColumns]);
 
   const inputModalProps: IInputModalProps = {
-    title: "Create new Column",
-    inputsContent: ["Column title"],
+    title: t('boardPageContent.createTitle'),
+    inputsContent: [t('boardPageContent.createContent')],
     confirmHandler: (value) => {
       createTrigger({
         id: params.boardId || "",
@@ -92,11 +94,8 @@ export default function BoardPage() {
   };
 
   const onDragEnd = (result: DropResult) => {
-    console.log(result);
     if (!result.destination) return;
     const { source, destination, draggableId } = result;
-    console.log(source, "------source");
-    console.log(destination, "------destination");
 
     if (source.droppableId !== destination.droppableId) {
       const sourceColumn = commonTaskColumn?.find(
@@ -159,7 +158,7 @@ export default function BoardPage() {
               startIcon={<ArrowBackIosIcon />}
               onClick={backClickHandler}
             >
-              {BUTTON_CONTENT}
+              {t('boardPageContent.title')}
             </Button>
             <Typography variant="h4" sx={{ display: "inline-Block" }}>
               {contentArr[0]}
@@ -171,7 +170,22 @@ export default function BoardPage() {
         </Grid>
       )}
       <DragDropContext onDragEnd={onDragEnd}>
-        <Grid sx={{ width: "100%", overflowX: "auto" }}>
+        <Grid
+          sx={{
+            width: "100%",
+            overflowX: "auto",
+            overflowY: "hidden",
+            "&::-webkit-scrollbar": {
+              height: "10px",
+            },
+            "&::-webkit-scrollbar-track": {
+              background: "#d2d2d6",
+            },
+            "&::-webkit-scrollbar-thumb": {
+              background: "#3f51b5",
+            },
+          }}
+        >
           <Grid
             container
             sx={{
@@ -180,7 +194,6 @@ export default function BoardPage() {
               flexDirection: "row",
               flexWrap: "nowrap",
               height: "50vh",
-              maxHeight: "70vh",
               width: "fit-content",
             }}
           >
@@ -189,7 +202,7 @@ export default function BoardPage() {
                 {(provided, snapshot) => {
                   return (
                     <div {...provided.droppableProps} ref={provided.innerRef}>
-                      <Column {...item} />
+                      <Column {...item} isDragging={snapshot.isDraggingOver} />
                       {provided.placeholder}
                     </div>
                   );
@@ -198,7 +211,7 @@ export default function BoardPage() {
             ))}
             <AddButton
               clickHandler={clickAddHandler}
-              content={ADD_COLUMN_BUTTON_CONTENT}
+              content={t('boardPageContent.button')}
             />
           </Grid>
           {isCreateModalOpen && <InputModal {...inputModalProps} />}

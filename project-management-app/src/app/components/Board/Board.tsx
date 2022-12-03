@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { NavLink, useLocation, useNavigate, useParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { Paper, Typography, IconButton } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import {
@@ -13,7 +14,7 @@ import { parseBoardTitle } from "../../utils/utils";
 export default function Board({ title, _id: id, owner, users }: IBoardProps) {
   const navigate = useNavigate();
   const params = useParams();
-  const MODAL_CONTENT = "Are your sure you want to delete this board?";
+  const { t } = useTranslation();
   const [boardTitle, boardDescription] = parseBoardTitle(title);
   const [triggerDelete] = useDeleteBoardMutation();
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -33,7 +34,7 @@ export default function Board({ title, _id: id, owner, users }: IBoardProps) {
       <Paper
         onClick={() => navigate(`/boards/${id}`)}
         sx={{
-          width: "350px",
+          width: "320px",
           minHeight: "200px",
           p: "1rem 1rem",
           boxSizing: "border-box",
@@ -68,7 +69,7 @@ export default function Board({ title, _id: id, owner, users }: IBoardProps) {
       </Paper>
       {isModalOpen && (
         <ConfirmModal
-          content={MODAL_CONTENT}
+          content={t('boardContent.modalContent')}
           confirmHandler={confirmModalHandler}
           closeHandler={closeModalHandler}
         />

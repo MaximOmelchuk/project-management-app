@@ -4,8 +4,6 @@ import {
   Slide,
   DialogTitle,
   DialogContent,
-  DialogContentText,
-  DialogActions,
   Button,
   TextField,
   Grid,
@@ -14,6 +12,7 @@ import {
 import { TransitionProps } from "@mui/material/transitions";
 import { useFormik } from "formik";
 import * as yup from "yup";
+import { useTranslation } from "react-i18next";
 import { IInputModalProps } from "../../utils/interfaces";
 
 const Transition = React.forwardRef<
@@ -36,17 +35,20 @@ export default function InputModal({
   title,
   inputsContent,
 }: IInputModalProps) {
+  const { t } = useTranslation();
 
   const isSingleInput = inputsContent.length === 1;
 
   const validationSchema = yup.object(
     isSingleInput
       ? {
-          first: yup.string().required("Required field"),
+          first: yup.string().required(t("inputModalContent.validation") || ""),
         }
       : {
-          first: yup.string().required("Required field"),
-          second: yup.string().required("Required field"),
+          first: yup.string().required(t("inputModalContent.validation") || ""),
+          second: yup
+            .string()
+            .required(t("inputModalContent.validation") || ""),
         }
   );
 
@@ -54,7 +56,7 @@ export default function InputModal({
     initialValues: isSingleInput ? { first: "" } : { first: "", second: "" },
     validationSchema,
     onSubmit: (value) => {
-      confirmHandler(value)
+      confirmHandler(value);
     },
   });
 
@@ -124,7 +126,7 @@ export default function InputModal({
               variant="contained"
               sx={{ width: "48%" }}
             >
-              ADD
+              {t("inputModalContent.ok")}
             </Button>
             <Button
               size="medium"
@@ -132,7 +134,7 @@ export default function InputModal({
               onClick={closeHandler}
               sx={{ width: "48%" }}
             >
-              Cancel
+              {t("inputModalContent.cancel")}
             </Button>
           </Grid>
         </Box>

@@ -136,6 +136,10 @@ export interface IColumnProps {
   tasks: ITaskProps[];
 }
 
+export interface IColumnPropsDrag extends IColumnProps {
+  isDragging: boolean;
+}
+
 export interface ITaskData {
   _id: string;
   title: string;

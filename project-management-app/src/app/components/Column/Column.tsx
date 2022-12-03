@@ -1,4 +1,4 @@
-import { ChangeEventHandler, EventHandler, useEffect, useState } from "react";
+import { ChangeEventHandler, useState } from "react";
 import {
   Paper,
   Typography,
@@ -11,18 +11,14 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import TaskAltIcon from "@mui/icons-material/TaskAlt";
 import AddIcon from "@mui/icons-material/Add";
-import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
+import { Draggable } from "react-beautiful-dnd";
+import { useTranslation } from "react-i18next";
 import {
   useDeleteColumnMutation,
   useUpdateColumnMutation,
-  useGetTaskListQuery,
   useCreateTaskMutation,
 } from "../../services/service";
-import {
-  IColumnProps,
-  IInputModalProps,
-  ITaskProps,
-} from "../../utils/interfaces";
+import { IColumnPropsDrag, IInputModalProps } from "../../utils/interfaces";
 import ConfirmModal from "../ConfirmModal/ConfirmModal";
 import Task from "../Task/Task";
 import InputModal from "../InputModal/InputModal";
@@ -33,9 +29,8 @@ export default function Column({
   order,
   boardId,
   tasks,
-}: IColumnProps) {
-  const MODAL_CONTENT = "Are your sure you want to delete this column?";
-  const ADD_TASK_CONTENT = "Add task";
+}: IColumnPropsDrag) {
+  const { t } = useTranslation();
   const [triggerUpdate] = useUpdateColumnMutation();
   const [triggerDelete] = useDeleteColumnMutation();
   const [triggerCreate] = useCreateTaskMutation();
@@ -83,8 +78,8 @@ export default function Column({
   const addTaskHandler = () => setIsAddTaskModalOpen(true);
 
   const inputModalProps: IInputModalProps = {
-    title: "Create new Task",
-    inputsContent: ["Task title", "Task description"],
+    title: t("columnContent.modalTitle"),
+    inputsContent: [t("columnContent.modalContentFirst"), t("columnContent.modalContentSecond")],
     confirmHandler: (value) => {
       const userId = window.localStorage.getItem("app_user_id") || "";
       triggerCreate({
@@ -109,8 +104,8 @@ export default function Column({
     <>
       <Paper
         sx={{
-          width: "350px",
-          // minHeight: "200px",
+          width: "320px",
+          maxHeight: "100%",
           height: "fit-content",
           p: "1rem",
           boxSizing: "border-box",
@@ -119,14 +114,14 @@ export default function Column({
           position: "relative",
           "&:hover": {
             cursor: "pointer",
-            // transform: "scale(1.01)",
+            opacity: ".9",
           },
         }}
         elevation={4}
       >
         <Grid container alignItems="center">
           {isTitleOpen ? (
-            <Grid container direction="row" mb="2rem">
+            <Grid container item direction="row">
               <TextField
                 color="primary"
                 size="small"
@@ -179,9 +174,8 @@ export default function Column({
               </IconButton>
             </Grid>
           ) : (
-            <Grid container direction="row" mb="2rem">
+            <Grid container item direction="row">
               <Button
-                //   variant="text"
                 disableElevation
                 sx={{
                   width: "80%",
@@ -189,7 +183,6 @@ export default function Column({
                   justifyContent: "left",
                   textTransform: "none",
                   "&:hover": {
-                    // transform: "scale(1.01)",
                     border: "2px solid #fff",
                   },
                 }}
@@ -204,7 +197,30 @@ export default function Column({
               </IconButton>
             </Grid>
           )}
-          <Grid container flexDirection="column" sx={{ width: "100%", gap: 1 }}>
+
+          <Grid
+            container
+            item
+            flexDirection="column"
+            sx={{
+              width: "100%",
+              gap: 1,
+              my: 2,
+              flexWrap: "noWrap",
+              height: "200px",
+              overflowY: "auto",
+              overflowX: "hidden",
+              "&::-webkit-scrollbar": {
+                width: "7px",
+              },
+              "&::-webkit-scrollbar-track": {
+                background: "#d2d2d6",
+              },
+              "&::-webkit-scrollbar-thumb": {
+                background: "#3f51b5",
+              },
+            }}
+          >
             {tasks.map((item, index) => {
               return (
                 <Draggable key={item._id} draggableId={item._id} index={index}>
@@ -234,21 +250,15 @@ export default function Column({
             onClick={addTaskHandler}
             sx={{
               color: "#fff",
-              mt: 7,
-
-              // "&:hover": {
-              //   transform: "scale(1.01)",
-              //   border: "2px solid #fff",
-              // },
             }}
           >
-            {ADD_TASK_CONTENT}
+            {t("columnContent.button")}
           </Button>
         </Grid>
       </Paper>
       {isModalOpen && (
         <ConfirmModal
-          content={MODAL_CONTENT}
+          content={t("columnContent.modalContent")}
           confirmHandler={confirmModalHandler}
           closeHandler={closeModalHandler}
         />
