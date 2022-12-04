@@ -1,14 +1,8 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { useTranslation } from 'react-i18next';
-import { Button, Grid, Typography } from "@mui/material";
-import {
-  DragDropContext,
-  Draggable,
-  Droppable,
-  DropResult,
-} from "react-beautiful-dnd";
-import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
+import { useParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import { Grid } from "@mui/material";
+import { DragDropContext, DropResult } from "react-beautiful-dnd";
 import {
   useCreateColumnMutation,
   useGetBoardByIdQuery,
@@ -25,31 +19,25 @@ import {
   IColumnProps,
   IInputModalProps,
   ITaskProps,
-  ITasksState,
 } from "../../utils/interfaces";
 import InputModal from "../InputModal/InputModal";
 import AddButton from "../AddButton/AddButton";
-import Column from "../Column/Column";
+import BoardPageHeadSection from "./BoardPageHeadSection";
+import DroppableColumn from "./DroppableColumn";
 
 export default function BoardPage() {
-  const BUTTON_CONTENT = "Back";
-  const ADD_COLUMN_BUTTON_CONTENT = "Add column";
   const { t } = useTranslation();
-
-  const navigate = useNavigate();
   const params = useParams();
-  const [showTitle, setShowTitle] = useState(false);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [contentArr, setContentArr] = useState(["", ""]);
-
+  const [commonTaskColumn, setCommonTaskColumn] = useState<IColumnProps[]>([]);
   const { data, isSuccess } = useGetBoardByIdQuery(params?.boardId || "");
   const { data: arrColumns, isSuccess: isSuccessColumns } =
     useGetColumnListQuery(params?.boardId || "");
-  const [createTrigger, result] = useCreateColumnMutation();
+  const [createTrigger] = useCreateColumnMutation();
   const [tasksSetTrigger] = useTasksSetMutation();
   const { data: allTasks, isSuccess: isSuccessAllTasks } =
     useGetAllTasksSetByIdQuery(params?.boardId || "");
-  const [commonTaskColumn, setCommonTaskColumn] = useState<IColumnProps[]>([]);
 
   useEffect(() => {
     if (isSuccessAllTasks && isSuccessColumns) {
@@ -64,8 +52,8 @@ export default function BoardPage() {
   }, [isSuccessAllTasks, allTasks, isSuccessColumns, arrColumns]);
 
   const inputModalProps: IInputModalProps = {
-    title: t('boardPageContent.createTitle'),
-    inputsContent: [t('boardPageContent.createContent')],
+    title: t("boardPageContent.createTitle"),
+    inputsContent: [t("boardPageContent.createContent")],
     confirmHandler: (value) => {
       createTrigger({
         id: params.boardId || "",
@@ -85,17 +73,12 @@ export default function BoardPage() {
   useEffect(() => {
     if (isSuccess) {
       setContentArr(parseBoardTitle(data.title));
-      setShowTitle(true);
     }
   }, [isSuccess]);
 
-  const backClickHandler = () => {
-    navigate(-1);
-  };
-
   const onDragEnd = (result: DropResult) => {
     if (!result.destination) return;
-    const { source, destination, draggableId } = result;
+    const { source, destination } = result;
 
     if (source.droppableId !== destination.droppableId) {
       const sourceColumn = commonTaskColumn?.find(
@@ -146,72 +129,42 @@ export default function BoardPage() {
     }
   };
 
+  const containerStyle = {
+    width: "100%",
+    overflowX: "auto",
+    overflowY: "hidden",
+    "&::-webkit-scrollbar": {
+      height: "10px",
+    },
+    "&::-webkit-scrollbar-track": {
+      background: "#d2d2d6",
+    },
+    "&::-webkit-scrollbar-thumb": {
+      background: "#3f51b5",
+    },
+  };
+
+  const columnsWrapStyle = {
+    mt: 2,
+    gap: 2,
+    flexDirection: "row",
+    flexWrap: "nowrap",
+    height: "50vh",
+    width: "fit-content",
+  };
+
   return (
     <Grid p="2rem">
-      {showTitle && (
-        <Grid color="#fff" sx={{ maxWidth: "30rem", mb: 2 }}>
-          <Grid container justifyContent="left" gap="1rem" sx={{ mb: 0.7 }}>
-            <Button
-              variant="outlined"
-              size="large"
-              sx={{ background: "#070e4a" }}
-              startIcon={<ArrowBackIosIcon />}
-              onClick={backClickHandler}
-            >
-              {t('boardPageContent.title')}
-            </Button>
-            <Typography variant="h4" sx={{ display: "inline-Block" }}>
-              {contentArr[0]}
-            </Typography>
-          </Grid>
-          <Typography align="left" variant="subtitle1" sx={{ opacity: ".7" }}>
-            {contentArr[1]}
-          </Typography>
-        </Grid>
-      )}
+      <BoardPageHeadSection contentArr={contentArr} />
       <DragDropContext onDragEnd={onDragEnd}>
-        <Grid
-          sx={{
-            width: "100%",
-            overflowX: "auto",
-            overflowY: "hidden",
-            "&::-webkit-scrollbar": {
-              height: "10px",
-            },
-            "&::-webkit-scrollbar-track": {
-              background: "#d2d2d6",
-            },
-            "&::-webkit-scrollbar-thumb": {
-              background: "#3f51b5",
-            },
-          }}
-        >
-          <Grid
-            container
-            sx={{
-              mt: 2,
-              gap: 2,
-              flexDirection: "row",
-              flexWrap: "nowrap",
-              height: "50vh",
-              width: "fit-content",
-            }}
-          >
-            {[...commonTaskColumn].reverse().map((item) => (
-              <Droppable droppableId={item._id} key={item._id}>
-                {(provided, snapshot) => {
-                  return (
-                    <div {...provided.droppableProps} ref={provided.innerRef}>
-                      <Column {...item} isDragging={snapshot.isDraggingOver} />
-                      {provided.placeholder}
-                    </div>
-                  );
-                }}
-              </Droppable>
+        <Grid sx={containerStyle}>
+          <Grid container sx={columnsWrapStyle}>
+            {commonTaskColumn.map((item) => (
+              <DroppableColumn item={item} key={item._id} />
             ))}
             <AddButton
               clickHandler={clickAddHandler}
-              content={t('boardPageContent.button')}
+              content={t("boardPageContent.button")}
             />
           </Grid>
           {isCreateModalOpen && <InputModal {...inputModalProps} />}

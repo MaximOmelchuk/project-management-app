@@ -59,9 +59,6 @@ export default function MainPage() {
       <Grid container gap="1rem">
         {isSuccess &&
           [...data].reverse().map((item) => <Board {...item} key={item._id} />)}
-        {/* <Column
-          data={{ _id: "dfdf", title: "New Title", order: 1, boardId: "sdsds" }}
-        /> */}
       </Grid>
     </Grid>
   );

@@ -15,13 +15,14 @@ import { TransitionProps } from "@mui/material/transitions";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import { useTranslation } from "react-i18next";
-import { IEditTaskModalProps, IInputModalProps } from "../../utils/interfaces";
+import { IEditTaskModalProps } from "../../utils/interfaces";
 import {
   useGetAllUsersQuery,
   useGetUserByIdQuery,
   useUpdateTaskMutation,
 } from "../../services/service";
 import { nanoid } from "@reduxjs/toolkit";
+import { type } from "os";
 
 const Transition = React.forwardRef<
   unknown,
@@ -83,6 +84,8 @@ export default function EditTaskModal({
     },
   });
 
+  
+
   useEffect(() => {
     if (isSuccessGetOneUser) {
       formik.setFieldValue("userId", { ...userData, key: nanoid() });
@@ -97,6 +100,17 @@ export default function EditTaskModal({
       formik.setFieldValue("users", usersFullArr);
     }
   }, [isSuccessGetAllUsers]);
+
+  const boxStyle = {
+    display: "flex",
+    gap: "1rem",
+    flexDirection: "column",
+    alignItems: "center",
+    height: "auto",
+    padding: " 1rem",
+    boxSizing: "content-box",
+    mt: 2,
+  };
 
   return (
     <Dialog
@@ -116,16 +130,7 @@ export default function EditTaskModal({
           onSubmit={formik.handleSubmit}
           noValidate
           component="form"
-          sx={{
-            display: "flex",
-            gap: "1rem",
-            flexDirection: "column",
-            alignItems: "center",
-            height: "auto",
-            padding: " 1rem",
-            boxSizing: "content-box",
-            mt: 2,
-          }}
+          sx={boxStyle}
         >
           <TextField
             fullWidth
@@ -176,7 +181,7 @@ export default function EditTaskModal({
                 helperText={
                   formik.touched.userId &&
                   Boolean(formik.errors.userId) &&
-                  "Required field"
+                  t("editTaskContent.error")
                 }
                 label={t("editTaskContent.owner")}
               />
