@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { Grid, Typography, Button } from "@mui/material";
-import { useTranslation } from 'react-i18next';
+import { Grid, Typography, Button, useMediaQuery } from "@mui/material";
+import { useTranslation } from "react-i18next";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import {
   useCreateBoardMutation,
@@ -17,6 +17,7 @@ export default function MainPage() {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [createTrigger] = useCreateBoardMutation();
   const userId = window.localStorage.getItem("app_user_id") || "";
+  const matches = useMediaQuery("(min-width:500px)");
 
   const createHandler = () => setIsCreateModalOpen(true);
   const { t } = useTranslation();
@@ -27,8 +28,11 @@ export default function MainPage() {
   }
 
   const inputModalProps: IInputModalProps = {
-    title: t('mainPageContent.createTitle'),
-    inputsContent: [t('mainPageContent.createContentFirst'), t('mainPageContent.createContentSecond')],
+    title: t("mainPageContent.createTitle"),
+    inputsContent: [
+      t("mainPageContent.createContentFirst"),
+      t("mainPageContent.createContentSecond"),
+    ],
     confirmHandler: (value) => {
       createTrigger({
         title: JSON.stringify(Object.values(value)),
@@ -50,26 +54,23 @@ export default function MainPage() {
         sx={{ mb: 2, fontWeight: "600" }}
         color="#fff"
       >
-        {t('mainPageContent.title')}
+        {t("mainPageContent.title")}
       </Typography>
       <Grid container justifyContent="left">
         <Button
           variant="contained"
-          size="large"
+          size={matches ? "large" : "medium"}
           endIcon={<AddCircleOutlineIcon />}
           onClick={createHandler}
           sx={{ mb: 2, alignSelf: "left" }}
         >
-         {t('mainPageContent.button')}
+          {t("mainPageContent.button")}
         </Button>{" "}
       </Grid>
       {isCreateModalOpen && <InputModal {...inputModalProps} />}
       <Grid container gap="1rem">
         {isSuccess &&
           [...data].reverse().map((item) => <Board {...item} key={item._id} />)}
-        {/* <Column
-          data={{ _id: "dfdf", title: "New Title", order: 1, boardId: "sdsds" }}
-        /> */}
       </Grid>
     </Grid>
   );

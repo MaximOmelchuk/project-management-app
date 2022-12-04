@@ -1,5 +1,4 @@
-import React from "react";
-import { Button, Paper } from "@mui/material";
+import { Button } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 
 export default function AddButton({
@@ -14,9 +13,9 @@ export default function AddButton({
       startIcon={<AddIcon />}
       onClick={clickHandler}
       sx={{
-        width: "300px",
+        width: "250px",
         height: "50px",
-        p: "1rem 1rem",
+        p: "1rem",
         boxSizing: "border-box",
         background: "#070e4a",
         color: "#fff",

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import {  Paper, Typography, Grid } from "@mui/material";
+import { Paper, Typography, Grid } from "@mui/material";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { useTranslation } from "react-i18next";
 import { useDeleteTaskMutation } from "../../services/service";
@@ -56,29 +56,26 @@ export default function Task({
     },
   };
 
+  const containerStyle = {
+    width: "100%",
+    justifyContent: "space-between",
+    textTransform: "none",
+    padding: ".5rem 1rem",
+    zIndex: 2,
+    "&:hover": { cursor: "pointer" },
+  };
+
+  const titleStyle = {
+    maxHeight: "10rem",
+    maxWidth: "80%",
+    wordWrap: "break-word",
+  };
+
   return (
     <>
       <Paper variant="outlined" sx={{ width: "100%", transform: "none" }}>
-        <Grid
-          sx={{
-            width: "100%",
-            justifyContent: "space-between",
-            textTransform: "none",
-            padding: '.5rem 1rem',
-            zIndex: 2,
-            "&:hover": { cursor: "pointer" },
-          }}
-          onClick={openEditModalHandler}
-          container
-        >
-          <Typography
-            align="left"
-            sx={{
-              maxHeight: "10rem",
-              maxWidth: "80%",
-              wordWrap: "break-word",
-            }}
-          >
+        <Grid sx={containerStyle} onClick={openEditModalHandler} container>
+          <Typography align="left" sx={titleStyle}>
             {title}
           </Typography>
           <DeleteOutlineIcon onClick={deleteHandler} />
@@ -86,7 +83,7 @@ export default function Task({
       </Paper>
       {isConfirmModalOpen && (
         <ConfirmModal
-          content={t('taskContent.modalContent')}
+          content={t("taskContent.modalContent")}
           confirmHandler={confirmModalHandler}
           closeHandler={closeModalHandler}
         />
