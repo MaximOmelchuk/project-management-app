@@ -1,9 +1,5 @@
 import { ChangeEventHandler, useState } from "react";
-import {
-  Paper,
-  Grid,
-  Button,
-} from "@mui/material";
+import { Paper, Grid, Button, useMediaQuery } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import { useTranslation } from "react-i18next";
 import {
@@ -71,6 +67,7 @@ export default function Column({
   };
 
   const addTaskHandler = () => setIsAddTaskModalOpen(true);
+  const matches = useMediaQuery("(min-width:500px)");
 
   const inputModalProps: IInputModalProps = {
     title: t("columnContent.modalTitle"),
@@ -99,7 +96,7 @@ export default function Column({
   };
 
   const containerStyle = {
-    width: "320px",
+    width: matches ? "320px" : '260px',
     maxHeight: "100%",
     height: "fit-content",
     p: "1rem",

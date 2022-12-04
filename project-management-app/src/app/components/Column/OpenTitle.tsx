@@ -1,5 +1,5 @@
 import { ChangeEventHandler } from "react";
-import { Grid, TextField, IconButton } from "@mui/material";
+import { Grid, TextField, IconButton, useMediaQuery } from "@mui/material";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import TaskAltIcon from "@mui/icons-material/TaskAlt";
 
@@ -16,9 +16,10 @@ export default function OpenTitle({
   approveSwitchHandler,
   denySwitchHandler,
 }: OpenTitleProps) {
-    
+  const matches = useMediaQuery("(min-width:500px)");
+
   const inputStyle = {
-    width: "75%",
+    width: matches ? "75%" : "65%",
     height: "50px",
     alignSelf: "center",
     justifyContent: "center",
@@ -51,6 +52,7 @@ export default function OpenTitle({
         size="small"
         autoFocus
         value={titleInput}
+        inputProps={{ maxLength: 50 }}
         sx={inputStyle}
         onChange={changeTitleHandler}
       />

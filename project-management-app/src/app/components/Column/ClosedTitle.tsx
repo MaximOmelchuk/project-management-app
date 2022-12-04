@@ -1,4 +1,4 @@
-import { Grid, Button, Typography, IconButton } from "@mui/material";
+import { Grid, Button, Typography, IconButton, useMediaQuery } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 
 type ClosedTitleProps = {
@@ -13,8 +13,10 @@ export default function ClosedTitle({
   deleteColumnHandler,
 }: ClosedTitleProps) {
 
+  const matches = useMediaQuery("(min-width:500px)");
+
   const style = {
-    width: "80%",
+    width: matches ? "80%" : '70%',
     color: "#fff",
     justifyContent: "left",
     textTransform: "none",
@@ -26,7 +28,7 @@ export default function ClosedTitle({
   return (
     <Grid container item direction="row">
       <Button disableElevation sx={style} onClick={titleSwitchHandler}>
-        <Typography variant="h6" align="left">
+        <Typography variant="h6" align="left" sx={{ overflow: "hidden" }}>
           {backUpInput}
         </Typography>
       </Button>

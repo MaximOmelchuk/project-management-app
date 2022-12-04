@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 import {
   Dialog,
   Slide,
@@ -10,19 +10,19 @@ import {
   Box,
   TextFieldProps,
   Autocomplete,
+  useMediaQuery,
 } from "@mui/material";
 import { TransitionProps } from "@mui/material/transitions";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import { useTranslation } from "react-i18next";
-import { IEditTaskModalProps } from "../../utils/interfaces";
+import { IEditTaskModalProps, IGetUserData } from "../../utils/interfaces";
 import {
   useGetAllUsersQuery,
   useGetUserByIdQuery,
   useUpdateTaskMutation,
 } from "../../services/service";
 import { nanoid } from "@reduxjs/toolkit";
-import { type } from "os";
 
 const Transition = React.forwardRef<
   unknown,
@@ -84,22 +84,30 @@ export default function EditTaskModal({
     },
   });
 
-  
+  const setFormikValue = useCallback(
+    (
+      field: string,
+      value: string | IGetUserData | IGetUserData[] | undefined
+    ) => {
+      formik.setFieldValue(field, value);
+    },
+    [formik]
+  );
 
   useEffect(() => {
     if (isSuccessGetOneUser) {
-      formik.setFieldValue("userId", { ...userData, key: nanoid() });
+      setFormikValue("userId", userData);
     }
-  }, [isSuccessGetOneUser]);
+  }, [isSuccessGetOneUser, userData, setFormikValue]);
 
   useEffect(() => {
     if (isSuccessGetAllUsers) {
       const usersFullArr = usersDropList.filter((item) =>
         users.includes(item._id)
       );
-      formik.setFieldValue("users", usersFullArr);
+      setFormikValue("users", usersFullArr);
     }
-  }, [isSuccessGetAllUsers]);
+  }, [isSuccessGetAllUsers, usersDropList, users, setFormikValue]);
 
   const boxStyle = {
     display: "flex",
@@ -111,6 +119,7 @@ export default function EditTaskModal({
     boxSizing: "content-box",
     mt: 2,
   };
+  const matches = useMediaQuery("(min-width:500px)");
 
   return (
     <Dialog
@@ -122,10 +131,14 @@ export default function EditTaskModal({
       onClose={closeHandler}
       aria-describedby="alert-dialog-slide-description"
     >
-      <DialogTitle variant="h5" align="center" sx={{ pb: 0, mt: 1 }}>
+      <DialogTitle
+        variant="h5"
+        align="center"
+        sx={{ pb: 0, mt: 1, fontSize: matches ? "20px" : "16px" }}
+      >
         {t("editTaskContent.formTitle")}
       </DialogTitle>
-      <DialogContent>
+      <DialogContent sx={{ p: matches ? "24px" : "0px" }}>
         <Box
           onSubmit={formik.handleSubmit}
           noValidate

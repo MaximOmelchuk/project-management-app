@@ -74,7 +74,7 @@ export default function BoardPage() {
     if (isSuccess) {
       setContentArr(parseBoardTitle(data.title));
     }
-  }, [isSuccess]);
+  }, [isSuccess, data?.title]);
 
   const onDragEnd = (result: DropResult) => {
     if (!result.destination) return;
@@ -131,6 +131,7 @@ export default function BoardPage() {
 
   const containerStyle = {
     width: "100%",
+    height: '400px',
     overflowX: "auto",
     overflowY: "hidden",
     "&::-webkit-scrollbar": {
