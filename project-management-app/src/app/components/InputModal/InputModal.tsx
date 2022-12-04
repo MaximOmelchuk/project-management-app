@@ -8,6 +8,7 @@ import {
   TextField,
   Grid,
   Box,
+  useMediaQuery,
 } from "@mui/material";
 import { TransitionProps } from "@mui/material/transitions";
 import { useFormik } from "formik";
@@ -60,6 +61,8 @@ export default function InputModal({
     },
   });
 
+  const matches = useMediaQuery("(min-width:500px)");
+
   return (
     <Dialog
       open={true}
@@ -70,10 +73,14 @@ export default function InputModal({
       onClose={closeHandler}
       aria-describedby="alert-dialog-slide-description"
     >
-      <DialogTitle variant="h5" align="center" sx={{ pb: 0, mt: 1 }}>
+      <DialogTitle
+        variant="h6"
+        align="center"
+        sx={{ pb: 0, mt: 1, fontSize: matches ? "20px" : "16px" }}
+      >
         {title}
       </DialogTitle>
-      <DialogContent>
+      <DialogContent sx={{ px: matches ? "24px" : "15px" }}>
         <Box
           onSubmit={formik.handleSubmit}
           noValidate
@@ -84,7 +91,6 @@ export default function InputModal({
             flexDirection: "column",
             alignItems: "center",
             height: "auto",
-            padding: " 1rem",
             boxSizing: "content-box",
             mt: 2,
           }}
@@ -122,14 +128,14 @@ export default function InputModal({
           <Grid container justifyContent="space-between" sx={{ mt: 1 }}>
             <Button
               type="submit"
-              size="medium"
+              size={matches ? "medium" : "small"}
               variant="contained"
               sx={{ width: "48%" }}
             >
               {t("inputModalContent.ok")}
             </Button>
             <Button
-              size="medium"
+              size={matches ? "medium" : "small"}
               variant="outlined"
               onClick={closeHandler}
               sx={{ width: "48%" }}
