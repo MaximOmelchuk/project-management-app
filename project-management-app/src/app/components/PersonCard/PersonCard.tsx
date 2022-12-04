@@ -1,14 +1,17 @@
-import { Link, Paper, SvgIcon, Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
+
+import { Link, List, ListItem, ListItemIcon, ListItemText, Paper, SvgIcon, Typography } from "@mui/material";
+import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
+
 import { ReactComponent as PersonIcon } from '../../assets/images/Person.svg'
 
 export interface PersonCardProps {
   title: string,
-  content?: string,
+  content: string[],
   link: string,
 }
 
-export default function PersonCard({title, content, link}: PersonCardProps) {
+export default function PersonCard({ title, content, link }: PersonCardProps) {
   const { t } = useTranslation();
 
   return (
@@ -16,7 +19,7 @@ export default function PersonCard({title, content, link}: PersonCardProps) {
       <Paper
         sx={{
           width: "300px",
-          minHeight: "200px",
+          minHeight: "365px",
           p: "1rem 1rem",
           boxSizing: "border-box",
           background: "rgb(44, 56, 126)",
@@ -33,11 +36,19 @@ export default function PersonCard({title, content, link}: PersonCardProps) {
         <Typography variant="h6">
           {t(title)}
         </Typography>
-        {content && (
-          <Typography variant="body1">
-            {t(content)}
-          </Typography>
-        )}
+        <Paper variant="outlined" sx={{ px: "0.5rem" }}>
+          <List>
+            {content.map(el => {
+              return <ListItem sx={{ p: "0.1rem" }}>
+                <ListItemIcon>
+                  <FiberManualRecordIcon></FiberManualRecordIcon>
+                </ListItemIcon>
+                <ListItemText>{el}</ListItemText>
+                </ListItem>
+            })}
+          </List>
+        </Paper>
+
       </Paper>
     </Link>
   );

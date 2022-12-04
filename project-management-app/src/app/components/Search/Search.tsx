@@ -1,8 +1,10 @@
 import React, { ChangeEvent, FormEvent, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+
+import { Box, Button, Container, TextField } from '@mui/material';
+
 import { changeSearchString } from '../../store/reducers/commonSlice';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { Box, Button, Container, TextField } from '@mui/material';
-import { useTranslation } from 'react-i18next';
 
 const Search = () => {
   const searchString = useAppSelector((state) => state.common.searchString);

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { Grid } from "@mui/material";
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
@@ -22,12 +22,14 @@ import {
 } from "../../utils/interfaces";
 import InputModal from "../InputModal/InputModal";
 import AddButton from "../AddButton/AddButton";
+import { getToken } from "../../utils/tokenUtils";
 import BoardPageHeadSection from "./BoardPageHeadSection";
 import DroppableColumn from "./DroppableColumn";
 
 export default function BoardPage() {
   const { t } = useTranslation();
   const params = useParams();
+  const navigate = useNavigate();
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [contentArr, setContentArr] = useState(["", ""]);
   const [commonTaskColumn, setCommonTaskColumn] = useState<IColumnProps[]>([]);
@@ -40,6 +42,9 @@ export default function BoardPage() {
     useGetAllTasksSetByIdQuery(params?.boardId || "");
 
   useEffect(() => {
+    if (!getToken()) {
+      navigate('/');
+    }
     if (isSuccessAllTasks && isSuccessColumns) {
       const columnsCopy = [...arrColumns].map((column) => {
         const tasksForColumn = allTasks

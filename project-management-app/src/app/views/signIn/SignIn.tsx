@@ -9,6 +9,7 @@ import { setFormSignIn, selectStateApp, setMessageResponsive } from '../../store
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { getToken } from '../../utils/tokenUtils';
 
 
 interface IErrorResponse {
@@ -41,6 +42,9 @@ export const SignIn = (): JSX.Element => {
   }
 
   useEffect(() => {
+    if (getToken()) {
+      navigate('/mainPage')
+    }
     const defaultValue = {
       name: '',
       login: '',

@@ -1,8 +1,10 @@
+import React from 'react';
+import { useTranslation } from 'react-i18next';
+
 import {
   Button, Menu, MenuItem,
 } from '@mui/material';
-import React from 'react';
-import { useTranslation } from 'react-i18next';
+
 import { Lang, LangSelectText } from '../../constants/translation';
 
 const ChangeLang = () => {
