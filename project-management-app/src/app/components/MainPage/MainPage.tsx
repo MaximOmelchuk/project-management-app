@@ -9,6 +9,8 @@ import {
 import { IInputModalProps } from "../../utils/interfaces";
 import Board from "../Board/Board";
 import InputModal from "../InputModal/InputModal";
+import { getToken } from "../../utils/tokenUtils";
+import { useNavigate } from "react-router-dom";
 
 export default function MainPage() {
   const { data, isSuccess } = useGetBoardsListQuery(undefined);
@@ -18,6 +20,12 @@ export default function MainPage() {
 
   const createHandler = () => setIsCreateModalOpen(true);
   const { t } = useTranslation();
+  const navigate = useNavigate();
+
+  if (!getToken()) {
+    navigate('/');
+  }
+
   const inputModalProps: IInputModalProps = {
     title: t('mainPageContent.createTitle'),
     inputsContent: [t('mainPageContent.createContentFirst'), t('mainPageContent.createContentSecond')],

@@ -7,13 +7,20 @@ import { Grid, Typography } from '@mui/material';
 import TaskCard from '../TaskItem/TaskItem';
 import { Loader } from '../Loader/Loader';
 import { Box } from '@mui/system';
+import { getToken } from '../../utils/tokenUtils';
+import { useNavigate } from 'react-router-dom';
 
 const SearchPage = () => {
   const searchString = useAppSelector((state) => state.common.searchString);
-
+  const navigate = useNavigate();
   const { data, isFetching } = useGetTasksOnSearchQuery(searchString);
 
+  if (!getToken()) {
+    navigate('/');
+  }
+
   const { t } = useTranslation();
+
   return (
     <Container color="white">
       <Typography color='white' sx={{ padding: "1rem 0", fontWeight: 700, fontSize: { xs: '1.4rem', sm: '2rem' } }}>

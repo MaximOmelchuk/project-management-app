@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { Navigate, useNavigate, useParams } from "react-router-dom";
 import { useTranslation } from 'react-i18next';
 import { Button, Grid, Typography } from "@mui/material";
 import {
@@ -30,6 +30,7 @@ import {
 import InputModal from "../InputModal/InputModal";
 import AddButton from "../AddButton/AddButton";
 import Column from "../Column/Column";
+import { getToken } from "../../utils/tokenUtils";
 
 export default function BoardPage() {
   const BUTTON_CONTENT = "Back";
@@ -52,6 +53,9 @@ export default function BoardPage() {
   const [commonTaskColumn, setCommonTaskColumn] = useState<IColumnProps[]>([]);
 
   useEffect(() => {
+    if (!getToken()) {
+      navigate('/');
+    }
     if (isSuccessAllTasks && isSuccessColumns) {
       const columnsCopy = [...arrColumns].map((column) => {
         const tasksForColumn = allTasks
