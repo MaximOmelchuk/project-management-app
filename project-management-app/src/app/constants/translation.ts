@@ -45,19 +45,34 @@ export const WelcomePageText = {
     personCards: [
       {
         title: "Maksim",
-        content: "Some example text for the first board",
+        content: [
+          'Team Lead',
+          'Main page',
+          'Board pages',
+          'Drag-and-drop',
+          'API requests'
+        ],
         link: "https://github.com/MaximOmelchuk",
         key: 1,
       },
       {
         title: "Anton",
-        content: "Some example text for the first board",
+        content: [
+          'Authorization',
+          'Registration',
+          'Server deployment',
+          'Edit profile page',
+        ],
         link: "https://github.com/anton13602",
         key: 2,
       },
       {
         title: "Artem",
-        content: "Some example text for the first board",
+        content: [
+          'Welcome page',
+          'Translation',
+          'Search tasks page',
+        ],
         link: "https://github.com/gavrilenkoartem038",
         key: 3,
       },
@@ -78,19 +93,34 @@ export const WelcomePageText = {
     personCards: [
       {
         title: "Максим",
-        content: "Some example text for the first board",
+        content: [
+          'Руководитель проекта',
+          'Главная страница',
+          'Страницы досок',
+          'Drag-and-drop',
+          'Взаимодействие с API',
+        ],
         link: "https://github.com/MaximOmelchuk",
         key: 1,
       },
       {
         title: "Антон",
-        content: "Some example text for the first board",
+        content: [
+          'Авторизация',
+          'Регистрация',
+          'Развертывание сервера',
+          'Страница изменения профиля',
+        ],
         link: "https://github.com/anton13602",
         key: 2,
       },
       {
         title: "Артем",
-        content: "Some example text for the first board",
+        content: [
+          'Стартовая страния',
+          'Перевод',
+          'Страница поиска задач',
+        ],
         link: "https://github.com/gavrilenkoartem038",
         key: 3,
       },

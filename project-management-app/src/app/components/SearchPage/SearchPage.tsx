@@ -1,14 +1,16 @@
-import { useTranslation } from 'react-i18next';
-import Container from '@mui/material/Container';
-import { useGetTasksOnSearchQuery } from '../../services/service';
-import Search from '../Search/Search';
-import { useAppSelector } from '../../hooks';
-import { Grid, Typography } from '@mui/material';
-import TaskCard from '../TaskItem/TaskItem';
-import { Loader } from '../Loader/Loader';
-import { Box } from '@mui/system';
-import { getToken } from '../../utils/tokenUtils';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+
+import { Box } from '@mui/system';
+import Container from '@mui/material/Container';
+import { Grid, Typography } from '@mui/material';
+
+import { useAppSelector } from '../../hooks';
+import Search from '../Search/Search';
+import TaskCard from '../TaskItem/TaskItem';
+import { getToken } from '../../utils/tokenUtils';
+import { useGetTasksOnSearchQuery } from '../../services/service';
+import { Loader } from '../Loader/Loader';
 
 const SearchPage = () => {
   const searchString = useAppSelector((state) => state.common.searchString);

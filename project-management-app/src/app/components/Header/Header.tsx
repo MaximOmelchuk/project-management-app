@@ -1,4 +1,6 @@
 import * as React from 'react';
+import { useTranslation } from 'react-i18next';
+
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -15,12 +17,12 @@ import ViewKanbanIcon from '@mui/icons-material/ViewKanban';
 import MarginIcon from '@mui/icons-material/Margin';
 import PersonIcon from '@mui/icons-material/Person';
 import SearchIcon from '@mui/icons-material/Search';
-import { useTranslation } from 'react-i18next';
-import ChangeLang from '../ChangeLang/ChangeLang';
 import { useNavigate } from 'react-router-dom';
 import ButtonWithIcon from '../ButtonWithIcon/ButtonWithIcon';
 import ScrollToColor from '../ScrollToColor/ScrollToColor';
 import { Button } from '@mui/material';
+
+import ChangeLang from '../ChangeLang/ChangeLang';
 import { getToken } from '../../utils/tokenUtils';
 
 function Header() {

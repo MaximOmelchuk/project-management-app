@@ -1,7 +1,9 @@
-import { Button, Container } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import HomeIcon from '@mui/icons-material/Home';
 import { useNavigate } from 'react-router-dom';
+
+import { Button, Container } from '@mui/material';
+import HomeIcon from '@mui/icons-material/Home';
+
 import { getToken } from '../../utils/tokenUtils';
 
 const NotFoundPage = () => {

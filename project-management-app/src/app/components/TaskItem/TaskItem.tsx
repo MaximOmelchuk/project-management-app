@@ -1,11 +1,13 @@
-import { Button, Grid, IconButton, Paper, Typography } from "@mui/material";
 import { useState } from "react";
-import { IEditTaskModalProps, ITaskProps } from "../../utils/interfaces";
+import { useTranslation } from "react-i18next";
+
+import { Grid, IconButton, Paper, Typography } from "@mui/material";
 import EditTaskModal from "../EditTaskModal/EditTaskModal";
 import DeleteIcon from "@mui/icons-material/Delete";
+
 import { useDeleteTaskMutation } from "../../services/service";
 import ConfirmModal from "../ConfirmModal/ConfirmModal";
-import { useTranslation } from "react-i18next";
+import { IEditTaskModalProps, ITaskProps } from "../../utils/interfaces";
 
 export default function TaskCard({
   _id,
