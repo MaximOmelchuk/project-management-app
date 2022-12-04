@@ -54,7 +54,7 @@ export default function BoardPage() {
       });
       setCommonTaskColumn(columnsCopy);
     }
-  }, [isSuccessAllTasks, allTasks, isSuccessColumns, arrColumns]);
+  }, [isSuccessAllTasks, allTasks, isSuccessColumns, arrColumns, navigate]);
 
   const inputModalProps: IInputModalProps = {
     title: t("boardPageContent.createTitle"),

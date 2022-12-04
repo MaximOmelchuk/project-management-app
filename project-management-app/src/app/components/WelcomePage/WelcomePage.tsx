@@ -1,7 +1,14 @@
-import { Container, Grid, List, ListItem, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import PersonCard, { PersonCardProps } from '../PersonCard/PersonCard';
+
+import { Container, Grid, List, ListItem, Typography } from '@mui/material';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+
+import PersonCard, { PersonCardProps } from '../PersonCard/PersonCard';
+import maksimImg from '../../assets/images/maxim_omelchuk.webp'
+import antonImg from '../../assets/images/anton_kochetov.webp'
+import artemImg from '../../assets/images/artem_gavrilenko.jpg'
+
+const imagesArr = [maksimImg, antonImg, artemImg]
 
 const WelcomePage = () => {
   const { t } = useTranslation();
@@ -46,8 +53,8 @@ const WelcomePage = () => {
       </Typography>
       <Grid container gap="2rem" justifyContent="space-evenly" paddingBottom="1rem">
         {cards.map(
-          (item) => (
-            <PersonCard {...item} />
+          (item, index) => (
+            <PersonCard {...item} image={imagesArr[index]} />
           )
         )}
       </Grid>
