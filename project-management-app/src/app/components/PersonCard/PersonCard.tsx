@@ -1,7 +1,7 @@
 import { useTranslation } from "react-i18next";
-
 import { Link, List, ListItem, ListItemIcon, ListItemText, Paper, Typography } from "@mui/material";
 import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
+import { nanoid } from "@reduxjs/toolkit";
 
 export interface PersonCardProps {
   title: string,
@@ -38,7 +38,7 @@ export default function PersonCard({ title, content, link, image }: PersonCardPr
         <Paper variant="outlined" sx={{ px: "0.5rem" }}>
           <List>
             {content.map(el => {
-              return <ListItem sx={{ p: "0.1rem" }}>
+              return <ListItem key={nanoid()} sx={{ p: "0.1rem" }}>
                 <ListItemIcon>
                   <FiberManualRecordIcon></FiberManualRecordIcon>
                 </ListItemIcon>

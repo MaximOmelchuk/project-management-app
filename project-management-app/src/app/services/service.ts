@@ -1,23 +1,18 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-// import setFields, { changeSearchString } from "../store/reducers/commonSlice";
 import {
   IBoardData,
   IColumnProps,
   ICreateBoard,
-  ICreateBoardResult,
   ICreateColumn,
   ICreateTask,
   IDeleteColumn,
   IDeleteTask,
   IGetUserData,
-  ISigninArg,
-  ISigninResult,
   ITaskProps,
   IUpdateBoard,
   IUpdateColumn,
   IUpdateTask,
 } from "../utils/interfaces";
-// import { formatDate, redirect } from "../utils/utils";
 import getHeaders, { getUserId } from "../utils/tokenUtils";
 
 export const service = createApi({
@@ -36,79 +31,25 @@ export const service = createApi({
       query: () => `/boards`,
       providesTags: ["POST"],
       keepUnusedDataFor: 0,
-      //   async onQueryStarted(arg, { dispatch, queryFulfilled }) {
-      //     try {
-      //       const { data } = await queryFulfilled;
-      //     } catch (err) {
-      // redirect(err, dispatch);
-      //     }
-      //   },
     }),
 
     getBoardById: builder.query<IBoardData, string>({
       query: (params) => `/boards/${params}`,
       providesTags: ["POST"],
       keepUnusedDataFor: 0,
-        // async onQueryStarted(arg, { dispatch, queryFulfilled }) {
-        //   try {
-        //     const { data } = await queryFulfilled;
-        //   } catch (err) {
-        // redirect(err, dispatch);
-        //   }
-        // },
     }),
 
     getAllUsers: builder.query<IGetUserData[], null>({
       query: () => `/users/`,
       providesTags: ["POST"],
       keepUnusedDataFor: 0,
-      //   async onQueryStarted(arg, { dispatch, queryFulfilled }) {
-      //     try {
-      //       const { data } = await queryFulfilled;
-      //     } catch (err) {
-      //   redirect(err, dispatch);
-      //     }
-      //   },
     }),
 
     getUserById: builder.query<IGetUserData, string>({
       query: (params) => `/users/${params}`,
       providesTags: ["POST"],
       keepUnusedDataFor: 0,
-      //   async onQueryStarted(arg, { dispatch, queryFulfilled }) {
-      //     try {
-      //       const { data } = await queryFulfilled;
-      //     } catch (err) {
-      //   redirect(err, dispatch);
-      //     }
-      //   },
     }),
-
-    // getAllUsers: builder.query<IGetUserData[], null>({
-    //   query: () => `/users/`,
-    //   providesTags: ["POST"],
-    //   keepUnusedDataFor: 0,
-    //   //   async onQueryStarted(arg, { dispatch, queryFulfilled }) {
-    //   //     try {
-    //   //       const { data } = await queryFulfilled;
-    //   //     } catch (err) {
-    //   //   redirect(err, dispatch);
-    //   //     }
-    //   //   },
-    // }),
-
-    // getUserById: builder.query<IGetUserData, string>({
-    //   query: (params) => `/users/${params}`,
-    //   providesTags: ["POST"],
-    //   keepUnusedDataFor: 0,
-    //   //   async onQueryStarted(arg, { dispatch, queryFulfilled }) {
-    //   //     try {
-    //   //       const { data } = await queryFulfilled;
-    //   //     } catch (err) {
-    //   //   redirect(err, dispatch);
-    //   //     }
-    //   //   },
-    // }),
 
     singIn: builder.mutation({
       query: (params) => ({
@@ -126,9 +67,7 @@ export const service = createApi({
           window.localStorage.setItem("app_access_token", token);
           const userId = getUserId(token);
           window.localStorage.setItem("app_user_id", userId);
-        } catch (err) {
-          // redirect(err, dispatch);
-        }
+        } catch (err) {}
       },
     }),
 
@@ -141,9 +80,7 @@ export const service = createApi({
       invalidatesTags: ["POST"],
       async onQueryStarted(arg, { dispatch, queryFulfilled }) {
         try {
-        } catch (err) {
-          // redirect(err, dispatch);
-        }
+        } catch (err) {}
       },
     }),
 
@@ -156,9 +93,7 @@ export const service = createApi({
       invalidatesTags: ["POST"],
       async onQueryStarted(arg, { dispatch, queryFulfilled }) {
         try {
-        } catch (err) {
-          // redirect(err, dispatch);
-        }
+        } catch (err) {}
       },
     }),
 
@@ -171,13 +106,11 @@ export const service = createApi({
       async onQueryStarted(arg, { dispatch, queryFulfilled }) {
         try {
           const { data } = await queryFulfilled;
-        } catch (err) {
-          //   redirect(err, dispatch);
-        }
+        } catch (err) {}
       },
     }),
 
-    deleteUser: builder.mutation({ 
+    deleteUser: builder.mutation({
       query: (params) => ({
         url: `users/${params.id}`,
         method: "DELETE",
@@ -186,9 +119,7 @@ export const service = createApi({
       async onQueryStarted(arg, { dispatch, queryFulfilled }) {
         try {
           const data = await queryFulfilled;
-        } catch (err) {
-          // redirect(err, dispatch);
-        }
+        } catch (err) {}
       },
     }),
 
@@ -198,16 +129,6 @@ export const service = createApi({
         method: "DELETE",
       }),
       invalidatesTags: ["POST"],
-      //   async onQueryStarted(arg, { dispatch, queryFulfilled }) {
-      //     try {
-      //       const {
-      //         data: { token },
-      //       } = await queryFulfilled;
-      //       window.localStorage.setItem("app_access_token", token);
-      //     } catch (err) {
-      // redirect(err, dispatch);
-      //     }
-      //   },
     }),
 
     createBoard: builder.mutation<IBoardData, ICreateBoard>({
@@ -217,16 +138,6 @@ export const service = createApi({
         body: params,
       }),
       invalidatesTags: ["POST"],
-      //   async onQueryStarted(arg, { dispatch, queryFulfilled }) {
-      //     try {
-      //       const {
-      //         data: { token },
-      //       } = await queryFulfilled;
-      //       window.localStorage.setItem("app_access_token", token);
-      //     } catch (err) {
-      // redirect(err, dispatch);
-      //     }
-      //   },
     }),
 
     updateBoard: builder.mutation<IBoardData, IUpdateBoard>({
@@ -236,16 +147,6 @@ export const service = createApi({
         body: params.body,
       }),
       invalidatesTags: ["POST"],
-      //   async onQueryStarted(arg, { dispatch, queryFulfilled }) {
-      //     try {
-      //       const {
-      //         data: { token },
-      //       } = await queryFulfilled;
-      //       window.localStorage.setItem("app_access_token", token);
-      //     } catch (err) {
-      // redirect(err, dispatch);
-      //     }
-      //   },
     }),
 
     updateColumn: builder.mutation<IBoardData, IUpdateColumn>({
@@ -255,16 +156,6 @@ export const service = createApi({
         body: params.body,
       }),
       invalidatesTags: ["POST"],
-      //   async onQueryStarted(arg, { dispatch, queryFulfilled }) {
-      //     try {
-      //       const {
-      //         data: { token },
-      //       } = await queryFulfilled;
-      //       window.localStorage.setItem("app_access_token", token);
-      //     } catch (err) {
-      // redirect(err, dispatch);
-      //     }
-      //   },
     }),
 
     updateTask: builder.mutation<IBoardData, IUpdateTask>({
@@ -274,16 +165,6 @@ export const service = createApi({
         body: params.body,
       }),
       invalidatesTags: ["POST"],
-      //   async onQueryStarted(arg, { dispatch, queryFulfilled }) {
-      //     try {
-      //       const {
-      //         data: { token },
-      //       } = await queryFulfilled;
-      //       window.localStorage.setItem("app_access_token", token);
-      //     } catch (err) {
-      // redirect(err, dispatch);
-      //     }
-      //   },
     }),
 
     deleteTask: builder.mutation<IBoardData, IDeleteTask>({
@@ -292,16 +173,6 @@ export const service = createApi({
         method: "DELETE",
       }),
       invalidatesTags: ["POST"],
-      //   async onQueryStarted(arg, { dispatch, queryFulfilled }) {
-      //     try {
-      //       const {
-      //         data: { token },
-      //       } = await queryFulfilled;
-      //       window.localStorage.setItem("app_access_token", token);
-      //     } catch (err) {
-      // redirect(err, dispatch);
-      //     }
-      //   },
     }),
 
     deleteColumn: builder.mutation<IBoardData, IDeleteColumn>({
@@ -310,29 +181,12 @@ export const service = createApi({
         method: "DELETE",
       }),
       invalidatesTags: ["POST"],
-      //   async onQueryStarted(arg, { dispatch, queryFulfilled }) {
-      //     try {
-      //       const {
-      //         data: { token },
-      //       } = await queryFulfilled;
-      //       window.localStorage.setItem("app_access_token", token);
-      //     } catch (err) {
-      // redirect(err, dispatch);
-      //     }
-      //   },
     }),
 
     getColumnList: builder.query<IColumnProps[], string>({
       query: (params) => `/boards/${params}/columns`,
       providesTags: ["POST"],
       keepUnusedDataFor: 0,
-      //   async onQueryStarted(arg, { dispatch, queryFulfilled }) {
-      //     try {
-      //       const { data } = await queryFulfilled;
-      //     } catch (err) {
-      //   redirect(err, dispatch);
-      //     }
-      //   },
     }),
 
     getTaskList: builder.query<
@@ -343,13 +197,6 @@ export const service = createApi({
         `/boards/${params.boardId}/columns/${params.columnId}/tasks`,
       providesTags: ["POST"],
       keepUnusedDataFor: 0,
-      // async onQueryStarted(arg, { dispatch, queryFulfilled }) {
-      //   try {
-      //     const { data } = await queryFulfilled;
-      //   } catch (err) {
-      // redirect(err, dispatch);
-      //   }
-      // },
     }),
 
     createColumn: builder.mutation<IColumnProps, ICreateColumn>({
@@ -359,16 +206,6 @@ export const service = createApi({
         body: params.body,
       }),
       invalidatesTags: ["POST"],
-      //   async onQueryStarted(arg, { dispatch, queryFulfilled }) {
-      //     try {
-      //       const {
-      //         data: { token },
-      //       } = await queryFulfilled;
-      //       window.localStorage.setItem("app_access_token", token);
-      //     } catch (err) {
-      // redirect(err, dispatch);
-      //     }
-      //   },
     }),
 
     createTask: builder.mutation<IColumnProps, ICreateTask>({
@@ -378,29 +215,12 @@ export const service = createApi({
         body: params.body,
       }),
       invalidatesTags: ["POST"],
-      //   async onQueryStarted(arg, { dispatch, queryFulfilled }) {
-      //     try {
-      //       const {
-      //         data: { token },
-      //       } = await queryFulfilled;
-      //       window.localStorage.setItem("app_access_token", token);
-      //     } catch (err) {
-      // redirect(err, dispatch);
-      //     }
-      //   },
     }),
 
     getTasksOnSearch: builder.query<ITaskProps[], string>({
       query: (params) => `/tasksSet?search=${params}`,
       providesTags: ["POST"],
       keepUnusedDataFor: 0,
-      //   async onQueryStarted(arg, { dispatch, queryFulfilled }) {
-      //     try {
-      //       const { data } = await queryFulfilled;
-      //     } catch (err) {
-      //   redirect(err, dispatch);
-      //     }
-      //   },
     }),
 
     tasksSet: builder.mutation({
@@ -410,126 +230,13 @@ export const service = createApi({
         body: params,
       }),
       invalidatesTags: ["POST"],
-      //   async onQueryStarted(arg, { dispatch, queryFulfilled }) {
-      //     try {
-      //       const {
-      //         data: { token },
-      //       } = await queryFulfilled;
-      //       window.localStorage.setItem("app_access_token", token);
-      //     } catch (err) {
-      // redirect(err, dispatch);
-      //     }
-      //   },
     }),
 
     getAllTasksSetById: builder.query<ITaskProps[], string>({
       query: (params) => `/tasksSet/${params}`,
       providesTags: ["POST"],
       keepUnusedDataFor: 0,
-      //   async onQueryStarted(arg, { dispatch, queryFulfilled }) {
-      //     try {
-      //       const {
-      //         data: { token },
-      //       } = await queryFulfilled;
-      //       window.localStorage.setItem("app_access_token", token);
-      //     } catch (err) {
-      // redirect(err, dispatch);
-      //     }
-      //   },
     }),
-
-    // updateHost: builder.mutation({
-    //   query: (params) => ({
-    //     url: `host/update/${params.id}`,
-    //     method: "POST",
-    //     body: params.body,
-    //   }),
-    //   invalidatesTags: ["POST"],
-    //   async onQueryStarted(arg, { dispatch, queryFulfilled }) {
-    //     try {
-    //       const { data } = await queryFulfilled;
-    //     } catch (err) {
-    //       //   redirect(err, dispatch);
-    //     }
-    //   },
-    // }),
-    //     deleteHost: builder.mutation({
-    //       query: (params) => ({
-    //         url: `host/delete/${params.id}`,
-    //         method: "DELETE",
-    //       }),
-    //       invalidatesTags: ["POST"],
-    //       async onQueryStarted(arg, { dispatch, queryFulfilled }) {
-    //         try {
-    //           const { data } = await queryFulfilled;
-    //         } catch (err) {
-    //           redirect(err, dispatch);
-    //         }
-    //       },
-    //     }),
-
-    //
-    //     getAllUnp: builder.query({
-    //       query: () => `host/create/unp-list/`,
-    //       providesTags: ["POST"],
-    //       keepUnusedDataFor: 0,
-    //       async onQueryStarted(arg, { dispatch, queryFulfilled }) {
-    //         try {
-    //           const { data } = await queryFulfilled;
-    //         } catch (err) {
-    //           redirect(err, dispatch);
-    //         }
-    //       },
-    //     }),
-    //     getHostStatuses: builder.query({
-    //       query: () => `dictionary/host-status/list/`,
-    //       providesTags: ["POST"],
-    //       keepUnusedDataFor: 0,
-    //       async onQueryStarted(arg, { dispatch, queryFulfilled }) {
-    //         try {
-    //           const { data } = await queryFulfilled;
-    //         } catch (err) {
-    //           redirect(err, dispatch);
-    //         }
-    //       },
-    //     }),
-    // getHostTypes: builder.query({
-    //   query: (params) => `dictionary/host-type/list/?${params}`,
-    //   providesTags: ["POST"],
-    //   keepUnusedDataFor: 0,
-    //   async onQueryStarted(arg, { dispatch, queryFulfilled }) {
-    //     try {
-    //       const { data } = await queryFulfilled;
-    //     } catch (err) {
-    //       redirect(err, dispatch);
-    //     }
-    //   },
-    // }),
-    //     getHostById: builder.query({
-    //       query: (params) => `host/uuid/${params}`,
-    //       providesTags: ["POST"],
-    //       keepUnusedDataFor: 0,
-    //       async onQueryStarted(arg, { dispatch, queryFulfilled }) {
-    //         try {
-    //           const { data } = await queryFulfilled;
-    //         } catch (err) {
-    //           redirect(err, dispatch);
-    //         }
-    //       },
-    //     }),
-    //     getCompanyByUnp: builder.query({
-    //       query: (params) => `host/update/company-name/${params}`,
-    //       providesTags: ["POST"],
-    //       keepUnusedDataFor: 0,
-    //       async onQueryStarted(arg, { dispatch, queryFulfilled }) {
-    //         try {
-    //           const { data } = await queryFulfilled;
-    //         } catch (err) {
-    //           redirect(err, dispatch);
-    //         }
-    //       },
-    //     }),
-    //   }),
   }),
 });
 
@@ -558,11 +265,4 @@ export const {
   useGetTasksOnSearchQuery,
   useTasksSetMutation,
   useGetAllTasksSetByIdQuery,
-  //   useUpdateHostMutation,
-  //   useGetHostByIdQuery,
-  //   useGetHostStatusesQuery,
-  //   useGetHostTypesQuery,
-  //   useDeleteHostMutation,
-  //   useGetAllUnpQuery,
-  //   useLazyGetCompanyByUnpQuery,
 } = service;

@@ -74,13 +74,6 @@ const appCommon = createSlice({
         searchString: action.payload,
       };
     },
-    // setInitialState: () => ({ ...initialState }),
-    // setToken: (state, action) => {
-    //   return { ...state, token: action.payload };
-    // },
-    // setUserInfo: (state, action) => {
-    //   return { ...state, userInfo: action.payload };
-    // },
   },
 });
 

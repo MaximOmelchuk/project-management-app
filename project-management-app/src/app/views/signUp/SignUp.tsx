@@ -3,7 +3,6 @@ import { NavLink, useNavigate } from 'react-router-dom';
 
 import { Box, Typography, Container } from '@mui/material';
 
-import { RegistrationText } from '../../components/AuthForm/content';
 import { AuthForm } from '../../components/AuthForm/AuthForm';
 import { useSingUpMutation, useSingInMutation } from '../../services/service';
 import { selectStateApp, setFormSignUp, setMessageResponsive } from '../../store/reducers/commonSlice';
