@@ -69,17 +69,8 @@ export const SignIn = (): JSX.Element => {
         />
         <Box sx={{ display: "inline-flex", gap: "10px" }}>
           <Typography variant="body1">{suggestion}</Typography>
-          <NavLink to="/sign-up">
-            <Typography
-              variant="body1"
-              sx={{
-                color: "#fff",
-                fontWeight: "700",
-                textDecoration: "none",
-              }}
-            >
-              {suggestionButton}
-            </Typography>
+          <NavLink className={'sign-in-link'} to='/sign-up'>
+            {suggestionButton}
           </NavLink>
         </Box>
       </Box>

@@ -1,6 +1,6 @@
 import {
   configureStore,
-  combineReducers,
+  combineReducers
 } from "@reduxjs/toolkit";
 import { service } from "../services/service";
 import common from "./reducers/commonSlice";

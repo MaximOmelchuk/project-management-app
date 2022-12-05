@@ -65,7 +65,7 @@ export const SignUp = (): JSX.Element => {
         <AuthForm isAllValidate={true} serverRequest={login} setState={setFormSignUp} contentForm={'registration'} stateForm={formSignUp} />
         <Box sx={{ display: "inline-flex", gap: "10px" }}>
           <Typography variant="body1">{suggestion}</Typography>
-          <NavLink to='/sign-in'>
+          <NavLink className={'sign-in-link'} to='/sign-in'>
             {suggestionButton}
           </NavLink>
         </Box>

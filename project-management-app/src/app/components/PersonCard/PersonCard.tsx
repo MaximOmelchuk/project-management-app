@@ -47,7 +47,6 @@ export default function PersonCard({ title, content, link, image }: PersonCardPr
             })}
           </List>
         </Paper>
-
       </Paper>
     </Link>
   );

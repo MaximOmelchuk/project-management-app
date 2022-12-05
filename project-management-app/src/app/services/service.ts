@@ -1,7 +1,6 @@
-import { ThunkDispatch, AnyAction } from "@reduxjs/toolkit";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { setMessageResponsive } from "../store/reducers/commonSlice";
-// import setFields, { changeSearchString } from "../store/reducers/commonSlice";
+
 import {
   IBoardData,
   IColumnProps,
@@ -155,6 +154,7 @@ export const service = createApi({
           await queryFulfilled;
           dispatch(setMessageResponsive({ mainMessage: 'actionMessage.deleteUser', type: 'success' }));
         } catch (err) {
+          getErrorMessage(err, dispatch);
           // redirect(err, dispatch);
         }
       },
