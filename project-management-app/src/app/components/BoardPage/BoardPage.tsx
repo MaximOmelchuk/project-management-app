@@ -155,7 +155,7 @@ export default function BoardPage() {
   };
 
   return (
-    <Grid p="2rem">
+    <Grid sx={{ maxWidth: "1500px", p: '2rem', mx: 'auto'}}>
       <BoardPageHeadSection contentArr={contentArr} />
       <DragDropContext onDragEnd={onDragEnd}>
         <Grid sx={containerStyle}>

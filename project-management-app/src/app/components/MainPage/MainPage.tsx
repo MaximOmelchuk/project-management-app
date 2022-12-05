@@ -39,7 +39,7 @@ export default function MainPage() {
   };
 
   return (
-    <Grid p="2rem">
+    <Grid sx={{ maxWidth: "1500px", p: '2rem', mx: 'auto'}}>
       <Typography
         variant="h4"
         align="left"
