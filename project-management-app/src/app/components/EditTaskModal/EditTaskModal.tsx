@@ -98,7 +98,7 @@ export default function EditTaskModal({
     if (isSuccessGetOneUser) {
       setFormikValue("userId", userData);
     }
-  }, [isSuccessGetOneUser, userData, setFormikValue]);
+  }, [isSuccessGetOneUser, userData]);
 
   useEffect(() => {
     if (isSuccessGetAllUsers) {
@@ -107,7 +107,7 @@ export default function EditTaskModal({
       );
       setFormikValue("users", usersFullArr);
     }
-  }, [isSuccessGetAllUsers, usersDropList, users, setFormikValue]);
+  }, [isSuccessGetAllUsers, usersDropList]);
 
   const boxStyle = {
     display: "flex",
