@@ -5,7 +5,6 @@ import {
 import { service } from "../services/service";
 import common from "./reducers/commonSlice";
 
-
 const rootReducer = combineReducers({
   common,
   [service.reducerPath]: service.reducer,

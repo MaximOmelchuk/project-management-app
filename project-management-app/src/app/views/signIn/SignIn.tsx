@@ -23,39 +23,41 @@ export const SignIn = (): JSX.Element => {
 
   const login = async (data: ISignInForm): Promise<void> => {
     await singIn({ login: data.login, password: data.password });
-  }
+  };
 
   useEffect(() => {
     if (getToken()) {
-      navigate('/mainPage')
+      navigate("/mainPage");
     }
     const defaultValue = {
-      name: '',
-      login: '',
-    }
+      name: "",
+      login: "",
+    };
     if (resultSingIn.isSuccess) {
       dispatch(setFormSignIn(defaultValue));
       navigate('/mainPage');
     }
   }, [dispatch, navigate, resultSingIn.isSuccess]);
 
-  const title = t('authorization.title');
-  const subTitle = t('authorization.subTitle');
-  const suggestion = t('authorization.suggestion');
-  const suggestionButton = t('authorization.suggestionButton');
+  const title = t("authorization.title");
+  const subTitle = t("authorization.subTitle");
+  const suggestion = t("authorization.suggestion");
+  const suggestionButton = t("authorization.suggestionButton");
 
   return (
     <Container>
-      <Box sx={{
-        maxWidth: "600px",
-        margin: "0 auto",
-        padding: "50px 10px",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        gap: "1.5rem",
-        color: '#fff',
-      }}>
+      <Box
+        sx={{
+          maxWidth: "600px",
+          margin: "0 auto",
+          padding: "50px 10px",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          gap: "1.5rem",
+          color: "#fff",
+        }}
+      >
         <Typography variant="h4">{title}</Typography>
         <Typography variant="body1">{subTitle}</Typography>
         <AuthForm
@@ -63,7 +65,8 @@ export const SignIn = (): JSX.Element => {
           serverRequest={login}
           setState={setFormSignIn}
           contentForm={"authorization"}
-          stateForm={formSignIn} />
+          stateForm={formSignIn}
+        />
         <Box sx={{ display: "inline-flex", gap: "10px" }}>
           <Typography variant="body1">{suggestion}</Typography>
           <NavLink className={'sign-in-link'} to='/sign-up'>
@@ -72,5 +75,5 @@ export const SignIn = (): JSX.Element => {
         </Box>
       </Box>
     </Container>
-  )
-}
+  );
+};

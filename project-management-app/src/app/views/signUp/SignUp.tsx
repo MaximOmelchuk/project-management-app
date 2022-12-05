@@ -4,7 +4,6 @@ import { NavLink, useNavigate } from 'react-router-dom';
 
 import { Box, Typography, Container } from '@mui/material';
 
-
 import { useSingUpMutation, useSingInMutation } from '../../services/service';
 import { selectStateApp, setFormSignUp } from '../../store/reducers/commonSlice';
 import { useAppDispatch, useAppSelector } from '../../hooks';
