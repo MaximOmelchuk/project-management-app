@@ -12,6 +12,7 @@ import InputModal from "../InputModal/InputModal";
 import { Loader } from "../Loader/Loader";
 import { getToken } from "../../utils/tokenUtils";
 import { useNavigate } from "react-router-dom";
+import { Container } from "@mui/system";
 
 export default function MainPage() {
   const { data, isSuccess, isFetching } = useGetBoardsListQuery(undefined);
@@ -48,7 +49,7 @@ export default function MainPage() {
   };
 
   return (
-    <Grid p="2rem">
+    <Container>
       <Typography
         variant="h4"
         align="left"
@@ -77,6 +78,6 @@ export default function MainPage() {
           {isSuccess &&
             [...data].reverse().map((item) => <Board {...item} key={item._id} />)}
         </Grid>}
-    </Grid>
+    </Container>
   );
 }

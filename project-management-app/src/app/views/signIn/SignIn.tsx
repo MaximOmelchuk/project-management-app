@@ -66,7 +66,7 @@ export const SignIn = (): JSX.Element => {
           stateForm={formSignIn} />
         <Box sx={{ display: "inline-flex", gap: "10px" }}>
           <Typography variant="body1">{suggestion}</Typography>
-          <NavLink to='/sign-up'>
+          <NavLink className={'sign-in-link'} to='/sign-up'>
             {suggestionButton}
           </NavLink>
         </Box>

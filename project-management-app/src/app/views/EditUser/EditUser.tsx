@@ -16,7 +16,6 @@ import { ISignInForm } from '../../utils/interfaces';
 import { AuthForm } from "../../components/AuthForm/AuthForm";
 import { Loader } from '../../components/Loader/Loader';
 import ConfirmModal from '../../components/ConfirmModal/ConfirmModal';
-import { getToken } from '../../utils/tokenUtils';
 
 export const EditUser = (): JSX.Element => {
   const idUser = localStorage.getItem("app_user_id");

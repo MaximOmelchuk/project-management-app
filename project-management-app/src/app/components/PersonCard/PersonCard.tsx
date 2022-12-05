@@ -37,8 +37,8 @@ export default function PersonCard({ title, content, link, image }: PersonCardPr
         </Typography>
         <Paper variant="outlined" sx={{ px: "0.5rem" }}>
           <List>
-            {content.map(el => {
-              return <ListItem sx={{ p: "0.1rem" }}>
+            {content.map((el, item) => {
+              return <ListItem key={item} sx={{ p: "0.1rem" }}>
                 <ListItemIcon>
                   <FiberManualRecordIcon></FiberManualRecordIcon>
                 </ListItemIcon>
@@ -47,7 +47,6 @@ export default function PersonCard({ title, content, link, image }: PersonCardPr
             })}
           </List>
         </Paper>
-
       </Paper>
     </Link>
   );
