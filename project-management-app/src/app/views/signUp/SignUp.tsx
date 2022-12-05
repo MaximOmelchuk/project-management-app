@@ -1,29 +1,18 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { NavLink, useNavigate } from 'react-router-dom';
 
 import { Box, Typography, Container } from '@mui/material';
 
-import { RegistrationText } from '../../components/AuthForm/content';
-import { AuthForm } from '../../components/AuthForm/AuthForm';
+
 import { useSingUpMutation, useSingInMutation } from '../../services/service';
-import { selectStateApp, setFormSignUp, setMessageResponsive } from '../../store/reducers/commonSlice';
+import { selectStateApp, setFormSignUp } from '../../store/reducers/commonSlice';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { useTranslation } from 'react-i18next';
 import { getToken } from '../../utils/tokenUtils';
 
-interface ISignInForm {
-  name: string;
-  login: string;
-  password: string;
-}
+import { ISignInForm } from '../../utils/interfaces';
 
-interface IErrorResponse {
-  status: number,
-  data: {
-    statusCode: number,
-    message: string
-  }
-}
+import { AuthForm } from '../../components/AuthForm/AuthForm';
 
 export const SignUp = (): JSX.Element => {
   const { t } = useTranslation();
@@ -32,12 +21,12 @@ export const SignUp = (): JSX.Element => {
   const navigate = useNavigate();
   const [singUp, resultSingUp] = useSingUpMutation();
   const [singIn, resultSingIn] = useSingInMutation();
-  const [user, setUser] = useState('')
 
   const login = async (data: ISignInForm) => {
-    await singUp({ name: data.name, login: data.login, password: data.password });
-    await singIn({ login: data.login, password: data.password });
-    setUser(data.login);
+    const response = await singUp({ name: data.name, login: data.login, password: data.password }) as ISingUpError;
+    if (!response?.error) {
+      await singIn({ login: data.login, password: data.password });
+    }
   }
 
   useEffect(() => {
@@ -50,16 +39,9 @@ export const SignUp = (): JSX.Element => {
     }
     if (resultSingUp.isSuccess && resultSingIn.isSuccess) {
       dispatch(setFormSignUp(defaultValue));
-      dispatch(setMessageResponsive({ message: `Hello ${user}`, type: 'success' }));
       navigate('/mainPage');
-    } else {
-      if (resultSingUp.isError) {
-        const { data } = resultSingUp.error as IErrorResponse;
-        dispatch(setMessageResponsive({ message: data.message, type: 'error' }));
-      }
     }
-  }, [dispatch, navigate, resultSingIn, resultSingIn.isSuccess, resultSingUp, resultSingUp.isSuccess, user]);
-
+  }, [dispatch, navigate, resultSingIn.isSuccess, resultSingUp.isSuccess]);
 
   const title = t('registration.title');
   const subTitle = t('registration.subTitle');
