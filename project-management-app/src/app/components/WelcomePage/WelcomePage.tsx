@@ -54,7 +54,7 @@ const WelcomePage = () => {
       <Grid container gap="2rem" justifyContent="space-evenly" paddingBottom="1rem">
         {cards.map(
           (item, index) => (
-            <PersonCard {...item} image={imagesArr[index]} />
+            <PersonCard key={index} {...item} image={imagesArr[index]} />
           )
         )}
       </Grid>

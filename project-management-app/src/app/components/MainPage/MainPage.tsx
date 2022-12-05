@@ -12,6 +12,7 @@ import InputModal from "../InputModal/InputModal";
 import { Loader } from "../Loader/Loader";
 import { getToken } from "../../utils/tokenUtils";
 import { useNavigate } from "react-router-dom";
+import { Container } from "@mui/system";
 
 export default function MainPage() {
   const { data, isSuccess, isFetching } = useGetBoardsListQuery(undefined);
@@ -25,7 +26,7 @@ export default function MainPage() {
   const navigate = useNavigate();
 
   if (!getToken()) {
-    navigate('/');
+    navigate("/");
   }
 
   const inputModalProps: IInputModalProps = {
@@ -48,7 +49,7 @@ export default function MainPage() {
   };
 
   return (
-    <Grid p="2rem">
+    <Container sx={{ p: "1.5rem" }}>
       <Typography
         variant="h4"
         align="left"
@@ -65,18 +66,22 @@ export default function MainPage() {
           onClick={createHandler}
           sx={{ mb: 2, alignSelf: "left" }}
         >
-         {t('mainPageContent.button')}
+          {t("mainPageContent.button")}
         </Button>{" "}
       </Grid>
       {isCreateModalOpen && <InputModal {...inputModalProps} />}
-      {isFetching ?
+      {isFetching ? (
         <Box maxWidth="500px" margin="auto">
           <Loader isOpen={true} />
-        </Box> :
+        </Box>
+      ) : (
         <Grid container gap="1rem">
           {isSuccess &&
-            [...data].reverse().map((item) => <Board {...item} key={item._id} />)}
-        </Grid>}
-    </Grid>
+            [...data]
+              .reverse()
+              .map((item) => <Board {...item} key={item._id} />)}
+        </Grid>
+      )}
+    </Container>
   );
 }

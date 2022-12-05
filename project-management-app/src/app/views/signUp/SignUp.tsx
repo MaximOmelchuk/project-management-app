@@ -4,7 +4,6 @@ import { NavLink, useNavigate } from 'react-router-dom';
 
 import { Box, Typography, Container } from '@mui/material';
 
-
 import { useSingUpMutation, useSingInMutation } from '../../services/service';
 import { selectStateApp, setFormSignUp } from '../../store/reducers/commonSlice';
 import { useAppDispatch, useAppSelector } from '../../hooks';
@@ -66,7 +65,7 @@ export const SignUp = (): JSX.Element => {
         <AuthForm isAllValidate={true} serverRequest={login} setState={setFormSignUp} contentForm={'registration'} stateForm={formSignUp} />
         <Box sx={{ display: "inline-flex", gap: "10px" }}>
           <Typography variant="body1">{suggestion}</Typography>
-          <NavLink to='/sign-in'>
+          <NavLink className={'sign-in-link'} to='/sign-in'>
             {suggestionButton}
           </NavLink>
         </Box>

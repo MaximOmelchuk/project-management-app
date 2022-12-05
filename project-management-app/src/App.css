@@ -42,3 +42,13 @@
     transform: translateY(0px);
   }
 }
+
+.sign-in-link {
+  color: rgb(223, 223, 223);
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.sign-in-link:hover {
+  color: rgb(255, 255, 255);
+}

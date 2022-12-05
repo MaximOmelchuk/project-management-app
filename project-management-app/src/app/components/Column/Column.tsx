@@ -97,7 +97,6 @@ export default function Column({
 
   const containerStyle = {
     width: matches ? "320px" : '260px',
-    maxHeight: "100%",
     height: "fit-content",
     p: "1rem",
     boxSizing: "border-box",
