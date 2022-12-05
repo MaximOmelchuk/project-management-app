@@ -26,7 +26,7 @@ export default function MainPage() {
   const navigate = useNavigate();
 
   if (!getToken()) {
-    navigate('/');
+    navigate("/");
   }
 
   const inputModalProps: IInputModalProps = {
@@ -49,7 +49,7 @@ export default function MainPage() {
   };
 
   return (
-    <Container>
+    <Container sx={{ p: "1.5rem" }}>
       <Typography
         variant="h4"
         align="left"
@@ -66,18 +66,22 @@ export default function MainPage() {
           onClick={createHandler}
           sx={{ mb: 2, alignSelf: "left" }}
         >
-         {t('mainPageContent.button')}
+          {t("mainPageContent.button")}
         </Button>{" "}
       </Grid>
       {isCreateModalOpen && <InputModal {...inputModalProps} />}
-      {isFetching ?
+      {isFetching ? (
         <Box maxWidth="500px" margin="auto">
           <Loader isOpen={true} />
-        </Box> :
+        </Box>
+      ) : (
         <Grid container gap="1rem">
           {isSuccess &&
-            [...data].reverse().map((item) => <Board {...item} key={item._id} />)}
-        </Grid>}
+            [...data]
+              .reverse()
+              .map((item) => <Board {...item} key={item._id} />)}
+        </Grid>
+      )}
     </Container>
   );
 }

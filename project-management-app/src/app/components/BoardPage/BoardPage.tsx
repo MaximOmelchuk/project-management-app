@@ -157,10 +157,10 @@ export default function BoardPage() {
     flexWrap: "nowrap",
     height: "50vh",
     width: "fit-content",
-  }; 
+  };
 
   return (
-    <Grid sx={{ width: "1500px", p: '2rem', mx: 'auto'}}>
+    <Grid sx={{ maxWidth: "100%", p: '2rem', mx: 'auto'}}>
       <BoardPageHeadSection contentArr={contentArr} />
       <DragDropContext onDragEnd={onDragEnd}>
         <Grid sx={containerStyle}>
