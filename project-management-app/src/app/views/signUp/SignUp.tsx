@@ -10,7 +10,7 @@ import { selectStateApp, setFormSignUp } from '../../store/reducers/commonSlice'
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { getToken } from '../../utils/tokenUtils';
 
-import { ISignInForm } from '../../utils/interfaces';
+import { ISignInForm, ISingUpError } from '../../utils/interfaces';
 
 import { AuthForm } from '../../components/AuthForm/AuthForm';
 

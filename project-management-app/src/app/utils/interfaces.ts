@@ -1,4 +1,4 @@
-import { FetchBaseQueryMeta } from "@reduxjs/toolkit/dist/query";
+import { FetchBaseQueryError, FetchBaseQueryMeta } from "@reduxjs/toolkit/dist/query";
 
 export interface ISigninArg {
   login: string;
@@ -158,4 +158,8 @@ export interface IError {
   error: IErrorResponse,
   isUnhandledError: boolean,
   meta: FetchBaseQueryMeta | undefined,
+}
+
+export interface ISingUpError {
+  error: IErrorResponse | FetchBaseQueryError
 }
