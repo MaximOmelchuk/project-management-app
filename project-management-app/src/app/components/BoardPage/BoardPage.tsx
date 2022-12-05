@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { Grid } from "@mui/material";
+import { Grid, Container } from "@mui/material";
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
 import {
   useCreateColumnMutation,
@@ -160,7 +160,7 @@ export default function BoardPage() {
   };
 
   return (
-    <Grid sx={{ maxWidth: "100%", p: '2rem', mx: 'auto'}}>
+    <Container maxWidth="xl" sx={{ p: '2rem'}}>
       <BoardPageHeadSection contentArr={contentArr} />
       <DragDropContext onDragEnd={onDragEnd}>
         <Grid sx={containerStyle}>
@@ -176,6 +176,6 @@ export default function BoardPage() {
           {isCreateModalOpen && <InputModal {...inputModalProps} />}
         </Grid>
       </DragDropContext>
-    </Grid>
+    </Container>
   );
 }
