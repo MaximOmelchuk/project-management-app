@@ -1,32 +1,22 @@
-import { Box, Button, Container, Typography } from '@mui/material';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
+import { Box, Button, Container, Typography } from '@mui/material';
 import PersonIcon from '@mui/icons-material/Person';
 import BorderColorIcon from '@mui/icons-material/BorderColor';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { AuthForm } from "../../components/AuthForm/AuthForm";
+
 import { useDeleteUserMutation, useEditUserMutation, useGetUserQuery } from "../../services/service";
-import { selectStateApp, setFormEditUser, setMessageResponsive } from '../../store/reducers/commonSlice';
+import { selectStateApp, setFormEditUser } from '../../store/reducers/commonSlice';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { useEffect, useState } from 'react';
+
+import { ISignInForm } from '../../utils/interfaces';
+
+import { AuthForm } from "../../components/AuthForm/AuthForm";
 import { Loader } from '../../components/Loader/Loader';
-import { useNavigate } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
 import ConfirmModal from '../../components/ConfirmModal/ConfirmModal';
 import { getToken } from '../../utils/tokenUtils';
-
-interface ISignInForm {
-  name: string;
-  login: string;
-  password: string;
-}
-
-interface IErrorResponse {
-  status: number,
-  data: {
-    statusCode: number,
-    message: string
-  }
-}
 
 export const EditUser = (): JSX.Element => {
   const idUser = localStorage.getItem("app_user_id");
@@ -40,7 +30,7 @@ export const EditUser = (): JSX.Element => {
   const { formEditUser } = useAppSelector(selectStateApp);
 
   const { data, isSuccess, isLoading } = useGetUserQuery(idUser);
-  const [editUser, resultEditUser] = useEditUserMutation();
+  const [editUser] = useEditUserMutation();
   const [deleteUser, resultDeleteUser] = useDeleteUserMutation();
 
   useEffect(() => {
@@ -50,32 +40,11 @@ export const EditUser = (): JSX.Element => {
   }, [data?.login, data?.name, dispatch, isSuccess]);
 
   useEffect(() => {
-    if (resultEditUser.isSuccess) {
-      dispatch(setMessageResponsive({ message: `Your profile has been successfully changed.`, type: 'success' }));
-    } else {
-      if (resultEditUser.isError) {
-        const { data } = resultEditUser.error as IErrorResponse;
-        dispatch(setMessageResponsive({ message: data.message, type: 'error' }))
-      }
-    }
-  }, [dispatch, navigate, resultEditUser.error, resultEditUser.isError, resultEditUser.isSuccess]);
-
-  useEffect(() => {
-    if (!getToken()) {
-      navigate('/');
-    }
     if (resultDeleteUser.isSuccess) {
-      dispatch(setMessageResponsive({ message: `Your profile has been successfully deleted.`, type: 'success' }));
       localStorage.removeItem("app_access_token")
       navigate('/')
-    } else {
-      if (resultDeleteUser.isError) {
-        const { data } = resultDeleteUser.error as IErrorResponse;
-        dispatch(setMessageResponsive({ message: data.message, type: 'error' }))
-      }
     }
-  }, [dispatch, navigate, resultDeleteUser.error, resultDeleteUser.isError, resultDeleteUser.isSuccess]);
-
+  }, [dispatch, navigate, resultDeleteUser.isSuccess]);
 
   const changeUser = async (data: ISignInForm) => {
     await editUser({

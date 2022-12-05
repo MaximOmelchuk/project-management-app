@@ -1,37 +1,20 @@
-import { NavLink, useNavigate } from "react-router-dom";
+import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
+import { NavLink, useNavigate } from 'react-router-dom';
 
-import { Box, Typography, Container } from "@mui/material";
+import { Box, Typography, Container } from '@mui/material';
 
-import { AuthText } from "../../components/AuthForm/content";
-import { AuthForm } from "../../components/AuthForm/AuthForm";
-import { useSingInMutation } from "../../services/service";
-import {
-  setFormSignIn,
-  selectStateApp,
-  setMessageResponsive,
-} from "../../store/reducers/commonSlice";
-import { useAppDispatch, useAppSelector } from "../../hooks";
-import { useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
-import { getToken } from "../../utils/tokenUtils";
+import { useSingInMutation } from '../../services/service';
+import { setFormSignIn, selectStateApp } from '../../store/reducers/commonSlice';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { getToken } from '../../utils/tokenUtils';
 
-interface IErrorResponse {
-  status: number;
-  data: {
-    statusCode: number;
-    message: string;
-  };
-}
+import { ISignInForm } from '../../utils/interfaces';
 
-interface ISignInForm {
-  name: string;
-  login: string;
-  password: string;
-}
+import { AuthForm } from '../../components/AuthForm/AuthForm';
 
 export const SignIn = (): JSX.Element => {
   const { t } = useTranslation();
-  const [user, setUser] = useState("");
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { formSignIn } = useAppSelector(selectStateApp);
@@ -39,7 +22,6 @@ export const SignIn = (): JSX.Element => {
   const [singIn, resultSingIn] = useSingInMutation();
 
   const login = async (data: ISignInForm): Promise<void> => {
-    setUser(data.login);
     await singIn({ login: data.login, password: data.password });
   };
 
@@ -53,19 +35,9 @@ export const SignIn = (): JSX.Element => {
     };
     if (resultSingIn.isSuccess) {
       dispatch(setFormSignIn(defaultValue));
-      dispatch(
-        setMessageResponsive({ message: `Hello ${user}`, type: "success" })
-      );
-      navigate("/mainPage");
-    } else {
-      if (resultSingIn.isError) {
-        const { data } = resultSingIn.error as IErrorResponse;
-        dispatch(
-          setMessageResponsive({ message: data.message, type: "error" })
-        );
-      }
+      navigate('/mainPage');
     }
-  }, [dispatch, navigate, resultSingIn.error, resultSingIn.isSuccess, user]);
+  }, [dispatch, navigate, resultSingIn.isSuccess]);
 
   const title = t("authorization.title");
   const subTitle = t("authorization.subTitle");

@@ -12,6 +12,7 @@ import { boardContent } from '../components/Board/content';
 import { columnContent } from '../components/Column/content';
 import { taskContent } from '../components/Task/content';
 import { editTaskContent } from '../components/EditTaskModal/content';
+import { actionMessage } from '../constants/errorTranslate'
 
 const DETECTION_OPTIONS = {
   order: ['localStorage']
@@ -35,6 +36,7 @@ const resources = {
       columnContent: columnContent.en,
       taskContent: taskContent.en,
       editTaskContent: editTaskContent.en,
+      actionMessage: actionMessage.en,
     }
   },
   ru: {
@@ -54,8 +56,7 @@ const resources = {
       columnContent: columnContent.ru,
       taskContent: taskContent.ru,
       editTaskContent: editTaskContent.ru,
-
-
+      actionMessage: actionMessage.ru,
     }
   }
 };

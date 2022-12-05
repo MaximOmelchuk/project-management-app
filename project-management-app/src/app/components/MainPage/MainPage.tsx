@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Grid, Typography, Button, useMediaQuery } from "@mui/material";
+import { Grid, Typography, Button, Box, useMediaQuery } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import {
@@ -9,11 +9,12 @@ import {
 import { IInputModalProps } from "../../utils/interfaces";
 import Board from "../Board/Board";
 import InputModal from "../InputModal/InputModal";
+import { Loader } from "../Loader/Loader";
 import { getToken } from "../../utils/tokenUtils";
 import { useNavigate } from "react-router-dom";
 
 export default function MainPage() {
-  const { data, isSuccess } = useGetBoardsListQuery(undefined);
+  const { data, isSuccess, isFetching } = useGetBoardsListQuery(undefined);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [createTrigger] = useCreateBoardMutation();
   const userId = window.localStorage.getItem("app_user_id") || "";
@@ -64,14 +65,18 @@ export default function MainPage() {
           onClick={createHandler}
           sx={{ mb: 2, alignSelf: "left" }}
         >
-          {t("mainPageContent.button")}
+         {t('mainPageContent.button')}
         </Button>{" "}
       </Grid>
       {isCreateModalOpen && <InputModal {...inputModalProps} />}
-      <Grid container gap="1rem">
-        {isSuccess &&
-          [...data].reverse().map((item) => <Board {...item} key={item._id} />)}
-      </Grid>
+      {isFetching ?
+        <Box maxWidth="500px" margin="auto">
+          <Loader isOpen={true} />
+        </Box> :
+        <Grid container gap="1rem">
+          {isSuccess &&
+            [...data].reverse().map((item) => <Board {...item} key={item._id} />)}
+        </Grid>}
     </Grid>
   );
 }

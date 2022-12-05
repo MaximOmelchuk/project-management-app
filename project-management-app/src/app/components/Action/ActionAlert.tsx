@@ -1,10 +1,14 @@
-import { Alert, Snackbar } from '@mui/material';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+
+import { Alert, Snackbar } from '@mui/material';
+
 import { useAppSelector } from '../../hooks';
 import { selectStateApp } from '../../store/reducers/commonSlice';
 
-
 export const ActionAlert = () => {
+  const { t } = useTranslation();
+
   const { alert } = useAppSelector(selectStateApp);
   const [open, setOpen] = useState(true);
 
@@ -24,7 +28,8 @@ export const ActionAlert = () => {
       anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
     >
       <Alert onClose={handleClose} severity={alert?.type} sx={{ width: '100%' }}>
-        {alert?.message}
+        {t(alert?.mainMessage || '')}
+        {t(alert?.secondMessage || '')}
       </Alert>
     </Snackbar>
   );
