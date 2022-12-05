@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction } from "react";
+import { FetchBaseQueryMeta } from "@reduxjs/toolkit/dist/query";
 
 export interface ISigninArg {
   login: string;
@@ -140,3 +140,22 @@ export interface IColumnPropsDrag extends IColumnProps {
   isDragging: boolean;
 }
 
+export interface ISignInForm {
+  name: string;
+  login: string;
+  password: string;
+}
+
+export type IErrorResponse = {
+  status: number,
+  data: {
+    statusCode: number,
+    message: string
+  }
+}
+
+export interface IError {
+  error: IErrorResponse,
+  isUnhandledError: boolean,
+  meta: FetchBaseQueryMeta | undefined,
+}
