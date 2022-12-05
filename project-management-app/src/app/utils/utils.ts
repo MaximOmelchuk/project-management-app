@@ -1,8 +1,10 @@
 // import moment from "moment";
 // import { setToken } from "../store/reducers/commonSlice";
-// import { getExpirationDate, isExpired } from "./tokenUtils";
+//import { getExpirationDate, isExpired } from "./tokenUtils";
 
-import { ITaskProps } from "./interfaces";
+import { IError, ITaskProps } from "./interfaces";
+import { ThunkDispatch, AnyAction } from "@reduxjs/toolkit";
+import { setMessageResponsive } from "../store/reducers/commonSlice";
 
 export function parseBoardTitle(title: string) {
   let res: string[];
@@ -28,6 +30,32 @@ export function reduceTaskData(arr: ITaskProps[], destColumnId?: string) {
     columnId: destColumnId || columnId,
   }));
 }
+
+export function redirect(err: unknown, dispatch: ThunkDispatch<any, any, AnyAction>) {
+  window.location.href = '/';
+}
+
+export const getErrorMessage = (err: unknown, dispatch: ThunkDispatch<any, any, AnyAction>) => {
+
+  const { error } = err as IError;
+  const { data: { message, statusCode } } = error;
+  switch (statusCode) {
+    case 401:
+      dispatch(setMessageResponsive({ mainMessage: 'actionMessage.userMistake', type: 'error' }));
+      break
+    case 403:
+      dispatch(setMessageResponsive({ mainMessage: 'actionMessage.unauthorized', type: 'error' }));
+      redirect(err, dispatch)
+      break
+    case 409:
+      dispatch(setMessageResponsive({ mainMessage: 'actionMessage.alreadyExist', type: 'error' }));
+      break
+    default:
+      dispatch(setMessageResponsive({ mainMessage: message, type: 'error' }))
+      break
+  }
+}
+
 
 // export async function asyncParseBoardTitle(title: Promise<string>) {
 //   let res: string[];

@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { string } from "yup";
+import { getToken } from "../../utils/tokenUtils";
 import { RootState } from "../store";
 
 export type FormContext = {
@@ -9,7 +9,8 @@ export type FormContext = {
 };
 
 export type ResponseAlert = {
-  message: string,
+  mainMessage: string,
+  secondMessage?: string,
   type: "error" | "warning" | "info" | "success",
 }
 
@@ -25,14 +26,33 @@ export type GlobalContextContent = {
   searchString: string;
 };
 
+const getDefaultContent = (): ResponseAlert => {
+  if (localStorage.getItem('app_access_token') && !getToken()) {
+    return {
+      mainMessage: 'actionMessage.unauthorized',
+      type: 'success'
+    }
+  } else if (localStorage.getItem('app_access_token')) {
+    return {
+      mainMessage: 'actionMessage.userReturn',
+      type: 'info'
+    }
+  } else {
+    return {
+      mainMessage: 'actionMessage.helloUser',
+      type: 'info'
+    }
+  }
+}
+
 const initialState: GlobalContextContent = {
   isModalConfirmOpen: false,
   modalConfirmContent: "",
-  modalConfirmHandler: () => {},
+  modalConfirmHandler: () => { },
   formSignIn: null,
   formSignUp: null,
   formEditUser: null,
-  alert: null,
+  alert: getDefaultContent(),
   searchString: localStorage.getItem('search') || '',
 };
 
@@ -44,11 +64,11 @@ const appCommon = createSlice({
       return action.payload
         ? { ...state, isModalConfirmOpen: action.payload }
         : {
-            ...state,
-            isModalConfirmOpen: action.payload,
-            modalConfirmContent: "",
-            modalConfirmHandler: () => {},
-          };
+          ...state,
+          isModalConfirmOpen: action.payload,
+          modalConfirmContent: "",
+          modalConfirmHandler: () => { },
+        };
     },
     setModalConfirmContent: (state, action) => {
       return { ...state, modalConfirmContent: action.payload };
