@@ -12,6 +12,7 @@ import { Loader } from '../../components/Loader/Loader';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import ConfirmModal from '../../components/ConfirmModal/ConfirmModal';
+import { getToken } from '../../utils/tokenUtils';
 
 interface ISignInForm {
   name: string;
@@ -60,6 +61,9 @@ export const EditUser = (): JSX.Element => {
   }, [dispatch, navigate, resultEditUser.error, resultEditUser.isError, resultEditUser.isSuccess]);
 
   useEffect(() => {
+    if (!getToken()) {
+      navigate('/');
+    }
     if (resultDeleteUser.isSuccess) {
       dispatch(setMessageResponsive({ message: `Your profile has been successfully deleted.`, type: 'success' }));
       localStorage.removeItem("app_access_token")

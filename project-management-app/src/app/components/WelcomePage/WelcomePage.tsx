@@ -1,13 +1,20 @@
-import { Container, Grid, List, ListItem, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import PersonCard from '../PersonCard/PersonCard';
+
+import { Container, Grid, List, ListItem, Typography } from '@mui/material';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+
+import PersonCard, { PersonCardProps } from '../PersonCard/PersonCard';
+import maksimImg from '../../assets/images/maxim_omelchuk.webp'
+import antonImg from '../../assets/images/anton_kochetov.webp'
+import artemImg from '../../assets/images/artem_gavrilenko.jpg'
+
+const imagesArr = [maksimImg, antonImg, artemImg]
 
 const WelcomePage = () => {
   const { t } = useTranslation();
-  const cards = t('welcome.personCards', { returnObjects: true }) as Array<{ title: string, content: string }>;
-  const advantagesList = t('welcome.advantagesList', { returnObjects: true }) as Array<string
-  >;
+  const cards = t('welcome.personCards', { returnObjects: true }) as Array<PersonCardProps>;
+  const advantagesList = t('welcome.advantagesList', { returnObjects: true }) as Array<string>;
+
   return (
     <Container>
       <Typography color='white' sx={{ padding: "1rem 0", fontWeight: 700, fontSize: { xs: '1.4rem', sm: '2rem' } }}>
@@ -46,8 +53,8 @@ const WelcomePage = () => {
       </Typography>
       <Grid container gap="2rem" justifyContent="space-evenly" paddingBottom="1rem">
         {cards.map(
-          (item: { title: string; content?: string }) => (
-            <PersonCard {...item} />
+          (item, index) => (
+            <PersonCard {...item} image={imagesArr[index]} />
           )
         )}
       </Grid>

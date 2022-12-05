@@ -9,6 +9,7 @@ import { useSingUpMutation, useSingInMutation } from '../../services/service';
 import { selectStateApp, setFormSignUp, setMessageResponsive } from '../../store/reducers/commonSlice';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { useTranslation } from 'react-i18next';
+import { getToken } from '../../utils/tokenUtils';
 
 interface ISignInForm {
   name: string;
@@ -39,8 +40,10 @@ export const SignUp = (): JSX.Element => {
     setUser(data.login);
   }
 
-
   useEffect(() => {
+    if (getToken()) {
+      navigate('/mainPage')
+    }
     const defaultValue = {
       name: '',
       login: '',
@@ -56,6 +59,7 @@ export const SignUp = (): JSX.Element => {
       }
     }
   }, [dispatch, navigate, resultSingIn, resultSingIn.isSuccess, resultSingUp, resultSingUp.isSuccess, user]);
+
 
   const title = t('registration.title');
   const subTitle = t('registration.subTitle');

@@ -1,22 +1,24 @@
-import { Link, Paper, SvgIcon, Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
-import { ReactComponent as PersonIcon } from '../../assets/images/Person.svg'
 
-export default function PersonCard({
-  title,
-  content,
-}: {
-  title: string;
-  content?: string;
-}) {
+import { Link, List, ListItem, ListItemIcon, ListItemText, Paper, Typography } from "@mui/material";
+import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
+
+export interface PersonCardProps {
+  title: string,
+  content: string[],
+  link: string,
+  image: string
+}
+
+export default function PersonCard({ title, content, link, image }: PersonCardProps) {
   const { t } = useTranslation();
 
   return (
-    <Link href="fds.com" target="_blank" sx={{ textDecoration: "none" }}>
+    <Link href={link} target="_blank" sx={{ textDecoration: "none" }}>
       <Paper
         sx={{
           width: "300px",
-          minHeight: "200px",
+          minHeight: "415px",
           p: "1rem 1rem",
           boxSizing: "border-box",
           background: "rgb(44, 56, 126)",
@@ -29,15 +31,23 @@ export default function PersonCard({
         }}
         elevation={4}
       >
-        <SvgIcon component={PersonIcon} inheritViewBox sx={{ color: "black", width: "100px", height: "100px" }} />
+        <img src={image} alt="" style={{ width: "150px", borderRadius: "200px" }}></img>
         <Typography variant="h6">
           {t(title)}
         </Typography>
-        {content && (
-          <Typography variant="body1">
-            {t(content)}
-          </Typography>
-        )}
+        <Paper variant="outlined" sx={{ px: "0.5rem" }}>
+          <List>
+            {content.map(el => {
+              return <ListItem sx={{ p: "0.1rem" }}>
+                <ListItemIcon>
+                  <FiberManualRecordIcon></FiberManualRecordIcon>
+                </ListItemIcon>
+                <ListItemText>{el}</ListItemText>
+                </ListItem>
+            })}
+          </List>
+        </Paper>
+
       </Paper>
     </Link>
   );
